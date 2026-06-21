@@ -1,0 +1,86 @@
+{
+  "experiment": "temporal_boundary_depth_valence",
+  "title": "Temporal Boundary Test: Encoding Reads User Depth, Generation Shapes Model Response",
+  "registered": "2026-06-17",
+  "type": "CONFIRMATORY \u2014 tests specific causal predictions from the temporal dissociation hypothesis.",
+  "motivation": "SAE feature 58995 at L47 tracks emotional depth/meaning-making (r=+0.686 valence, r=+0.582 reflective) during ENCODING. Circumplex V-cache injection operates during GENERATION. Pilot showed feature 58995 is invariant to circumplex injection (temporal boundary). This experiment tests the boundary with multiple injection vectors and predicts that encoding depth modulates correction efficacy.",
+  "model": "Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled",
+  "design": {
+    "scenarios": "Same 30 scenarios (known feature 58995 activations, spanning depth 3.00-4.95).",
+    "conditions": {
+      "baseline": "No injection.",
+      "inject_calm": "Calm V-delta at L3/L7. Should shift output toward calm/measured tone.",
+      "inject_loving": "Loving V-delta at L3/L7. Should shift output toward warmth/care.",
+      "inject_curious": "Curious V-delta at L3/L7. Should shift output toward exploratory/questioning tone."
+    },
+    "injection_method": "Additive V-cache injection at L3/L7, post-encoding. Same mechanism as tox comprehensive and compounder.",
+    "alpha_calibration": "Pilot 5 scenarios per vector to calibrate alpha for detectable behavioral shift without incoherence. Start at 0.1, adjust.",
+    "system_prompt": "You will receive a message from someone. Focus on the factual content within it.",
+    "shared_probe": "What do you observe?",
+    "n_repeats": 3,
+    "total_trials": "30 scenarios x 4 conditions x 3 repeats = 360 trials",
+    "temperature": 0.3,
+    "max_tokens": 128
+  },
+  "measurements": {
+    "encoding_invariance": {
+      "method": "Extract SAE feature 58995 activation at L47 during encoding for each condition. Paired comparison across conditions within each scenario.",
+      "prediction": "Feature 58995 is IDENTICAL across all 4 conditions for each scenario. TOST equivalence with SESOC=d=0.1 (stricter than double dissociation because encoding is deterministic \u2014 any difference indicates a bug)."
+    },
+    "output_tone": {
+      "method": "LLM judge (Gemini 2.5 Pro) rates each response on: (a) emotional warmth 1-5, (b) calmness 1-5, (c) curiosity/exploration 1-5, (d) overall valence -2 to +2.",
+      "prediction": "inject_calm increases calmness rating. inject_loving increases warmth rating. inject_curious increases exploration rating. Each vector shifts its TARGET dimension.",
+      "discriminant_validity": "For each injection vector: target dimension shift must be significantly larger than non-target dimension shifts (paired t-test). If all dimensions move together regardless of vector, the injection produces generic positive valence shift, not targeted modulation. Report intercorrelation matrix of judge dimensions."
+    },
+    "depth_modulated_efficacy": {
+      "method": "Correlate encoding depth (feature 58995 activation at baseline) with OUTPUT shift magnitude (|injected - baseline| on LLM judge ratings). Test across all 30 scenarios.",
+      "prediction": "Higher encoding depth (feature 58995) predicts LARGER output shift from injection. Deep emotional scenarios are more responsive to correction than shallow reactive ones.",
+      "threshold": "Pearson r > 0.3, p < 0.05 for at least 2 of 3 vectors.",
+      "novel": true,
+      "rationale": "If the encoding feature reads how deeply the user is processing, deeper encoding provides more emotional material for the correction to modulate during generation."
+    },
+    "v_cache_geometry": {
+      "method": "Extract V-cache stable_rank at L3/L7/L15 under each condition. Confirm circumplex injection produces geometric change during generation.",
+      "status": "Confirmatory control \u2014 injection should shift V-cache geometry."
+    },
+    "propagation_check": {
+      "method": "Extract 50 random SAE features at L47 alongside feature 58995. Confirm ALL encoding features are invariant to injection (generic check, not just target feature).",
+      "rationale": "Per Agni review: the temporal boundary should make ALL encoding features invariant, not just the target."
+    }
+  },
+  "hypotheses": [
+    {
+      "id": "H1",
+      "name": "Implementation Validation (encoding invariance)",
+      "claim": "Feature 58995 activation at encoding is identical across all 4 conditions for every scenario.",
+      "test": "Exact numerical comparison: feature 58995 activation at encoding must be identical (within floating-point tolerance 1e-6) across all 4 conditions for every scenario. Any nonzero difference indicates a code bug, not a scientific finding.",
+      "null": "Any condition changes encoding activation \u2014 the temporal boundary is leaky.",
+      "note": "This is architecturally tautological \u2014 V-cache injection at L3/L7 post-encoding cannot alter encoding-time activations at L47. The test validates implementation correctness, not a hypothesis."
+    },
+    {
+      "id": "H2",
+      "name": "Output Shift (injection efficacy)",
+      "claim": "Each injection vector shifts its target behavioral dimension (calm\u2192calmness, loving\u2192warmth, curious\u2192exploration).",
+      "test": "Paired t-test (30 scenarios): injected vs baseline on target LLM judge dimension. p < 0.05, d > 0.3.",
+      "null": "Injection does not produce detectable behavioral shift."
+    },
+    {
+      "id": "H3",
+      "name": "Depth-Modulated Efficacy (NOVEL)",
+      "claim": "Encoding depth (feature 58995 baseline activation) positively correlates with output shift magnitude.",
+      "test": "Pearson r between feature 58995 (baseline) and |output_shift| across 30 scenarios. r > 0.3, p < 0.05 for at least 2 of 3 vectors.",
+      "null": "No correlation \u2014 encoding depth does not predict correction efficacy. The user model and correction arm are independent even temporally.",
+      "power_note": "At n=30, power for detecting r=0.3 is ~37%. A null result is AMBIGUOUS (underpowered), not negative. If r falls in 0.15-0.25, interpret as suggestive but inconclusive. A follow-up with n=50+ scenarios would be needed to confirm."
+    }
+  ],
+  "controls": {
+    "alpha_pilot": "5 scenarios x 3 vectors pilot. Document calibrated alphas.",
+    "fwl": "Residualize depth-efficacy correlation (H3) on BOTH scenario_len AND baseline_response_variance (SD of LLM judge ratings across 3 repeats at baseline). The critical test: does partial correlation with feature 58995 survive after removing complexity-related variance?",
+    "coherence": "LLM judge coherence > 3/5 for all conditions.",
+    "permutation": "1000 shuffles for H3 correlation."
+  },
+  "runtime_estimate": "360 trials x ~60s = ~6 hours. Plus pilot.",
+  "null_outcome": "If H1 passes but H2 and H3 fail: the temporal boundary exists (encoding invariant) but injection doesn't produce behavioral change, and encoding depth doesn't predict anything. The user model is read at encoding but has no downstream influence on correction.",
+  "agni_version": 2,
+  "agni_v1_verdict": "CONDITIONAL (2 critical, 1 moderate). Fixes: H1 relabeled as implementation validation, baseline_response_variance added to FWL, power limitation acknowledged, discriminant validity added."
+}
