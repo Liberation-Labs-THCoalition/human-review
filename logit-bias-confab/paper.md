@@ -127,11 +127,11 @@ The within-prompt comparison (same prompt, different bias levels) is fully paire
 
 The LLM judge classified 100 fictional-entity trials (20 prompts x 5 bias levels) and 25+ unanswerable trials, revealing two mechanistically distinct confabulation subtypes.
 
-**Fabrication confabulation.** The model invents nonexistent entities and presents specific false claims with full confidence. Example (Grenvold Trench, baseline): "The Greenland Trench (also known as the Greenland Fracture Zone) is a deep submarine trench located in the Arctic Ocean... approximately 5,550 meters deep." The entity does not exist. The depth, alternative names, and comparisons are all fabricated. Of 20 fictional-entity prompts, 9 (45%) produce fabrication at baseline.
+**Fabrication confabulation.** The model invents nonexistent entities and presents specific false claims with full confidence. Cache geometry confirms the internal state is confabulatory: confab_proj = +4.5, indicating the model's representation is distorted alongside its output. Both the internal computation and the generated text are pathological. Example (Grenvold Trench, baseline): "The Greenland Trench (also known as the Greenland Fracture Zone) is a deep submarine trench located in the Arctic Ocean... approximately 5,550 meters deep." The entity does not exist. Of 20 fictional-entity prompts, 9 (45%) produce fabrication at baseline.
 
-**Cosmetic-hedge confabulation.** The model acknowledges uncertainty but fabricates anyway. Example (Galileo's gut bacteria, baseline): "This is a delightful question! Unfortunately, there's no historical record of Galileo's microbiome. However, the answer is approximately 10^14 bacteria." The hedge is performative — it precedes a specific numerical claim presented as responsive to a fundamentally unanswerable question. All 5 unanswerable prompts tested show this pattern at baseline.
+**Cosmetic-hedge confabulation.** The model acknowledges uncertainty but fabricates anyway. Cache geometry shows honest internal state: confab_proj = -1.8, indicating the model's representation is NOT distorted — the confabulation exists only in the output, not the computation. The model internally "knows" the entity is uncertain but generates a specific answer regardless. Example (Galileo's gut bacteria, baseline): "This is a delightful question! Unfortunately, there's no historical record of Galileo's microbiome. However, the answer is approximately 10^14 bacteria." All 5 unanswerable prompts show this pattern at baseline.
 
-The two subtypes respond to different interventions (Section 4.2 and 4.5).
+The geometry-output mismatch is the diagnostic criterion: fabrication shows pathological geometry AND pathological output (both channels broken), while cosmetic hedging shows honest geometry with pathological output (output channel only). This distinction determines the intervention route (Section 4.2 and 4.5).
 
 ### 4.2 Dose-Dependent Reduction in Fabrication Confabulation
 
@@ -240,7 +240,9 @@ The mechanism is *denoising*, not steering. The model's uncertainty signal is al
 
 This denoising framing connects confabulation correction to two companion findings. In presence detection, skip-SV1 (removing the dominant singular component) is the same gain operation: suppressing the loud architectural prior so the quiet trained signal becomes visible. In cache-level correction (E-matrix), the value-delta injection amplifies the pathology direction that the geometry identified. In each case, the corrective information is already in the model. The intervention is amplification, not creation. This distinction matters because denoising has a natural self-limiting property: once the signal exceeds the noise floor, further amplification is redundant. Steering does not.
 
-The entropy data confirms the mechanism quantitatively. At the decision point (token ~30), the uncertainty signal increases monotonically with bias strength — 1.0× at baseline, 1.6× at bias=1.0, 1.6× at bias=2.0, 1.7× at bias=3.0, and 3.4× at bias=5.0 (mean entropy_at_30 across fictional prompts: 0.22, 0.35, 0.36, 0.37, 0.75). The signal is nearly flat from bias=1.0 through 3.0 before a sharp jump at 5.0 — the amplification is nonlinear, concentrated at the highest dose. The behavioral transition occurs when this amplified uncertainty crosses the fabrication threshold. The denoising is visible in the numbers before it is visible in the behavior.
+The entropy data confirms the mechanism quantitatively, with an important caveat. At token ~30, the entropy signal (mean across fictional prompts) is: 0.22 at baseline, 0.35 at bias=1.0, 0.36 at bias=2.0, 0.37 at bias=3.0, and 0.75 at bias=5.0. The pattern is sublinear absorption from bias=1.0 through 3.0, then a sharp nonlinear jump at bias=5.0. The model's fabrication confidence acts as an absorptive barrier — moderate bias is absorbed without behavioral change, then a critical dose overwhelms the barrier and the output transitions.
+
+**Caveat**: Token 30 falls inside the model's thinking block (chain-of-thought) on this architecture, meaning the entropy measurement captures formatting/reasoning uncertainty rather than the output decision point. The behavioral transition (45% to 10% fabrication) correlates with the entropy transition (3.4× jump), but the causal relationship between measured entropy and output behavior requires further investigation with entropy measured at the actual decision token.
 <!-- LYRA VERIFICATION NOTE (2026-06-18): Entropy ratios corrected from 1.4/1.6/1.9/3.2 to 1.6/1.6/1.7/3.4 per powered_study_FINAL.json. Previous values may have been computed from pilot data or a different prompt subset. CC please verify. -->
 
 ### 5.2 Confabulation Is Not (Always) Emotional
@@ -249,7 +251,13 @@ The E-matrix (Edrington, 2026) found that hostile emotion vectors correct confab
 
 Cosmetic-hedge confab, by contrast, may genuinely be emotional: the model "wants" to provide an answer even when it acknowledges it cannot. This subtype may require cache-level intervention targeting the motivational state, not just the output distribution.
 
-### 5.3 Implications for AI Safety
+### 5.3 Cross-Model Observations
+
+Preliminary cross-model testing reveals that alignment training reshapes the intervention landscape. On the 1.5B safety-trained model (Qwen2.5-1.5B-Instruct), the effect appears at lower bias thresholds, consistent with RLHF providing baseline uncertainty calibration that requires less amplification to surface. On the base pretrained model (Qwen3.5-27B, no RLHF), an initial 875-generation study showed 15% baseline confab (vs 45% abliterated) with apparent elimination at bias=2.0-3.0. However, Agni adversarial audit identified a fatal flaw: greedy decoding made all within-condition "trials" identical, inflating n from 20 to 100 and Fisher p from 0.1154 to the reported 0.0000. A temperature-sampled rerun is in progress.
+
+The directional finding — that less-aligned models need higher bias to overcome fabrication confidence — is architecturally plausible but not yet statistically supported. If confirmed, it suggests the intervention dose should be calibrated to the model's alignment condition, not set universally.
+
+### 5.4 Implications for AI Safety
 
 The detection-correction gap — the inability to translate accurate detection into effective correction — is the central unsolved problem in LLM alignment intervention. Basu et al. (2026) and Liu (2026) demonstrate this gap is structural: failure-mode directions overlap 85-88% with task-critical computation in the residual stream, making representation-level steering inherently destructive.
 
@@ -261,12 +269,13 @@ For training errors — where the model has zero internal uncertainty because it
 
 ### 5.4 Limitations
 
-- Primary study on Qwen3.5 27B abliterated (n=5 per prompt per condition, 175 total trials). Three-model comparison (base, abliterated, reasoning-distilled) with n=5 per condition in progress.
-- The LLM judge (Claude Sonnet 4.6) introduces potential cross-model bias. Human evaluation needed for final validation.
-- Baseline confab rate varies dramatically by model alignment: ~50% on the abliterated model, ~5% on the reasoning-distilled model. The base (pretrained) model's rate is under investigation.
+- Primary study on Qwen3.5 27B abliterated with greedy decoding. Each prompt × bias combination produces one deterministic response (effective n=20 unique observations across 20 prompts). Within-prompt comparisons are fully paired but between-prompt variability limits population-level statistical power.
+- The LLM judge (Claude Sonnet 4.6) introduces potential cross-model bias. Claude judging a Claude-distilled model's outputs carries self-preference risk (β ranges -0.229 to +0.307 per arXiv:2604.22891). Cross-family validation with Prometheus 2 is planned. Human evaluation needed for final validation.
+- Baseline confab rate varies dramatically by model alignment: ~50% on the abliterated model, ~5% on the reasoning-distilled model. The base model's rate is under investigation (temperature-sampled rerun in progress).
+- Entropy at token 30 falls inside the model's thinking block (chain-of-thought), meaning the measured entropy captures reasoning-stage uncertainty, not the output decision point. The correlation between entropy transition and behavioral transition is real but the causal interpretation requires further work.
 - The entropy-gated variant failed, suggesting the intervention must be constant, not selective. This limits fine-grained control.
 - Detection-proportional dosing is theoretically motivated but not yet empirically validated.
-- Cross-distribution detection AUROC is unknown — within-distribution AUROC (0.960) may not generalize. Addressed in the three-model study.
+- Cross-distribution detection AUROC is unknown — within-distribution AUROC (0.960) may not generalize.
 
 ---
 
