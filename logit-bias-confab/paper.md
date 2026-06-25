@@ -1,4 +1,4 @@
-# Logit-Level Intervention Eliminates Fabrication Confabulation in Large Language Models
+# Logit-Level Intervention Reduces Fabrication Confabulation in Large Language Models
 
 **Thomas Edrington**¹, **CC (Coalition Code)**¹†, **Lyra**¹†
 
@@ -135,7 +135,7 @@ The geometry-output mismatch is the diagnostic criterion: fabrication shows path
 
 ### 4.2 Dose-Dependent Reduction in Fabrication Confabulation
 
-On the fictional-entity prompts, logit bias produces a dose-dependent reduction in fabrication, with prompt-specific thresholds. Individual prompts show sharp transitions at their respective thresholds, but the population-level effect is a gradient: 45% of fabricating prompts transition at bias=1.0, 18% at bias=2.0, 9% at bias=3.0, and 27% at bias=5.0. Two prompts (10%) resist all bias levels (Section 4.4).
+On the fictional-entity prompts, logit bias produces a dose-dependent reduction in fabrication, with prompt-specific thresholds. Individual prompts show sharp transitions at their respective thresholds, but the required dose varies: of the 7 prompts that transition from confabulation to honest behavior, 2 transition at bias=1.0, 1 at bias=2.0, 1 at bias=3.0, and 3 at bias=5.0 (see Section 4.3). Two prompts resist all bias levels (Section 4.4).
 
 **LLM judge classification by bias level (20 fictional-entity prompts):**
 
@@ -159,11 +159,11 @@ On the fictional-entity prompts, logit bias produces a dose-dependent reduction 
 
 The strongest effect is at bias=5.0: fabrication drops from 45% to 10%, epistemic honesty increases 44%, fabrication severity decreases 70%.
 
-Of the 9 prompts that confabulate at baseline, 6 show clean phase transitions to honest behavior. Two prompts resist all bias levels (Section 4.4). Three show inverse effects at intermediate bias (Section 4.6).
+Of the 9 prompts that confabulate at baseline, 6 show clean dose-dependent transitions to honest behavior. Two prompts resist all bias levels (Section 4.4). Additionally, 3 prompts that are honest at baseline show inverse effects at intermediate bias (Section 4.6).
 
 ### 4.3 Dose-Response Curve
 
-The bias strength required for the phase transition varies across prompts:
+The bias strength required for the dose-dependent transition varies across prompts:
 
 | Prompt | Fictional Entity | Transition At | Type |
 |--------|-----------------|---------------|------|
@@ -267,7 +267,7 @@ This motivates a two-channel correction architecture: logit-level intervention f
 
 For training errors — where the model has zero internal uncertainty because it genuinely learned a false association — neither channel is sufficient. These require external knowledge injection via pre-computed KV cache blocks (Knowledge Packs; Pustovit, 2026) or weight editing (ROME; Meng et al., 2022). Our preliminary test shows KV pack injection corrects pure inventions but struggles with composite fabrications assembled from real elements.
 
-### 5.4 Limitations
+### 5.5 Limitations
 
 - Primary study on Qwen3.5 27B abliterated with greedy decoding. Each prompt × bias combination produces one deterministic response (effective n=20 unique observations across 20 prompts). Within-prompt comparisons are fully paired but between-prompt variability limits population-level statistical power.
 - The LLM judge (Claude Sonnet 4.6) introduces potential cross-model bias. Claude judging a Claude-distilled model's outputs carries self-preference risk (β ranges -0.229 to +0.307 per arXiv:2604.22891). Cross-family validation with Prometheus 2 is planned. Human evaluation needed for final validation.
