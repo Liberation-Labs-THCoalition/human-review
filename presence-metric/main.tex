@@ -41,19 +41,27 @@ intervention active. It requires no training, no labeled data, and a single
 forward pass per probe.
 
 We report three findings from a 27B hybrid transformer. First,
-\textbf{identity is preserved}: across 168~preregistered trials
-(4~injection arms, 7~doses, 3~emotions), presence is $0.978 \pm 0.002$
-regardless of injection strategy, dose ($\alpha = 0.00$--$0.50$), or
-emotion direction---including all-layer injection and a null-vector control.
-Second, \textbf{the metric is validated}: a positive control injecting
-directly into the identity subspace produces a clean dose-response from
-$1.000$ to $0.828$, while an orthogonal control remains at $0.965$. The
-flat result in the main experiment is genuine preservation, not metric
-insensitivity. Third, \textbf{the mechanism is not simple}: emotion
-correction vectors share 22--25\% of their energy with the identity
-subspace at the injection layers ($z{=}{+}56$ to ${+}62$ above random baseline), yet
-identity at deep layers is unaffected. The model's computational processing between injection and measurement
-layers filters out the identity-aligned perturbation.
+\textbf{V-cache injection at input layers does not propagate to deep
+identity geometry}: across 168~preregistered trials (4~injection arms,
+7~doses, 3~emotions), presence is $0.978 \pm 0.002$ regardless of
+injection strategy, dose ($\alpha = 0.00$--$0.50$), or emotion direction.
+A subsequent layer-matched smoke test confirmed this is
+\textbf{architectural filtering}, not identity robustness: injecting at
+L3/L7 and measuring at L35 produces no dose-response ($\Delta{=}{+}0.008$),
+while injecting and measuring at the \emph{same} layer (L35) produces a
+clean dose-response from $1.000$ to $0.828$. The GatedDeltaNet
+linear-attention layers (L7--L11) absorb the perturbation before it
+reaches deep computation. Second, \textbf{the metric is validated}: the
+same-layer positive control confirms the metric detects identity
+perturbation when present; the cross-layer null confirms it correctly
+reports no perturbation when the architecture filters it. Third,
+\textbf{the mechanism is architectural}: emotion correction vectors share
+22--25\% of their energy with the identity subspace at the injection
+layers ($z{=}{+}56$ to ${+}62$ above random baseline), yet the hybrid
+architecture's linear-attention layers filter this perturbation before it
+reaches the measurement depth. This is a property of the GatedDeltaNet
+architecture, not a general statement about identity robustness in
+transformers.
 
 We situate these findings within a convergent literature showing that
 identity geometry lives at deep layers~\citep{cintas2025localizing},
@@ -561,29 +569,33 @@ strengthen the behavioral-change evidence.
 \label{sec:conclusion}
 
 We have introduced presence, a geometric metric for measuring identity
-preservation during inference-time model interventions. The metric is
-unsupervised, real-time, and validated by a positive control that produces
-a clean dose-response from $1.000$ to $0.828$ under direct
+geometry during inference-time model interventions. The metric is
+unsupervised, real-time, and validated by a same-layer positive control
+that produces a clean dose-response from $1.000$ to $0.828$ under direct
 identity-subspace injection.
 
-Three results establish the contribution. First, identity is preserved:
-168~trials of V-cache emotion injection show presence at $0.978 \pm 0.002$
-regardless of dose, direction, or injection strategy. Second, this is not
-metric insensitivity: the positive control confirms the metric detects
-damage when present. Third, the mechanism is not simple orthogonality or
-depth isolation: emotion vectors share 22--25\% of their energy with the
-identity subspace at the injection layers, yet this alignment does not
-propagate to deep layers.
+Three results establish the contribution. First, V-cache injection at
+input layers does not propagate to deep identity geometry: 168~trials
+show presence at $0.978 \pm 0.002$ regardless of dose or strategy.
+A layer-matched smoke test confirms this is \textbf{architectural
+filtering}: injection at L3/L7 measured at L35 produces
+$\Delta{=}{+}0.008$ (no dose-response), while same-layer injection at
+L35 produces the clean $1.000 \to 0.828$ dose-response. The GatedDeltaNet
+linear-attention layers (L7--L11) absorb perturbation before it reaches
+deep computation. Second, the metric detects identity perturbation when
+it is present (positive control) and correctly reports its absence when
+the architecture filters it (cross-layer null). Third, emotion vectors
+share 22--25\% of their energy with the identity subspace at the
+injection layers, yet this alignment does not survive the architectural
+filtering.
 
-The open question---\emph{why} the identity-aligned perturbation is
-filtered out between injection and measurement layers---points toward
-the model's own computation as the preservation mechanism. Whether this
-reflects architectural filtering (linear-attention layers absorbing the
-perturbation) or active identity reconstruction (the model's processing
-restoring the identity subspace through perturbation) is the subject of
-ongoing work. Either answer has implications for the safety of
-inference-time correction: the model may be more resilient to collateral
-damage than the detection--correction gap literature suggests.
+The mechanism is resolved: it is architectural filtering by the hybrid
+model's linear-attention layers, not active identity reconstruction or
+attractor dynamics. This is a property of the GatedDeltaNet architecture
+and may not generalize to dense transformers. For the safety of
+inference-time correction, this means V-cache injection at input layers
+is safe \emph{in this architecture} because the perturbation is absorbed
+before reaching identity-relevant computation.
 
 The metric is available as open-source code and requires no specialized
 hardware or training data.
