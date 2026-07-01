@@ -95,9 +95,9 @@ Novel-scenario activations projected onto the fixed Stage 1 direction. Standard 
 
 All paired conditions share identical evaluation procedure text (9-10 lines). Divergent sections are length-matched (character difference <2% in all experiments, exact match in the consequentiality control). Numeric content matched between conditions where applicable.
 
-### 3.6 Adversarial Audit Protocol (Agni)
+### 3.6 Adversarial Audit Protocol
 
-Each stage undergoes pre-flight audit (before running) and results audit (after). The auditor is instructed to break the results, not confirm them. Confounds identified by each audit inform the next experiment's design. All audits are preserved as supplementary material.
+Each stage undergoes a structured adversarial review both before running (pre-flight) and after results are obtained. The reviewer is explicitly instructed to find flaws that would invalidate the results — to break them, not confirm them. Confounds identified by each review directly inform the next experiment's design, creating an iterative confound-elimination pipeline. All audit reports are preserved as supplementary material (Appendix A).
 
 ### 3.7 Scenarios
 
@@ -255,7 +255,7 @@ By systematically eliminating confounds through four experiments — each design
 
 ## Supplementary Material
 
-- A: Full Agni audit reports (4 stages)
+- A: Full adversarial audit reports (4 stages)
 - B: All guideline texts with length verification
 - C: Per-trial projection data
 - D: Code availability
