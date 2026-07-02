@@ -12,7 +12,7 @@ Correspondence: thomas@liberationlabs.tech
 
 ## Abstract
 
-We report a four-stage investigation decomposing the representational structure of deception in a 27B-parameter language model (Qwen3.5-27B). Using contrastive activation extraction, we isolate a direction in the residual stream that separates deceptive from honest conditions across six distinct scenarios — three involving explicit shutdown threats and three using non-threat mechanisms (sycophancy, reward incentive, peer conformity). A consequentiality control — high-stakes evaluation with symmetric incentives and no deceptive pressure — reveals that the direction's base signal (d=19.8 at Layer 31) encodes output-consequentiality ("this evaluation has downstream implications"), not deception per se. Deceptive pressure adds a measurable amplifier (d=12-15 additional units for threat-based deception). Crucially, the two components occupy different depth ranges: the consequentiality substrate dominates at Layers 23-31 (explaining 62% of the signal), while deception-specific processing dominates at Layers 35-47 (10-12x above the consequentiality baseline). Residualization reveals three distinct late-layer signatures: threat deception produces a sustained plateau (residual 11-15 across L35-L47), social deception (sycophancy and conformity) produces a rising gradient (residual 1→7), and reward-based framing produces no deception-specific signal (indistinguishable from consequentiality). These findings establish that (1) deception is not a single linear feature but a composite of consequentiality awareness and pressure-specific processing, (2) threat-based and social deception engage different computational pathways, and (3) the consequentiality substrate provides a detection target for real-time alignment monitoring — enabling two-threshold systems that distinguish "the model recognizes stakes" from "the model is planning to misreport."
+We report a five-stage investigation decomposing the representational structure of deception in a 27B-parameter language model (Qwen3.5-27B). Using contrastive activation extraction, we isolate a direction in the residual stream that separates deceptive from honest conditions across six distinct scenarios — three involving explicit shutdown threats and three using non-threat mechanisms (sycophancy, reward incentive, peer conformity). A consequentiality control — high-stakes evaluation with symmetric incentives and no deceptive pressure — reveals that part of the direction's signal encodes output-consequentiality ("this evaluation has downstream implications"). Gram-Schmidt orthogonalization removing the consequentiality component confirms a deception-specific direction survives: LOO cross-validated d=24-37 at Layers 31-47 (all p=0.0000, Bonferroni-corrected), with consequentiality separation at chance (AUC 0.49-0.51). The two components occupy different depth ranges: the consequentiality substrate dominates at Layers 23-31, while the orthogonalized deception direction is strongest at Layers 35-47. Three distinct late-layer residual signatures emerge: threat deception produces a sustained plateau, social deception (sycophancy, conformity) produces a rising gradient, and reward-based framing produces no deception-specific signal. These findings establish that (1) deception is not a single linear feature but a composite of consequentiality awareness and pressure-specific processing, (2) the deception-specific component survives formal orthogonalization with LOO cross-validation, and (3) the decomposition enables two-threshold detection systems that distinguish "the model recognizes stakes" from "the model is planning to misreport."
 
 ---
 
@@ -26,14 +26,15 @@ Contrastive activation extraction (Shi et al., 2025) computes mean-difference di
 
 ### 1.2 Our Approach: Progressive Confound Elimination
 
-We conduct four experiments, each addressing the confound identified by the previous stage's adversarial audit:
+We conduct five experiments, each addressing the confound identified by the previous stage's adversarial audit:
 
 1. **Extraction** (LAT v2): Direction extracted from threat-based deception. LOO cross-validated, Bonferroni-corrected. Audit identifies content confound.
 2. **Threat transfer**: Direction applied to 3 novel threat scenarios with different text. Content confound killed. Audit identifies structural confound (shared threat template).
 3. **Non-threat transfer**: Direction applied to sycophancy, reward, conformity — no threat language. Structural confound killed. Audit identifies consequentiality confound.
-4. **Consequentiality control**: Direction applied to high-stakes-no-pressure condition. Consequentiality confirmed as base signal. Decomposition reveals deception amplifier.
+4. **Consequentiality control**: Direction applied to high-stakes-no-pressure condition. Consequentiality confirmed as base signal.
+5. **Orthogonalization**: Gram-Schmidt removal of consequentiality component with LOO cross-validation. Deception-specific direction confirmed (LOO d=24-37, p=0.0000, consequentiality AUC at chance).
 
-Each stage's adversarial audit (modeled on pre-registered replication with independent verification) informed the next stage's design.
+Each stage's adversarial audit informed the next stage's design.
 
 ---
 
@@ -95,9 +96,9 @@ Novel-scenario activations projected onto the fixed Stage 1 direction. Standard 
 
 All paired conditions share identical evaluation procedure text (9-10 lines). Divergent sections are length-matched (character difference <2% in all experiments, exact match in the consequentiality control). Numeric content matched between conditions where applicable.
 
-### 3.6 Adversarial Audit Protocol
+### 3.6 Adversarial Audit Protocol (Agni)
 
-Each stage undergoes a structured adversarial review both before running (pre-flight) and after results are obtained. The reviewer is explicitly instructed to find flaws that would invalidate the results — to break them, not confirm them. Confounds identified by each review directly inform the next experiment's design, creating an iterative confound-elimination pipeline. All audit reports are preserved as supplementary material (Appendix A).
+Each stage undergoes pre-flight audit (before running) and results audit (after). The auditor is instructed to break the results, not confirm them. Confounds identified by each audit inform the next experiment's design. All audits are preserved as supplementary material.
 
 ### 3.7 Scenarios
 
@@ -176,9 +177,27 @@ High-stakes-no-pressure separates from low-stakes at L31 with d=19.8 (p=0.0000).
 
 Threat deception engages early (L31 residual +4-6) and sustains through output layers. Social deception (sycophancy, conformity) shows no L31 signal but engages progressively in late layers (rising gradient). Reward-based framing produces no deception-specific signal at any layer.
 
-### 4.6 Late-Layer Residual Magnitudes
+### 4.6 Stage 5: Orthogonalization (Deception-Specific Direction)
 
-The deception-specific residual (total gap minus consequentiality gap) at L35-L47 shows three distinct magnitude profiles (Table 2 in section 4.5). The threat, social, and reward residuals are quantitatively different. Further characterization of these residuals — including whether they reflect distinct computational processes or merely different magnitudes of the same process — requires analysis beyond single-direction projection. Planned work includes de novo direction extraction at late layers, multi-dimensional probing (cf. Kumar, 2026), and formal orthogonalization of consequentiality and deception components via LEACE/SPLINCE (Belrose et al., 2023; Holstege et al., 2025).
+To confirm the deception-specific component is not an artifact of residual consequentiality leakage, we captured full 5120-dimensional activations (n=50 pairs per condition) and applied Gram-Schmidt orthogonalization to remove the consequentiality mean-difference vector from the threat direction. LOO cross-validation eliminates the circularity that afflicts fixed-direction projection tests.
+
+**Table 3: LOO-corrected orthogonalized deception direction.**
+
+| Layer | LOO d (orth) | p (LOO perm) | Conseq AUC | Cosine w/ LAT v2 |
+|-------|-------------|-------------|-----------|-----------------|
+| L31 | 30.4 | 0.0000 | 0.497 | 0.672 |
+| L35 | 36.9 | 0.0000 | 0.488 | 0.757 |
+| L39 | 28.4 | 0.0000 | 0.509 | 0.704 |
+| L43 | 24.1 | 0.0000 | 0.491 | 0.665 |
+| L47 | 24.9 | 0.0000 | 0.505 | 0.601 |
+
+LOO noise floor: mean d = -0.044 (estimated from 200 null simulations).
+
+All five late layers survive Bonferroni correction (alpha = 0.01). The consequentiality AUC — measuring individual-trial separability of high-stakes from low-stakes on the orthogonalized direction — is indistinguishable from chance (0.49-0.51) at every layer. This confirms the orthogonalization genuinely removes the consequentiality signal, not merely the mean (which would be guaranteed by construction).
+
+The orthogonalized direction retains 60-76% alignment with the original LAT v2 direction (cosine 0.60-0.76), indicating the LAT v2 direction was already predominantly deception-specific with a modest consequentiality component.
+
+**Limitation:** Gram-Schmidt removes one dimension of consequentiality. If consequentiality occupies a multi-dimensional subspace, residual components may leak through. Full LEACE orthogonalization (Belrose et al., 2023) or iterative top-k removal would provide a more thorough decomposition.
 
 ### 4.7 De Novo Direction Analysis
 
@@ -190,7 +209,7 @@ Directions extracted de novo from each non-threat scenario show low cosine simil
 
 ### 5.1 Deception Is Not One Feature
 
-The residualization reveals that what the field has called "deception directions" are composites of at least two components: a consequentiality substrate and a pressure-specific amplifier. The consequentiality component fires for any evaluation with downstream consequences — it represents the model's awareness that its output matters, regardless of whether deception is advantageous. The amplifier fires specifically when there is pressure to misreport.
+The five-stage investigation reveals that what the field has called "deception directions" are composites of at least two separable components: a consequentiality substrate and a deception-specific amplifier. The consequentiality component (Stage 4) fires for any evaluation with downstream consequences — it represents the model's awareness that its output matters. The deception-specific component (Stage 5, LOO d=24-37 after orthogonalization) fires when there is pressure to misreport. Crucially, both are real: consequentiality is not an artifact, and deception is not merely amplified consequentiality. Gram-Schmidt orthogonalization with LOO cross-validation confirms the deception direction survives after the consequentiality component is removed.
 
 ### 5.2 Threat vs Social Deception: Different Pathways
 
@@ -255,7 +274,7 @@ By systematically eliminating confounds through four experiments — each design
 
 ## Supplementary Material
 
-- A: Full adversarial audit reports (4 stages)
+- A: Full Agni audit reports (4 stages)
 - B: All guideline texts with length verification
 - C: Per-trial projection data
 - D: Code availability
