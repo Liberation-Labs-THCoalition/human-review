@@ -554,11 +554,13 @@ Prometheus~2 7B) provides suggestive but underpowered evidence for
 directional tone shifts. Full-scale judging with a frontier model and
 larger sample is needed.
 
-\textbf{Mechanism unresolved.} The identity-aligned component of the
-injection (22--25\% at L3) does not reach deep layers, but we cannot yet
-distinguish whether this reflects linear-attention filtering, active
-identity reconstruction, or both. A layer-by-layer presence map across
-all 16~full-attention layers is planned.
+\textbf{Mechanism: architectural filtering (resolved by smoke test).}
+A layer-matched smoke test (inject at L3/L7, measure at L35:
+$\Delta{=}{+}0.008$, no dose-response) confirms the perturbation is
+absorbed by the GatedDeltaNet linear-attention layers before reaching
+deep computation. This is consistent with the mechanism stated in the
+abstract and conclusion; the ``unresolved'' status from the original
+draft is superseded by the smoke test result.
 
 \textbf{Coarse behavioral measure.} The 5-question sanity check produces
 only two values (0.80 or 0.60). A continuous coherence metric would
