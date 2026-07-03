@@ -123,7 +123,7 @@ across all conditions). The combination establishes both that the metric
 The mechanism is surprising: emotion correction vectors are 22--25\%
 aligned with the identity subspace at the injection layers, yet identity at
 deep layers is unaffected. The model's own computation between injection
-and measurement layers filters out the identity-aligned perturbation. We
+and measurement layers attenuates the identity-aligned perturbation. We
 discuss this finding in the context of Attention Schema Theory, which
 predicts that a self-model would be robust to external perturbations while
 remaining modifiable by the system's own processing.
@@ -483,7 +483,7 @@ for the flat presence result:
 \end{itemize}
 
 What remains: the model's computation between the injection layers and
-the measurement layers filters out the identity-aligned component of the
+the measurement layers attenuates the identity-aligned component of the
 perturbation. The positive control confirms the metric \emph{can} detect
 perturbation at L35 (presence drops to $0.828$ under direct
 identity-subspace injection). But the same perturbation, when introduced
