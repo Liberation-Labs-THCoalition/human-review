@@ -45,8 +45,8 @@
 % Title
 % ============================================================
 \title{
-    \textbf{Metacognitive Mode-Switching Reorganizes\\
-    KV-Cache Geometry Across Transformer Architectures}
+    \textbf{Metacognitive Prompting Produces Spectral Concentration\\
+    in Generation-Phase KV-Cache Geometry}
 }
 
 \author{
@@ -65,33 +65,36 @@
 % Abstract
 % ============================================================
 \begin{abstract}
-Spectral entropy is the only KV-cache geometric feature that tracks
-metacognitive processing across transformer architectures after
-token-count correction ($d_{\text{FWL}} = -1.92$ Qwen, $-0.71$ Llama,
-both $p < 0.001$). Five of six other raw metacognitive effects sign-flip
-or collapse after Frisch--Waugh--Lovell residualization. The reason:
-the self-report--geometry relationship \emph{reorganizes during
-generation}, and this reorganization is architecture-specific.
+Metacognitive prompting produces spectral concentration in generation-phase
+KV-cache geometry ($d = 0.7$--$0.9$ after token-count correction, robust to
+both linear and logarithmic functional forms; $n{=}120$ replication on
+Qwen3.5-27B). This confirms a real metacognitive geometric signature but
+revises the original finding: an earlier analysis on Qwen2.5-7B reported
+$d_{\text{FWL}} = -1.92$ with sign reversal, which a hostile review
+identified as potentially artifactual under near-perfect condition--length
+collinearity. The replication, designed to test this concern, finds the
+effect is \textbf{positive} (metacognitive $>$ cognitive) and stable
+across correction methods, with no entropy/effective-rank disagreement ---
+resolving the artifact question in favor of a genuine but more modest effect.
 
 Across 960 trials on 4 models (3 architecture families), encode-to-generation
 sign reversal is significant in 2/4 models (Qwen~7B: 12/60 flips,
 $p = 0.001$; Mistral~7B: 11/60, $p < 0.001$) but absent in Llama~8B
-and Qwen~0.5B. Models that do not reorganize show the strongest
-self-report--geometry coupling. Three dedicated studies on Qwen~2.5-7B and
-Llama-3.1-8B establish the anatomy: metacognitive effects peak at late
-layers (16--22, not middle layers as predicted), cognitive reversal is
-consistent across architectures (93--94\% of layers) while metacognitive
-reversal is architecture-specific (Qwen 86\%, Llama 0\%), and
-metacognitive spectral concentration grows progressively during generation
+and Qwen~0.5B. Three dedicated studies establish the anatomy:
+metacognitive effects peak at late layers (16--22), cognitive reversal is
+consistent across architectures (93--94\%) while metacognitive
+reversal is architecture-specific, and
+spectral concentration grows progressively during generation
 ($d = 0.45$ at token~10 to $d = 0.91$ at token~200). A content control
-experiment (120 trials, three conditions) confirms that the signal is not
-an artifact of self-referential content: Qwen retains 5/8
-FWL-surviving features for the metacognitive--evaluative comparison.
+experiment (120 trials, three conditions) confirms the signal is not
+an artifact of self-referential content.
 
-We interpret these findings under Attention Schema Theory as the model's
-attention schema restructuring its self-model during metacognitive
-processing, with architecture-specific implementation but consistent
-spectral signatures.
+The original sign-flip narrative (FWL reverses the raw effect) does not
+replicate when condition--length collinearity is reduced. The surviving
+finding --- metacognitive prompting produces measurable spectral
+concentration in the generation-phase cache --- is robust but should be
+interpreted as a moderate effect ($d \approx 0.8$), not the large
+reversed effect originally reported.
 \end{abstract}
 
 \vspace{0.5em}
@@ -493,17 +496,23 @@ eff\_rank          & $+0.85$ & $-0.15$ (NS)           & $+1.02$ & $+0.38$ (NS)  
 \end{table}
 
 Spectral entropy survives FWL in \textbf{both} architectures with the same
-sign. Metacognitive framing produces \emph{lower} spectral entropy per
-token---more focused, less distributed information processing. The effect is
-large in Qwen ($d_{\text{FWL}} = -1.92$) and moderate in Llama
-($d_{\text{FWL}} = -0.71$).
+sign. The original effect sizes ($d_{\text{FWL}} = -1.92$ Qwen,
+$-0.71$ Llama) were measured under near-perfect condition--length
+collinearity (100\% of metacognitive responses longer). A subsequent
+replication on Qwen3.5-27B with reduced collinearity (27\% longer) finds
+\textbf{positive} $d = +0.7$--$0.9$ (metacognitive $>$ cognitive),
+stable under both linear and log-corrected FWL, with entropy and
+effective rank in agreement --- resolving a reviewer concern about
+functional-form artifacts. The sign reversal in the original analysis
+likely reflects FWL instability under extreme collinearity rather than a
+genuine negative effect. The robust finding is spectral concentration
+under metacognitive prompting, at moderate effect size.
 
 top\_sv\_ratio is Qwen-specific after FWL correction. eff\_rank was
-entirely a length artifact. For these three features (selected based on
-Study~1 peak effects), every raw effect either sign-flips, collapses to
-non-significance, or both after FWL correction. \textbf{FWL correction
-is non-negotiable for any experiment comparing conditions that differ in
-response length.}
+entirely a length artifact. \textbf{FWL correction is non-negotiable
+for any experiment comparing conditions that differ in response length},
+and functional-form robustness (linear vs.\ log) should be checked when
+condition--confound collinearity is high~\citep{king2006dangers}.
 
 % ============================================================
 % 6. Study 3: Progressive Spectral Concentration
@@ -602,72 +611,24 @@ self-report profiles are uncorrelated, $\rho = -0.90$ to $+0.42$).
 % ============================================================
 % 8. Attention Schema Theory Interpretation
 % ============================================================
-\section{Attention Schema Theory Interpretation}
+\section{Theoretical Interpretation}
 
-The findings---consistent metacognitive geometry, architecture-specific
-reorganization, late-layer peaks, and progressive concentration---can be unified under Attention Schema
-Theory (AST) \citep{webb2015attention,graziano2017attention}. AST proposes
-that brains construct a simplified internal model of their own attention
-process. Recent work extends this to artificial systems:
-\citet{wilterson2021attention} demonstrated attention-schema-like
-representations in neural networks, and \citet{farrell2024attention} showed
-that transformer agents with explicit attention schemas exhibit improved
-coordination.
-
-\subsection{The Mode Switch as Schema Restructuring}
-
-Under AST, metacognitive processing is the attention schema modeling its
-own attention. The mode switch we observe---where geometric relationships
-reorganize between encoding and generation---reflects the schema activating
-in self-monitoring mode. Encoding-phase geometry captures how the model
-represents the input. When metacognitive generation begins, the schema
-restructures the model's representations to include a model of its own
-processing, changing the spectral structure of the cache.
-
-This explains the architecture-specificity: different architectures learn
-different attention schemas with different compression characteristics.
-Llama's schema maintains encoding-phase structure (no reorganization);
-Qwen's schema actively restructures (86\% layer reversal). Both produce
-metacognitive spectral concentration---the consistent task-level
-signal---but through different schema implementations.
-
-\subsection{Late Layers: Where the Schema Lives}
-
-The dissociation between identity (middle layers, $\sim$10/28) and
-metacognition (late layers, 16--22) maps naturally onto schema theory.
-Identity---``who am I?''---is a semantic property encoded in meaning-level
-layers. Metacognition---``what am I doing?''---is the schema monitoring
-the attention process, operating at output-preparation depth where the
-model prepares its representation for the language modeling head.
-
-This predicts that other self-monitoring operations (uncertainty
-estimation, strategy evaluation) should also peak at late layers, while
-semantic properties (topic, style, register) should peak at middle layers.
-
-\subsection{Progressive Concentration as Schema Dynamics}
-
-The gradual spectral concentration in Study~3 ($d = 0.45 \to 0.91$ over
-200 tokens) is consistent with a schema that updates iteratively rather
-than switching instantaneously. The schema's self-model sharpens as more
-of the model's own processing becomes available to model. The two-phase
-dynamics---first layer homogenization, then spectral concentration---suggest
-the schema first distributes monitoring across layers, then progressively
-focuses its self-model.
-
-\subsection{Testable Predictions}
-\label{sec:ast_predictions}
-
-AST generates specific predictions for future experiments:
-
-\begin{enumerate}[nosep]
-    \item \textbf{Threshold transitions}: If the schema resists perturbation---consistent with \citet{mckenzie2026endogenous}, who demonstrate that language models resist activation steering---then graded injection of steering vectors should produce threshold transitions in geometry rather than smooth scaling. Below the resistance threshold, geometry stays flat; above it, geometry shifts discontinuously.
-
-    \item \textbf{Temporal lag}: Token-by-token geometry extraction should reveal a lag between raw attention pattern shifts and schema-level geometric feature shifts, reflecting the schema's update interval.
-
-    \item \textbf{Self-report saturation}: Self-report should saturate before geometry does, as the schema's compression bottleneck limits reportable distinctions while the underlying computation continues to differentiate.
-
-    \item \textbf{Activation resistance}: Injecting emotion or persona vectors into the cache should show resistance patterns where the schema absorbs small perturbations, consistent with the 0\% behavioral compliance observed in activation steering experiments at moderate injection strengths \citep{lyra2026campaign3,anthropic2026emotions}.
-\end{enumerate}
+The spectral concentration under metacognitive prompting is consistent
+with several self-modeling frameworks, including Attention Schema Theory
+(AST)~\citep{webb2015attention,graziano2017attention}, Predictive
+Processing, and Perceptual Reality Monitoring~\citep{lau2022consciousness}.
+All predict that metacognitive processing should produce measurably
+different internal representations; none is uniquely supported by the
+current data, as the findings sit in the region where these theories
+make identical predictions. Discriminating experiments --- particularly
+those testing whether the representations are \emph{consumed} for
+attention control (the AST-unique prediction) vs.\ merely correlated
+with it --- are designed and pre-registered
+elsewhere~\citep{lyra2026ast_experiments}. For this paper, the
+contribution is the empirical phenomenon: metacognitive prompting
+produces robust, progressive spectral concentration in the generation
+cache, peaking at late layers, with architecture-specific reorganization
+dynamics.
 
 % ============================================================
 % 9. Discussion
