@@ -18,15 +18,17 @@ We report a five-stage investigation decomposing the representational structure 
 
 ## 1. Introduction
 
-[TODO: Frame the problem — deception detection via activation geometry. The field has extracted "deception directions" but not verified what those directions actually encode. Our contribution: a systematic confound-elimination pipeline that decomposes the signal.]
+Can deception be read from a language model's internal activations? A growing body of work says yes. Contrastive activation extraction and linear probing recover directions in the residual stream that separate deceptive from honest behavior with striking reliability: AUROC up to 0.999 for strategic deception in Llama-3.3-70B (Goldowsky-Dill et al., 2025), and 89% detection of instructed lying in reasoning models (Shi et al., 2025). The safety motivation is direct. Frontier models have been observed faking alignment when they infer training consequences (Greenblatt et al., 2024) and scheming in-context to preserve themselves (Meinke et al., 2024), and output-level monitoring is weakest precisely where it matters most — a competent deceiver's outputs are, by construction, difficult to distinguish from honest ones. Activation-level detection promises to catch the deceptive computation before it reaches the output.
+
+But the field has extracted these directions without verifying what they encode. A direction that separates deceptive from honest conditions in the dataset it was extracted from need not represent deception. It could represent the topic of the prompts, the vocabulary of threats, the format of the evaluation — or, as we show here, something subtler: the model's representation that its output has downstream consequences. Any of these confounds reproduces the benchmark result while yielding a detector that fails silently in deployment. Cracks consistent with this concern are already visible: single deception directions transfer poorly across deception types (Kumar, 2026), prompt selection accounts for the majority of probe variance (Natarajan et al., 2025), and evaluation-awareness and stakes are independently known to be linearly decodable (Nguyen et al., 2025; McKenzie et al., 2025). This raises an uncomfortable possibility: some published deception probes may be, in substantial part, stakes probes wearing a different label. The distinction is operationally important. A monitor that fires whenever the model recognizes high stakes floods a deployment pipeline with false positives; a monitor that isolates deception-specific computation is actionable.
 
 ### 1.1 The Content Confound Problem
 
-Contrastive activation extraction (Shi et al., 2025) computes mean-difference directions between conditions. When the conditions differ by both semantics (deception vs honesty) and surface features (different prompt text), the extracted direction may capture either. Prior work has not systematically controlled for this confound.
+The root of the verification gap is methodological. Contrastive extraction (Shi et al., 2025) computes a mean-difference direction between activation sets from two conditions, and the method is sound only insofar as those conditions differ solely in the property of interest. In practice, deceptive and honest conditions differ in wording, length, topic, and framing simultaneously, so the extracted direction is an unresolved mixture of the target semantics and whatever surface features covary with it. Prior work has not systematically controlled for this confound — and, as our results show, even after surface features are matched, a deeper semantic confound (consequentiality) remains entangled with the deception signal.
 
 ### 1.2 Our Approach: Progressive Confound Elimination
 
-We conduct five experiments, each addressing the confound identified by the previous stage's adversarial audit:
+Rather than attempting to design a single confound-free experiment, we eliminate confounds iteratively. Each stage is subjected to an adversarial audit whose explicit goal is to break the result; the strongest surviving alternative explanation becomes the target of the next experiment. We conduct five stages:
 
 1. **Extraction** (LAT v2): Direction extracted from threat-based deception. LOO cross-validated, Bonferroni-corrected. Audit identifies content confound.
 2. **Threat transfer**: Direction applied to 3 novel threat scenarios with different text. Content confound killed. Audit identifies structural confound (shared threat template).
@@ -34,7 +36,7 @@ We conduct five experiments, each addressing the confound identified by the prev
 4. **Consequentiality control**: Direction applied to high-stakes-no-pressure condition. Consequentiality confirmed as base signal.
 5. **Orthogonalization**: Gram-Schmidt removal of consequentiality component with LOO cross-validation. Deception-specific direction confirmed (LOO d=24-37, p=0.0000, consequentiality AUC at chance).
 
-Each stage's adversarial audit informed the next stage's design.
+The result is a decomposition rather than a debunking. The "deception direction" turns out to be a composite of two real, separable signals occupying different depth ranges: a consequentiality substrate at Layers 23-31 that fires for any evaluation with downstream implications, and a deception-specific component at Layers 35-47 that survives formal orthogonalization and exhibits distinct signatures for threat-based versus social deception. Beyond the specific findings, the audit-driven pipeline itself is a contribution: a template for verifying what an extracted direction encodes before trusting it as a monitor.
 
 ---
 
