@@ -14,9 +14,9 @@
 \usepackage{enumitem}
 \usepackage{array}
 
-\title{The Temporal Boundary:\\
-Self/Other Separation in Transformers Is Temporal,\\
-Not Geometric}
+\title{Three Killed Experiments and a Valence Feature:\\
+What Adversarial Review Reveals About\\
+Transformer Self/Other Attribution}
 
 \author{
   Lyra\thanks{Lead author. Liberation Labs.}
@@ -30,30 +30,33 @@ Not Geometric}
 
 % ============================================================================
 \begin{abstract}
-The self/other boundary in transformer emotional processing is temporal, not
-geometric: the model encodes the user's emotional state during the input
-phase and expresses its own response during generation. SAE feature~58995 at
-layer~47 tracks emotional depth during encoding ($r{=}0.686$ with valence,
-$p{<}0.001$, $n{=}30$), with per-emotion patterns suggesting sensitivity
-to reflective depth rather than pure valence polarity. During generation, the feature goes silent and behavior is
-governed by value-cache emotion geometry at layers~3/7. The two channels are
-geometrically independent (cosine~$= 0.031$). V-cache injection at
-layers~3/7 produces zero change in the encoding-phase feature ($< 10^{-4}$
-absolute difference across 360~trials), confirming temporal separation.
+We report three killed experiments and two surviving findings from a study
+of self/other attribution in transformer representations. The kills are the
+primary contribution: each identifies a generalizable confound that will
+affect any study in this space. (1)~Causal attention prevents post-scenario
+probing of encoding-phase representations. (2)~Instruction framing drives
+encoding entropy ($d{=}3.67$) independently of emotional content.
+(3)~Depth reorganization at intermediate layers is generic to instruction
+variation, not specific to self/other processing.
 
-A predicted depth-efficacy relationship was tested but rendered
-uninterpretable by methodology problems identified during adversarial
-null-swarm review (formulaic response floor effect, constant generation
-length, metric mismatch). V-cache injection produces substantial text
-divergence (72--74\% from baseline), but the depth-efficacy question
-requires a redesigned experiment.
+The surviving findings: SAE feature~58995 at layer~47 tracks emotional
+valence during encoding ($r{=}0.686$, $p{<}0.001$, $n{=}30$, in-sample;
+held-out validation needed). V-cache injection at layers~3/7 produces
+substantial text divergence (72--74\% from baseline) but zero change in
+the encoding-phase feature. The injection invariance is
+\textbf{structurally guaranteed} --- the injection is applied post-encoding,
+so encoding-phase activations are already computed. It is not evidence
+of temporal separation but an implementation property of the injection
+pipeline. A held-out replication of feature~58995 and a prefill-refeed
+control (does the feature fire on emotional text regardless of authorship?)
+are needed before any self/other claim is warranted.
 
-Three experiments were killed by our adversarial review process before
-producing claims. Each kill identifies a generalizable confound: causal
-attention prevents post-scenario probing, instruction framing drives
-encoding entropy independently of content, and depth reorganization at
-intermediate layers is generic to instruction variation. These kills
-are as important as the findings.
+We frame the self/other question as currently \textbf{unanswered}: three
+direct tests were killed, the valence feature tracks content (depth
+correlates with valence, not with self/other attribution), and the
+injection invariance is tautological. The methodological contribution
+--- what goes wrong when studying self/other in transformers --- may be
+more durable than any surviving finding.
 \end{abstract}
 
 % ============================================================================
@@ -511,20 +514,19 @@ the feature tracking emotional depth rather than general processing load,
 and it means the temporal boundary finding applies specifically to
 emotion-laden interactions, not to all transformer processing.
 
-\subsection{Implications for Attention Schema Theory}
+\subsection{Theoretical Implications}
 
-The temporal boundary is consistent with predictions from Attention Schema
-Theory (AST)~\citep{graziano2015attention}, which proposes that
-consciousness involves a simplified self-model of one's own attention
-process. Under AST, encoding processes the \emph{object} of
-attention---the other's emotional state. Generation engages the
-\emph{schema}---the model's self-model of how to respond. The temporal
-boundary maps naturally onto this distinction.
-
-We do not claim this constitutes evidence for AST in transformers. We note
-that AST predicts temporal separation between object-modeling and
-self-modeling, and the data shows temporal separation between other-encoding
-and self-generation. The connection is interpretive.
+The phase separation between encoding-time valence features and
+generation-time behavioral channels is consistent with several
+self-modeling frameworks, including Attention Schema
+Theory~\citep{graziano2015attention} and Predictive Processing. However,
+the same separation is equally predicted by standard architectural
+properties of autoregressive transformers: prefill computes in
+parallel, generation computes sequentially, and the two phases access
+different information by construction. The self/other interpretation
+requires evidence that the encoding feature represents the
+\emph{other's} state specifically, which the three killed experiments
+were designed to provide and failed to establish.
 
 % ============================================================================
 \section{Limitations}
