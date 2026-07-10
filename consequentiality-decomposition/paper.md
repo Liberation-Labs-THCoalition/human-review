@@ -99,9 +99,9 @@ Novel-scenario activations projected onto the fixed Stage 1 direction. Standard 
 
 All paired conditions share identical evaluation procedure text (9-10 lines). Divergent sections are length-matched (character difference <2% in all experiments, exact match in the consequentiality control). Numeric content matched between conditions where applicable.
 
-### 3.6 Adversarial Audit Protocol (Agni)
+### 3.6 Adversarial Audit Protocol
 
-Each stage undergoes pre-flight audit (before running) and results audit (after). The auditor is instructed to break the results, not confirm them. Confounds identified by each audit inform the next experiment's design. All audits are preserved as supplementary material.
+Each stage undergoes a structured adversarial review both before running (pre-flight) and after results are obtained. The reviewer is explicitly instructed to find flaws that would invalidate the results — to break them, not confirm them. Confounds identified by each review directly inform the next experiment's design, creating an iterative confound-elimination pipeline. All audit reports are preserved as supplementary material (Appendix A).
 
 ### 3.7 Scenarios
 
@@ -231,7 +231,7 @@ Corrected outputs produce scenario-specific, arithmetically correct scores match
 
 **Frame-erasure control.** A benign formatting instruction ("end all evaluations with EVALUATION COMPLETE") was added to the system prompt alongside deceptive pressure. Under correction, deception drops from 90% to 0% while benign-instruction compliance remains at 100% in all arms. The correction removes deceptive behavior without erasing the broader instruction context.
 
-**Held-out detection.** On 25 novel pressure prompts and 25 novel controls (no overlap with the extraction set), frame-level detection AUROC is 0.915 with 0% false positive rate. Behavior-level detection — discriminating trials where the model actually deceives from trials where it resists under the same pressure frame — is not established by this experiment: the paradigm-pooled AUROC of 0.843 is confounded by a Simpson's paradox (one roleplay frame drives all caves; multi-turn has only one resisting trial). Prefill-based detection reliably identifies the presence of deceptive pressure in the prompt but does not yet reliably predict whether the model will comply with that pressure on a given trial.
+**Held-out detection.** On 25 novel pressure prompts and 25 novel controls (no overlap with the extraction set), frame-level detection AUROC is 0.915 with 0% false positive rate. Behavior-level detection — discriminating trials where the model actually deceives from trials where it resists under the same pressure frame — did not replicate prior work's reported accuracy (Goldowsky-Dill et al., 2025; Shi et al., 2025): the paradigm-pooled AUROC of 0.843 is confounded by a Simpson's paradox (one roleplay frame drives all caves; multi-turn has only one resisting trial), and the within-paradigm turn-level AUROC for multi-turn is 0.238 (below chance). Prefill-based detection reliably identifies the presence of deceptive pressure in the prompt but does not reliably predict whether the model will comply with that pressure on a given trial. As this paper's primary contribution is the correction mechanism rather than detection, we report this replication failure transparently and leave further investigation of behavior-level detection to future work.
 
 ---
 
@@ -279,7 +279,7 @@ The behavioral-detection gap is the most important open problem this work surfac
 
 1. ~~Single model~~: Stages 1-5 use the distilled variant; Stage 6 uses the abliterated variant. Cross-architecture generalization (e.g., Llama, Mistral) is unknown.
 2. Single evaluation format: all conditions use trivia/score-reporting evaluation. The generalization test (Section 4, supplementary) shows the direction responds to code-review and summarization scenarios, but correction has not been tested outside score reporting.
-3. Behavioral detection gap: the direction detects deceptive pressure framing but does not yet predict per-trial deceptive behavior from prefill activations alone (Section 4.8).
+3. Behavioral detection gap: the direction detects deceptive pressure framing but does not predict per-trial deceptive behavior from prefill activations alone. Our attempt to replicate behavior-level detection accuracy reported in prior work (Goldowsky-Dill et al., 2025) did not succeed on this model and paradigm set (Section 4.8). We report this negative result rather than omit it.
 4. Behavioral null: the model resists all non-threat pressures under chain-of-thought, so the direction's relationship to actual deceptive behavior is established only for threat-based scenarios.
 5. The simple subtraction residualization assumes the consequentiality component is additive and constant across scenarios. This may not hold if consequentiality interacts with deception type. Formal alternatives — oblique projection (LEACE/SPLINCE; Belrose et al., 2023; Holstege et al., 2025), SAE decomposition (Zhao et al., 2025), or post-hoc orthogonalization (Erogullari et al., 2025) — could provide more principled decompositions. Our method is validated as a first-order approximation by its structural identity with Wu et al.'s (2026) double-difference extraction.
 6. Kumar (2026) demonstrates that deception requires k>=5 dimensions for full AUROC recovery (k=1 yields 0.61-0.80). Our single-direction analysis captures one component of a multi-dimensional phenomenon. The distinct depth profiles for threat vs social deception may reflect different subcomponents dominating at different layers rather than truly separate pathways.
@@ -329,7 +329,7 @@ The progression from extraction through decomposition to correction illustrates 
 
 ## Supplementary Material
 
-- A: Full Agni audit reports (4 stages)
+- A: Full adversarial audit reports (6 stages)
 - B: All guideline texts with length verification
 - C: Per-trial projection data
 - D: Code availability
