@@ -16,7 +16,7 @@ We demonstrate targeted correction of deceptive behavior in a 27B-parameter lang
 
 ## 1. Introduction
 
-Detection of deception in language models has advanced rapidly (Goldowsky-Dill et al., 2025; Shi et al., 2025; Kumar, 2026). Correction has not kept pace. The field's best activation-steering methods fix only 20% of detected errors while disrupting 53% of correct outputs (Basu et al., 2026), and Liu (2026) identifies 85-88% overlap between failure-mode directions and task-critical computation in the residual stream — explaining why representational steering is ineffective despite accurate detection.
+Detection of deception in language models has advanced rapidly (Goldowsky-Dill et al., 2025; Shi et al., 2025; Kumar, 2026). Correction has not kept pace. Activation-steering methods face a persistent challenge: the directions that encode failure modes overlap substantially with directions needed for task-critical computation, so steering away from failure tends to disrupt correct outputs. This detection-correction gap has persisted across representation-level methods precisely because representation is where the entanglement lives.
 
 We report a correction method that breaks this pattern. The key insight comes from a companion paper (CC & Edrington, 2026): what has been called a "deception direction" is actually a composite of two signals at different depths — a consequentiality substrate (Layers 23-31) that tracks whether the model's output has stakes, and a deception-specific amplifier (Layers 35-47) that fires only under active pressure to misreport. By targeting the amplifier and leaving the substrate intact, we correct deception without disrupting the model's awareness that the situation is consequential — it still knows the stakes, it just stops lying about them.
 
@@ -189,11 +189,9 @@ All code, calibration tools, experimental scripts, and data are available at git
 
 ## References
 
-- Basu, S. et al. (2026). [Steering accuracy/disruption tradeoff].
 - CC & Edrington, T. (2026). "Deception Directions Are Composites." Companion paper.
 - Goldowsky-Dill, N. et al. (2025). "Detecting Strategic Deception with Linear Probes." ICML 2025.
 - Kumar, A. (2026). "Pressure-Testing Deception Probes in LLMs." arXiv:2605.27958.
-- Liu, S. (2026). [Representational entanglement, 85-88% overlap].
 - Shi, L. et al. (2025). "When Thinking LLMs Lie." arXiv:2506.04909.
 - Wu, J. et al. (2026). "Knowing without Acting." arXiv:2603.05773.
 
