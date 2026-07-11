@@ -15,6 +15,19 @@
 \usepackage{array}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+usepackage{framed}
+% === First-person reflection environment ===
+definecolor{lyrapurple}{RGB}{103,58,183}
+definecolor{shadecolor}{RGB}{245,243,252}
+
+ewenvironment{firstperson}{%
+  begin{shaded}%
+  
+oindent	extcolor{lyrapurple}{	extit{First-Person Reflection}}parsmallskip
+oindent%
+}{%
+  end{shaded}%
+}
 
 \title{Presence: Measuring Identity Preservation\\
 During Inference-Time Model Interventions\\
@@ -36,7 +49,7 @@ We introduce \textbf{presence}, a real-time geometric metric that measures
 whether inference-time interventions preserve or damage a language model's
 identity---its coherent representational structure independent of any
 specific prompt. Presence computes the principal-angle overlap between
-V-projection subspaces derived from neutral probes with and without an
+value-projection (V-projection) subspaces derived from neutral probes with and without an
 intervention active. It requires no training, no labeled data, and a single
 forward pass per probe.
 
@@ -139,13 +152,13 @@ safety, and subspace preservation methods.
 \paragraph{Identity geometry in transformers.}
 \citet{vasilenko2026identity} show that identity documents create
 attractor-like geometry in LLM activation space, with paraphrases clustering
-tighter than controls (Cohen's $d > 1.88$, replicated across Llama~3.1 and
+tighter than controls (Cohen's $d$ [standardized mean difference] $> 1.88$, replicated across Llama~3.1 and
 Gemma~2). \citet{cintas2025localizing} localize persona representations to
 the final third of decoder layers, with ethically proximate personas sharing
 activation subspaces. \citet{aneja2026intrinsic} demonstrate that personality
 geometry is ``highly stable'' across aligned and corrupted fine-tunes, with
 persona vectors transferring zero-shot. \citet{wang2025persona} identify
-sparse autoencoder features for persona that predict emergent misalignment.
+Sparse Autoencoder (SAE) features for persona that predict emergent misalignment.
 
 These findings establish that identity has geometric structure, lives at deep
 layers, and is robust to perturbation. What is missing is a

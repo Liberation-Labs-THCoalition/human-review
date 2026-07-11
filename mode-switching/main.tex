@@ -66,7 +66,7 @@
 % ============================================================
 \begin{abstract}
 Metacognitive prompting produces spectral concentration in generation-phase
-KV-cache geometry ($d = 0.7$--$0.9$ after token-count correction, robust to
+KV-cache geometry (Cohen's $d$ [standardized mean difference] $= 0.7$--$0.9$ after token-count correction, robust to
 both linear and logarithmic functional forms; $n{=}120$ replication on
 Qwen3.5-27B). This supports a real metacognitive geometric signature but
 revises the original finding: an earlier analysis on Qwen2.5-7B reported
@@ -117,8 +117,8 @@ activations. Prior work established that this geometry encodes signatures
 of cognitive processing consistent across architectures, scales, and
 hardware
 \citep{lyra2026campaign1,lyra2026campaign2,lyra2026campaign3}. Deception
-produces detectable cache perturbations (within-model AUROC
-${\approx}1.0$), confabulation contracts the cache representation, and
+produces detectable cache perturbations (cross-model AUROC
+${>}0.95$; within-model detection was subsequently retracted due to a prompt-template confound), confabulation contracts the cache representation, and
 honest processing allocates ${\sim}25\%$ more cache growth per token than
 deceptive processing.
 
