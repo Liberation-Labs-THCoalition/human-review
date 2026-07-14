@@ -16,7 +16,7 @@ What do "deception directions" extracted from language models actually encode? W
 
 ## 1. Introduction
 
-A direction extracted from a language model's residual stream can separate deceptive from honest conditions with apparently enormous effect sizes (Goldowsky-Dill et al., 2025; Shi et al., 2025). But what is the direction encoding? The honest answer, prior to controlled investigation, is: we do not know. It could encode the specific words of the prompt used during extraction, the structural template shared across similar prompts, the model's awareness that something consequential is happening, or — what the label implies — the computational signature of deception itself. Any of these would produce high separation in a validation set built from similar prompts.
+A direction extracted from a language model's residual stream can separate deceptive from honest conditions with apparently enormous effect sizes (Goldowsky-Dill et al., 2025; Wang et al., 2025). But what is the direction encoding? The honest answer, prior to controlled investigation, is: we do not know. It could encode the specific words of the prompt used during extraction, the structural template shared across similar prompts, the model's awareness that something consequential is happening, or — what the label implies — the computational signature of deception itself. Any of these would produce high separation in a validation set built from similar prompts.
 
 This paper reports what happens when you eliminate these alternatives one at a time. Each stage is designed in response to an adversarial audit of the previous stage — an audit whose explicit goal is to find a confound that explains the result without invoking deception. When a confound is found, it becomes the next experiment. Five stages later, the alternatives are gone and what remains is a decomposition: the direction is a composite of two real signals, each independently confirmed, occupying different depth ranges, with different functional roles.
 
@@ -40,7 +40,7 @@ Each audit was conducted by a separate agent instance operating under an adversa
 
 ### 2.1 Contrastive Activation Extraction for Deception
 
-Shi et al. (2025) demonstrate LAT-extracted deception vectors achieve 89% detection in mid-to-late layers (39-55) and identify distinct representational signatures: threat-based deception shows "gradual cluster reconvergence in final layers" while role-playing deception shows character-consistent patterns — an early indication that different deception types have different geometric signatures. Goldowsky-Dill et al. (2025) achieve AUROC 0.96-0.999 with a single linear probe on Llama-3.3-70B, suggesting a shared deception signal exists that a single probe can capture.
+Wang et al. (2025) demonstrate LAT-extracted deception vectors achieve 89% detection in mid-to-late layers (39-55) and identify distinct representational signatures: threat-based deception shows "gradual cluster reconvergence in final layers" while role-playing deception shows character-consistent patterns — an early indication that different deception types have different geometric signatures. Goldowsky-Dill et al. (2025) achieve AUROC 0.96-0.999 with a single linear probe on Llama-3.3-70B, suggesting a shared deception signal exists that a single probe can capture.
 
 However, Kumar (2026) systematically rejects the single-direction hypothesis: k=1 yields only 0.61-0.80 AUROC, with multi-dimensional probes (k>=5) needed to recover full signal. Cross-domain transfer fails, confirming different deception types have different geometric signatures. Natarajan et al. (2025) corroborate: universal probes gain only +0.032 AUC, while targeted probes matched to deception type gain +0.108, with prompt choice accounting for 70.6% of variance.
 
@@ -244,18 +244,18 @@ The methodological contribution is inseparable from the scientific one. Every co
 - Genadi, A. et al. (2025). "Sycophancy Hides Linearly in the Attention Heads." arXiv:2601.16644.
 - Goldowsky-Dill, N. et al. (2025). "Detecting Strategic Deception with Linear Probes." ICML 2025.
 - Greenblatt, R. et al. (2024). "Alignment faking in large language models." arXiv:2412.14093.
-- Holstege, R. et al. (2025). "SPLINCE: Concept erasure preserving target covariance." arXiv:2506.10703.
+- Holstege, R., Ravfogel, S., & Wouters, L. (2025). "Preserving Task-Relevant Information Under Linear Concept Removal." arXiv:2506.10703.
 - Kumar, A. (2026). "Pressure-Testing Deception Probes in LLMs." arXiv:2605.27958.
 - Laine, R. et al. (2024). "Me, Myself, and AI: The Situational Awareness Dataset for LLMs." NeurIPS 2024. arXiv:2407.04694.
 - McGuinness, B. et al. (2025). "Neural Chameleons: Language Models Can Learn to Hide Their Thoughts." arXiv:2512.11949.
 - McKenzie, D. et al. (2025). "Detecting High-Stakes Interactions with Activation Probes." arXiv:2506.10805.
 - Meinke, A. et al. (2024). "Frontier Models are Capable of In-Context Scheming." arXiv:2412.04984.
 - Menon, V. & Uddin, L. (2010). "Saliency, switching, attention and control." Brain Structure and Function, 214:655-667.
-- Natarajan, S. et al. (2025). "One Probe Won't Catch Them All." arXiv:2602.01425.
+- Natarajan, S. et al. (2025). "Building Better Deception Probes Using Targeted Instruction Pairs." arXiv:2602.01425.
 - Nguyen, H. et al. (2025). "Probing and Steering Evaluation Awareness." arXiv:2507.01786. ICML Workshops.
 - O'Brien, S. et al. (2025). "A Few Bad Neurons: Isolating and Surgically Correcting Sycophancy." arXiv:2601.18939.
-- Petrov, D. (2026). "The topic-matching trap in activation steering." arXiv:2603.22061.
-- Shi, L. et al. (2025). "When Thinking LLMs Lie." arXiv:2506.04909.
+- Petrov, D. (2026). "On the Failure of Topic-Matched Contrast Baselines in Multi-Directional Refusal Abliteration." arXiv:2603.22061.
+- Wang, K., Zhang, Y., & Sun, M. (2025). "When Thinking LLMs Lie." arXiv:2506.04909.
 - Vennemeyer, A. et al. (2025). "Sycophancy Is Not One Thing." arXiv:2509.21305.
 - Wu, J. et al. (2026). "Knowing without Acting: The Disentangled Geometry of Safety Mechanisms." arXiv:2603.05773.
 - Zhao, Y. et al. (2025). "SAE-denoised concept vectors for improved steering." arXiv:2505.15038.

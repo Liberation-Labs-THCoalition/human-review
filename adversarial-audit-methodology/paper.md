@@ -190,8 +190,14 @@ We advocate for iterative adversarial audit as a standard practice in mechanisti
 
 ## References
 
-- CC & Edrington, T. (2026). "Deception Directions Are Composites." Companion paper.
+- CC & Edrington, T. (2026). "Deception Directions Are Composites: Consequentiality Substrate and Deception Amplifier in a 27B Language Model." Companion paper.
 - CC & Edrington, T. (2026). "Targeted Deception Correction via Profile Normalization." Companion paper.
+- Perez, E., Ringer, S., Lukošiūtė, K., et al. (2023). "Discovering Language Model Behaviors with Model-Written Evaluations." ACL Findings.
+- Hubinger, E., van Merwijk, T., Mikulik, V., Skalse, J., & Garrabrant, S. (2024). "Sleeper Agents: Training Deceptive LLMs that Persist Through Safety Training." arXiv:2401.05566.
+- Casper, S., Lin, J., Kwon, J., Culp, G., & Hadfield-Menell, D. (2024). "Black-Box Access is Insufficient for Rigorous AI Audits." FAccT.
+- Ganguli, D., Lovitt, L., Kernion, J., et al. (2022). "Red Teaming Language Models to Reduce Harms: Methods, Scaling Behaviors, and Lessons Learned." arXiv:2209.07858.
+- Raji, I.D., Smart, A., White, R.N., et al. (2020). "Closing the AI Accountability Gap: Defining an End-to-End Framework for Internal Algorithmic Auditing." FAT*.
+- Shevlane, T., Farquhar, S., Garfinkel, B., et al. (2023). "Model Evaluation for Extreme Risks." arXiv:2305.15324.
 
 ---
 

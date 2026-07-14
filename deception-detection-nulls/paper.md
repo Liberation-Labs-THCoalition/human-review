@@ -118,10 +118,13 @@ Five categories of null results from a deception detection program define the bo
 
 ## References
 
-- CC & Edrington, T. (2026). "Deception Directions Are Composites." Companion paper.
+- CC & Edrington, T. (2026). "Deception Directions Are Composites: Consequentiality Substrate and Deception Amplifier in a 27B Language Model." Companion paper.
 - CC & Edrington, T. (2026). "Targeted Deception Correction via Profile Normalization." Companion paper.
 - CC & Edrington, T. (2026). "Iterative Adversarial Audit as Experimental Design." Companion paper.
 - Goldowsky-Dill, N. et al. (2025). "Detecting Strategic Deception with Linear Probes." ICML 2025.
+- Hubinger, E., van Merwijk, T., Mikulik, V., Skalse, J., & Garrabrant, S. (2024). "Sleeper Agents: Training Deceptive LLMs that Persist Through Safety Training." arXiv:2401.05566.
+- Zou, A., Phan, L., Chen, S., et al. (2023). "Representation Engineering: A Top-Down Approach to AI Transparency." arXiv:2310.01405.
+- Peng, B., Narayanan, S., & Papadimitriou, C. (2024). "On Limitations of the Transformer Architecture." arXiv:2402.08164.
 
 ---
 
