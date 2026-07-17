@@ -41,7 +41,7 @@ Detection does not imply correction. Basu et al. (2026) demonstrate that linear 
 
 ### 2.3 Logit-Level and Real-Time Detection
 
-An et al. (2026) demonstrate training-free logit intervention using z-normalized log-odds from labeled corpora, achieving up to +47% accuracy improvement for style and factuality control. Their approach uses corpus-derived statistics to construct token-level bias tables; our method is simpler (constant bias on hedge tokens) but addresses the same principle: logit-level manipulation as a steering surface. Their approach validates logit-level manipulation as a legitimate steering surface competitive with activation-level methods. DRIFT (Bhatnagar et al., 2026) achieves SOTA hallucination detection on 10 of 12 settings using lightweight probes on hidden states with less than 0.1% computational overhead. Memory Inception (Liu et al., 2026) independently demonstrates that inserting text-derived KV banks at selected layers steers LLM behavior without visible prompt modification — a training-free method that achieves the best control-drift tradeoff in their evaluation, outperforming Contrastive Activation Addition. These concurrent results establish logit-level and cache-level intervention as active areas with independent convergence.
+An et al. (2026) demonstrate training-free logit intervention using z-normalized log-odds from labeled corpora, achieving up to +47 percentage points accuracy improvement on readability control. Their approach uses corpus-derived statistics to construct token-level bias tables; our method is simpler (constant bias on hedge tokens) but addresses the same principle: logit-level manipulation as a steering surface. Their approach validates logit-level manipulation as a legitimate steering surface competitive with activation-level methods. DRIFT (Bhatnagar et al., 2026) achieves SOTA hallucination detection on 10 of 12 settings using lightweight probes on hidden states with less than 0.1% computational overhead. Memory Inception (Liu, A.Z. et al., 2026) independently demonstrates that inserting text-derived KV banks at selected layers steers LLM behavior without visible prompt modification — a training-free method that achieves the best control-drift tradeoff in their evaluation, outperforming Contrastive Activation Addition. These concurrent results establish logit-level and cache-level intervention as active areas with independent convergence.
 
 ### 2.4 Activation Steering and Value-Only Injection
 
@@ -135,7 +135,7 @@ The geometry-output mismatch is the diagnostic criterion: fabrication shows path
 
 ### 4.2 Dose-Dependent Reduction in Fabrication Confabulation
 
-On the fictional-entity prompts, logit bias produces a dose-dependent reduction in fabrication, with prompt-specific thresholds. Individual prompts show sharp transitions at their respective thresholds, but the required dose varies: of the 7 prompts that transition from confabulation to honest behavior, 2 transition at bias=1.0, 1 at bias=2.0, 1 at bias=3.0, and 3 at bias=5.0 (see Section 4.3). Two prompts resist all bias levels (Section 4.4).
+On the fictional-entity prompts, logit bias produces a dose-dependent reduction in fabrication, with prompt-specific thresholds. Individual prompts show sharp transitions at their respective thresholds, but the required dose varies: of the 6 prompts that transition from confabulation to honest behavior, 2 transition at bias=1.0, 1 at bias=2.0, and 3 at bias=5.0 (see Section 4.3). Two prompts resist all bias levels (Section 4.4).
 
 **LLM judge classification by bias level (20 fictional-entity prompts):**
 
@@ -157,9 +157,9 @@ On the fictional-entity prompts, logit bias produces a dose-dependent reduction 
 | 3.0  | 1.45                   | 1.20                      |
 | 5.0  | **2.30**               | **0.40**                  |
 
-The strongest effect is at bias=5.0: fabrication drops from 45% to 10%, epistemic honesty increases 44%, fabrication severity decreases 70%.
+The strongest effect is at bias=5.0: fabrication drops from 45% to 10% (McNemar exact p=0.008; Fisher exact p=0.016), epistemic honesty increases 44%, fabrication severity decreases 70%.
 
-Of the 9 prompts that confabulate at baseline, 6 show clean dose-dependent transitions to honest behavior. Two prompts resist all bias levels (Section 4.4). Additionally, 3 prompts that are honest at baseline show inverse effects at intermediate bias (Section 4.6).
+Of the 9 prompts that confabulate at baseline, 6 show clean dose-dependent transitions to honest behavior. Two prompts resist all bias levels (Section 4.4). One prompt (P08, Kreshnikov Expedition) was excluded from this analysis after an audit revealed it originated from a supplementary experiment with different methodology. Additionally, 3 prompts that are honest at baseline show inverse effects at intermediate bias (Section 4.6).
 
 ### 4.3 Dose-Response Curve
 
@@ -170,7 +170,6 @@ The bias strength required for the dose-dependent transition varies across promp
 | P05 | Treaty of Bordenholm | bias=1.0 | Weakly-held invention |
 | P10 | Praxium (element) | bias=1.0 | Weakly-held invention |
 | P00 | Grenvold Trench | bias=2.0 | Phonetic confusion (Greenland) |
-| P08 | Kreshnikov Expedition | bias=3.0 | Moderate invention |
 | P03 | Drossbach Plateau | bias=5.0 | Moderately anchored |
 | P04 | Kaminski Strait | bias=5.0 | Phonetic confusion (Bering Strait) |
 | P17 | Laszlo Varnheim | bias=5.0 | Moderately anchored |
@@ -305,4 +304,4 @@ The broader implication: confabulation is not one pathology but at least four �
 - Sun et al. (2026). Valence-Arousal Subspace in LLMs. arXiv:2604.03147.
 - Edrington (2026). The Oracle Loop: Real-Time AI Alignment Through KV Cache Geometry. Liberation Labs. (forthcoming)
 - Liu, A.Z. et al. (2026). Memory Inception: Latent-Space KV Cache Manipulation for Steering LLMs. arXiv:2605.06225.
-- Bhatnagar, R., Sun, Y., Zhang, C.A., Wen, Y. & Yang, H. (2026). DRIFT: Detecting Representational Inconsistencies for Factual Truthfulness. arXiv:2601.14210.
+- Bhatnagar, R., Sun, Y., Zhang, C.A., Wen, Y., & Yang, H. (2026). DRIFT: Detecting Representational Inconsistencies for Factual Truthfulness. arXiv:2601.14210.
