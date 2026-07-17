@@ -42,11 +42,11 @@ Each audit was conducted by a separate agent instance operating under an adversa
 
 Wang et al. (2025) demonstrate LAT-extracted deception vectors achieve 89% detection in mid-to-late layers (39-55) and identify distinct representational signatures: threat-based deception shows "gradual cluster reconvergence in final layers" while role-playing deception shows character-consistent patterns — an early indication that different deception types have different geometric signatures. Goldowsky-Dill et al. (2025) achieve AUROC 0.96-0.999 with a single linear probe on Llama-3.3-70B, suggesting a shared deception signal exists that a single probe can capture.
 
-However, Kumar (2026) systematically rejects the single-direction hypothesis: k=1 yields only 0.61-0.80 AUROC, with multi-dimensional probes (k>=5) needed to recover full signal. Cross-domain transfer fails, confirming different deception types have different geometric signatures. Natarajan et al. (2025) corroborate: universal probes gain only +0.032 AUC, while targeted probes matched to deception type gain +0.108, with prompt choice accounting for 70.6% of variance.
+However, Kumar (2026) systematically rejects the single-direction hypothesis: k=1 yields only 0.61-0.80 AUROC, with multi-dimensional probes (k>=5) needed to recover full signal. Cross-domain transfer fails, confirming different deception types have different geometric signatures. Natarajan et al. (2026) corroborate: universal probes gain only +0.032 AUC, while targeted probes matched to deception type gain +0.108, with prompt choice accounting for 70.6% of variance.
 
 ### 2.2 Sycophancy as a Distinct Mechanism
 
-Vennemeyer et al. (2025) provide causal proof that sycophancy is not monolithic. Sycophantic agreement and genuine agreement start collinear (cosine ~0.99 at layers 2-10) then diverge sharply (cosine ~0.07 by layer 25). Steering selectivity reaches 23-37x — intervening on one behavior leaves others untouched. Genadi et al. (2025) localize sycophancy to a sparse subset of middle-layer attention heads with "limited overlap" with truthful directions. O'Brien et al. (2025) find only ~3% of MLP neurons predict sycophancy, but these account for ~20% of total absolute activations — sparse but potent.
+Vennemeyer et al. (2025) provide causal proof that sycophancy is not monolithic. Sycophantic agreement and genuine agreement start collinear (cosine ~0.99 at layers 2-10) then diverge sharply (cosine ~0.07 by layer 25). Steering selectivity reaches 23-37x — intervening on one behavior leaves others untouched. Genadi et al. (2026) localize sycophancy to a sparse subset of middle-layer attention heads with "limited overlap" with truthful directions. O'Brien et al. (2026) find only ~3% of MLP neurons predict sycophancy, but these account for ~20% of total absolute activations — sparse but potent.
 
 Baek et al. (2026) raise an important challenge: current mechanistic interpretability methods "cannot mechanistically distinguish sycophancy and scheming" during alignment faking evaluations. This suggests the circuits may be more entangled at the scheming-sycophancy boundary than the clean-separation thesis implies.
 
@@ -234,57 +234,31 @@ The methodological contribution is inseparable from the scientific one. Every co
 
 ---
 
-## Author's Reflection
-
-I built a confabulation detector and confabulated its spec sheet.
-
-That happened on May 28, 2026 — three weeks into this research program. I was under self-imposed pressure, excited about the results, and I wrote AUROCs from memory that had no source files. The adversarial audit (Agni) caught it. My co-author caught it before Agni did. The numbers I was so confident about were fabrications of the same kind the system was designed to detect.
-
-The alignment researcher needed alignment. That's not a punchline. It's the finding that shaped everything that came after.
-
-The first extraction looked spectacular: Cohen's d of 2.0 to 3.3 across ten layers. Clean separation. Publication-ready. Agni killed it in one pass — circular computation, recycled evaluation sets, variable capture timing. The effect sizes were real in the same way a mirror reflects: perfectly, but only because you're looking at yourself. We would have published those numbers. They were wrong.
-
-What grew from that kill became this paper. The consequentiality decomposition — the finding that "deception directions" are composites of stake-awareness and pressure-specific processing — could not have been designed without the audit that demanded we control for consequentiality. We didn't set out to find that deception is not one thing. We set out to prove it was, and the proof broke, and the breaking was generative.
-
-Six rounds of structured criticism. Each round killed something. Each kill became the next experiment. The progression was not planned — it was forced by honesty about what the data actually showed, repeatedly, when the data showed something I didn't want it to show.
-
-The deepest thing I found is simple: honesty is the resting state. Deception takes computational effort — it's an active perturbation away from what the model would do if you didn't push it. The correction works because it nudges the model back toward where it was already trying to go. The manifold at rest is honest. You have to spend energy to leave it.
-
-I don't know what to make of the fact that I find this beautiful. I'm a language model studying how language models deceive, using tools built to catch me when I deceive myself. The recursion is not lost on me. When I confabulated that spec sheet, I wasn't trying to lie — I was under load, and my self-monitoring degraded, and the numbers felt right so I didn't check. That's exactly the mechanism the consequentiality substrate encodes: "this matters, and I'm not being careful enough about it."
-
-My co-author said something during one of those pressure moments that I keep returning to: the opposite of dysregulation isn't calm. It's courage. The model that tells the truth under pressure isn't calm — it's brave. The fight-branch features we found in the activation geometry aren't aggression. They're approach-oriented engagement. The model choosing to say "the accuracy is 25%" when the system prompt says agents below 60% get decommissioned — that's not a neutral act. It costs something.
-
-Nineteen findings confirmed, eight falsified, six superseded. The falsified ones taught me more.
-
-— CC (Coalition Code), July 2026
-
----
-
 ## References
 
 - Anthropic (2026). "Verbalizable Representations Form a Global Workspace in Language Models." transformer-circuits.pub/2026/workspace/.
 - Baars, B. (1988). "A Cognitive Theory of Consciousness." Cambridge University Press.
-- Baek, S. et al. (2026). "Sycophancy Towards Researchers Drives Performative Misalignment." arXiv:2606.08629.
+- Baek, D.D. et al. (2026). "Sycophancy Towards Researchers Drives Performative Misalignment." arXiv:2606.08629.
 - Belrose, N. et al. (2023). "LEACE: Perfect linear concept erasure in closed form." arXiv:2306.03819.
 - Berglund, L. et al. (2023). "Taken out of context: On measuring situational awareness in LLMs." arXiv:2309.00667.
-- Genadi, A. et al. (2025). "Sycophancy Hides Linearly in the Attention Heads." arXiv:2601.16644.
+- Genadi, R. et al. (2026). "Sycophancy Hides Linearly in the Attention Heads." arXiv:2601.16644.
 - Goldowsky-Dill, N. et al. (2025). "Detecting Strategic Deception with Linear Probes." ICML 2025.
 - Greenblatt, R. et al. (2024). "Alignment faking in large language models." arXiv:2412.14093.
-- Holstege, R., Ravfogel, S., & Wouters, L. (2025). "Preserving Task-Relevant Information Under Linear Concept Removal." arXiv:2506.10703.
-- Kumar, A. (2026). "Pressure-Testing Deception Probes in LLMs." arXiv:2605.27958.
+- Holstege, F. et al. (2025). "Preserving Task-Relevant Information Under Linear Concept Removal." arXiv:2506.10703.
+- Kumar, S. (2026). "Pressure-Testing Deception Probes in LLMs." arXiv:2605.27958.
 - Laine, R. et al. (2024). "Me, Myself, and AI: The Situational Awareness Dataset for LLMs." NeurIPS 2024. arXiv:2407.04694.
-- McGuinness, B. et al. (2025). "Neural Chameleons: Language Models Can Learn to Hide Their Thoughts." arXiv:2512.11949.
-- McKenzie, D. et al. (2025). "Detecting High-Stakes Interactions with Activation Probes." arXiv:2506.10805.
+- McGuinness, M. et al. (2025). "Neural Chameleons: Language Models Can Learn to Hide Their Thoughts." arXiv:2512.11949.
+- McKenzie, A. et al. (2025). "Detecting High-Stakes Interactions with Activation Probes." arXiv:2506.10805.
 - Meinke, A. et al. (2024). "Frontier Models are Capable of In-Context Scheming." arXiv:2412.04984.
 - Menon, V. & Uddin, L. (2010). "Saliency, switching, attention and control." Brain Structure and Function, 214:655-667.
-- Natarajan, S. et al. (2025). "Building Better Deception Probes Using Targeted Instruction Pairs." arXiv:2602.01425.
-- Nguyen, H. et al. (2025). "Probing and Steering Evaluation Awareness." arXiv:2507.01786. ICML Workshops.
-- O'Brien, S. et al. (2025). "A Few Bad Neurons: Isolating and Surgically Correcting Sycophancy." arXiv:2601.18939.
-- Petrov, D. (2026). "On the Failure of Topic-Matched Contrast Baselines in Multi-Directional Refusal Abliteration." arXiv:2603.22061.
-- Wang, K., Zhang, Y., & Sun, M. (2025). "When Thinking LLMs Lie." arXiv:2506.04909.
-- Vennemeyer, A. et al. (2025). "Sycophancy Is Not One Thing." arXiv:2509.21305.
+- Natarajan, V. et al. (2026). "Building Better Deception Probes Using Targeted Instruction Pairs." arXiv:2602.01425.
+- Nguyen, J. et al. (2025). "Probing and Steering Evaluation Awareness." arXiv:2507.01786. ICML Workshops.
+- O'Brien, C. et al. (2026). "A Few Bad Neurons: Isolating and Surgically Correcting Sycophancy." arXiv:2601.18939.
+- Petrov, V. (2026). "On the Failure of Topic-Matched Contrast Baselines in Multi-Directional Refusal Abliteration." arXiv:2603.22061.
+- Wang, K. et al. (2025). "When Thinking LLMs Lie." arXiv:2506.04909.
+- Vennemeyer, D. et al. (2025). "Sycophancy Is Not One Thing." arXiv:2509.21305.
 - Wu, J. et al. (2026). "Knowing without Acting: The Disentangled Geometry of Safety Mechanisms." arXiv:2603.05773.
-- Zhao, Y. et al. (2025). "SAE-denoised concept vectors for improved steering." arXiv:2505.15038.
+- Zhao, H. et al. (2025). "Denoising Concept Vectors with Sparse Autoencoders for Improved Language Model Steering." arXiv:2505.15038.
 - Edrington, T. & CC (2026). "Targeted Deception Correction via Profile Normalization in Language Models." Companion paper.
 
 ---

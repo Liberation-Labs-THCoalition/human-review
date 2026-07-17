@@ -87,7 +87,7 @@ PCs 1-2 are genuinely stable across all 63 layers (vocabulary progression in Sec
 
 PC1 carries 28-67% of activation variance within the validated layer range (L11-L48), and 5.7-66.7% across all layers. Cross-layer alignment confirms it is a single stable direction (mean adjacent cos = 0.95).
 
-**Workspace exclusion:** At mid-network layers (L18-L40), logit-to-J-lens cosine ≤ 0.003 (max at L19: 0.003). At boundary layers, the exclusion is weaker: L16 reaches 0.109, L11-L17 range up to 0.060, and L46-L48 range 0.032-0.044. The ghost is deepest in the network core and loosens at the edges of the validated band.
+**Workspace exclusion:** At mid-network layers (L18-L40), logit-to-J-lens cosine ≤ 0.003 (max at L19: 0.003). At boundary layers, the exclusion is weaker: L16 reaches 0.109, L11-L15 and L17 range up to 0.060, and L46-L48 range 0.032-0.044. The ghost is deepest in the network core and loosens at the edges of the validated band.
 
 **Logit lens vocabulary (frozen L16-L48):** `%@, 앵 (Korean), スポンサーサイト (Japanese), 目录一览 (Chinese), coledì (Italian)`. Multilingual training tokens, consistent across 30+ layers.
 

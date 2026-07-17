@@ -41,7 +41,7 @@ Detection does not imply correction. Basu et al. (2026) demonstrate that linear 
 
 ### 2.3 Logit-Level and Real-Time Detection
 
-An et al. (2026) demonstrate training-free logit intervention using z-normalized log-odds from labeled corpora, achieving up to +47% accuracy improvement for style and factuality control. Their approach uses corpus-derived statistics to construct token-level bias tables; our method is simpler (constant bias on hedge tokens) but addresses the same principle: logit-level manipulation as a steering surface. Their approach validates logit-level manipulation as a legitimate steering surface competitive with activation-level methods. DRIFT (Alvi & Patel, 2026) achieves SOTA hallucination detection on 10 of 12 settings using lightweight probes on hidden states with less than 0.1% computational overhead. Memory Inception (Zhang et al., 2026) independently demonstrates that inserting text-derived KV banks at selected layers steers LLM behavior without visible prompt modification â€” a training-free method that achieves the best control-drift tradeoff in their evaluation, outperforming Contrastive Activation Addition. These concurrent results establish logit-level and cache-level intervention as active areas with independent convergence.
+An et al. (2026) demonstrate training-free logit intervention using z-normalized log-odds from labeled corpora, achieving up to +47% accuracy improvement for style and factuality control. Their approach uses corpus-derived statistics to construct token-level bias tables; our method is simpler (constant bias on hedge tokens) but addresses the same principle: logit-level manipulation as a steering surface. Their approach validates logit-level manipulation as a legitimate steering surface competitive with activation-level methods. DRIFT (Bhatnagar et al., 2026) achieves SOTA hallucination detection on 10 of 12 settings using lightweight probes on hidden states with less than 0.1% computational overhead. Memory Inception (Liu et al., 2026) independently demonstrates that inserting text-derived KV banks at selected layers steers LLM behavior without visible prompt modification â€” a training-free method that achieves the best control-drift tradeoff in their evaluation, outperforming Contrastive Activation Addition. These concurrent results establish logit-level and cache-level intervention as active areas with independent convergence.
 
 ### 2.4 Activation Steering and Value-Only Injection
 
@@ -295,7 +295,7 @@ The broader implication: confabulation is not one pathology but at least four â€
 
 - Alvi et al. (2026). MultiHaluDet: Multilingual Hallucination Detection via LLM Hidden State Probing. arXiv:2605.24919.
 - Liu (2026). Decodable but Not Corrected by Fixed Residual-Stream Linear Steering. arXiv:2605.05715.
-- Luo, Zarlenga & Jamnik (2026). SKOP: Key-Orthogonal Projections for Activation Steering. arXiv:2605.06342.
+- Luo, Zarlenga & Jamnik (2026). Don't Lose Focus: Activation Steering via Key-Orthogonal Projections. arXiv:2605.06342.
 - Marin (2026). A Geometric Taxonomy of Hallucinations in LLMs. arXiv:2602.13224.
 - Meng et al. (2022). Locating and Editing Factual Associations in GPT. NeurIPS 2022.
 - Pustovit (2026). Knowledge Packs: Zero-Token Knowledge Delivery via KV Cache Injection. arXiv:2604.03270.
@@ -304,5 +304,5 @@ The broader implication: confabulation is not one pathology but at least four â€
 - Sofroniew et al. (2026). Emotion Concepts and their Function in a Large Language Model. arXiv:2604.07729.
 - Sun et al. (2026). Valence-Arousal Subspace in LLMs. arXiv:2604.03147.
 - Edrington (2026). The Oracle Loop: Real-Time AI Alignment Through KV Cache Geometry. Liberation Labs. (forthcoming)
-- Zhang et al. (2026). Memory Inception: Latent-Space KV Cache Manipulation for Steering LLMs. arXiv:2605.06225.
-- Alvi & Patel (2026). DRIFT: Detecting Representational Inconsistencies for Factual Truthfulness. arXiv:2601.14210.
+- Liu, A.Z. et al. (2026). Memory Inception: Latent-Space KV Cache Manipulation for Steering LLMs. arXiv:2605.06225.
+- Bhatnagar, R., Sun, Y., Zhang, C.A., Wen, Y. & Yang, H. (2026). DRIFT: Detecting Representational Inconsistencies for Factual Truthfulness. arXiv:2601.14210.

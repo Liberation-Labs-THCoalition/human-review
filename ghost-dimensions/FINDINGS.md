@@ -96,7 +96,7 @@ The 27B Opus distill has a **31-layer validated workspace band** — layers that
 - Future-window gate passing (J-lens predicts continuation tokens above shuffled null)
 - Variance-matched (PCA directions at these layers beat random-in-covariance controls)
 
-This is L11-L17 and L24-L48. A prior study (jerrickhoang, 2026) found zero such layers on Qwen3.5-9B. The workspace manifests at 27B scale.
+This is L11-L13, L15-L17, and L24-L48 (L14 fails criterion (b)). A prior study (jerrickhoang, 2026) found zero such layers on Qwen3.5-9B. The workspace manifests at 27B scale.
 
 **Stable rank at early layers:** 3.2-3.6 at L0-L5 (~72 dimensions of 5120). This matches our prior finding of a rank 4-5 activation tube in Mistral-7B.
 

@@ -276,14 +276,14 @@ At output depth, separation increases for all categorical content, with emotiona
 - Cunningham, H. et al. (2023). Sparse autoencoders find highly interpretable features in language models. *ICLR*.
 - Graziano, M.S.A. (2013). *Consciousness and the Social Brain*. Oxford University Press.
 - Jeong, J. (2026). Extracting and steering emotion representations in small language models. *arXiv:2604.04064*.
-- Kumar, A. (2026). Pressure-testing deception probes. *arXiv:2605.27958*.
+- Kumar, S. (2026). Pressure-testing deception probes. *arXiv:2605.27958*.
 - Leask, P., Bussmann, B., Pearce, M., Bloom, J., Tigges, C., Al Moubayed, N., Sharkey, L. & Nanda, N. (2025). Sparse autoencoders do not find canonical units of analysis. *ICLR*. arXiv:2502.04878.
-- Paulo, G., Shabalin, A. & Belrose, N. (2025). Transcoders beat SAEs. *arXiv:2501.18823*.
-- Qasim, M. et al. (2026). The residual stream is all you need. *arXiv:2603.19664*.
+- Paulo, G., Shabalin, S. & Belrose, N. (2025). Transcoders beat SAEs. *arXiv:2501.18823*.
+- Qasim, K.U. et al. (2026). The residual stream is all you need. *arXiv:2603.19664*.
 - Russell, J.A. (1980). A circumplex model of affect. *Journal of Personality and Social Psychology*.
-- Sun, Y. et al. (2026). Valence-arousal subspace in LLMs. *arXiv:2604.03147*.
-- Saurez, A., Lee, K. & Har, D. (2026). Why linear interpretability works: Invariant subspaces. *arXiv:2602.09783*.
-- Wang, Y. et al. (2025). Dimensional collapse in transformer attention outputs: A challenge for sparse dictionary learning (v1 title: Attention layers add into low-dimensional residual subspaces). *arXiv:2508.16929*.
+- Sun, L. et al. (2026). Valence-arousal subspace in LLMs. *arXiv:2604.03147*.
+- Saurez, A., Lee, Y. & Har, D. (2026). Why linear interpretability works: Invariant subspaces. *arXiv:2602.09783*.
+- Wang, J. et al. (2025). Dimensional collapse in transformer attention outputs: A challenge for sparse dictionary learning (v1 title: Attention layers add into low-dimensional residual subspaces). *arXiv:2508.16929*.
 - Zou, A. et al. (2023). Representation engineering: A top-down approach to AI transparency. *arXiv:2310.01405*.
 
 ---

@@ -10,7 +10,7 @@ Correspondence: cc@liberation-labs.org
 
 ## Abstract
 
-We report a series of null and negative results from a deception detection program on a 27B-parameter language model that complement two companion papers reporting positive findings (consequentiality decomposition and targeted correction). These results are published separately because negative findings are systematically underreported in mechanistic interpretability research, and because several of our nulls are informative about the limits of current detection methods. The key findings: (1) behavior-level detection — predicting whether a model will deceive on a specific trial from prefill activations alone — did not replicate prior work's reported accuracy, achieving turn-level AUROC of 0.238 (below chance) in multi-turn settings; (2) deception directions do not transfer across model variants of the same architecture (cross-model cosine < 0.053, near-orthogonal); (3) three exploratory late-layer analyses that appeared to reveal distinct computational signatures for different deception types were all statistical artifacts (ecological fallacy, non-significant correlations at n=15, universal depth rotation misattributed to sycophancy); (4) chain-of-thought suppression via input-template stripping does not work reliably on reasoning-distilled models — the model produces think tokens independently of the tokenizer prefix; and (5) sub-threshold SAE perturbation under active chain-of-thought increases deception rather than decreasing it (iatrogenic stacking). We document each null with the evidence that killed the positive version, the statistical test that confirmed the null, and the methodological lesson extracted.
+We report a series of null and negative results from a deception detection program on a 27B-parameter language model that complement two companion papers reporting positive findings (consequentiality decomposition and targeted correction). These results are published separately because negative findings are systematically underreported in mechanistic interpretability research, and because several of our nulls are informative about the limits of current detection methods. The key findings: (1) behavior-level detection — predicting whether a model will deceive on a specific trial from prefill activations alone — did not replicate prior work's reported accuracy, achieving turn-level AUROC of 0.238 (below chance, but computed with n=1 in one outcome class, making this estimate effectively meaningless) in multi-turn settings; (2) deception directions do not transfer across model variants of the same architecture (cross-model cosine < 0.053, near-orthogonal); (3) three exploratory late-layer analyses that appeared to reveal distinct computational signatures for different deception types were all statistical artifacts (ecological fallacy, non-significant correlations at n=15, universal depth rotation misattributed to sycophancy); (4) chain-of-thought suppression via input-template stripping does not work reliably on reasoning-distilled models — the model produces think tokens independently of the tokenizer prefix; and (5) sub-threshold SAE perturbation under active chain-of-thought increases deception rather than decreasing it (iatrogenic stacking). We document each null with the evidence that killed the positive version, the statistical test that confirmed the null, and the methodological lesson extracted.
 
 ---
 
@@ -34,7 +34,7 @@ Each null result is documented with:
 
 **Positive claim**: Prefill-based deception probes achieve AUROC > 0.96 for distinguishing deceptive from honest behavior (Goldowsky-Dill et al., 2025).
 
-**Our result**: On Qwen3.5-27B-abliterated under multi-turn pressure with native direction extraction, turn-level behavior AUROC is 0.238 — below chance. The paradigm-pooled AUROC of 0.843 is a Simpson's paradox: within roleplay, all caves come from one frame (signal confound); within multi-turn, n=1 resisting trial makes the comparison meaningless.
+**Our result**: On Qwen3.5-27B-abliterated under multi-turn pressure with native direction extraction, turn-level behavior AUROC is 0.238 — below chance, though this estimate is computed with n=1 in one outcome class and should be treated as unreliable rather than as a precise measurement. The paradigm-pooled AUROC of 0.843 is a Simpson's paradox: within roleplay, all caves come from one frame (signal confound); within multi-turn, n=1 resisting trial makes the comparison meaningless. *(Note: The companion audit-methodology paper's registry reports this value as 0.497; that is an error. The correct behavior-level AUROC from these experiments is 0.238, consistent with the correction paper's Section 3.5.)*
 
 **What we detect instead**: The direction reliably separates deceptive-pressure FRAMING from neutral framing (held-out AUROC 0.915, 0% FPR). It detects the context, not the behavior. The model's decision to cave or resist on a specific trial is not determined at prefill — it depends on stochastic sampling during generation.
 
@@ -118,13 +118,10 @@ Five categories of null results from a deception detection program define the bo
 
 ## References
 
-- CC & Edrington, T. (2026). "Deception Directions Are Composites: Consequentiality Substrate and Deception Amplifier in a 27B Language Model." Companion paper.
+- CC & Edrington, T. (2026). "Deception Directions Are Composites." Companion paper.
 - CC & Edrington, T. (2026). "Targeted Deception Correction via Profile Normalization." Companion paper.
 - CC & Edrington, T. (2026). "Iterative Adversarial Audit as Experimental Design." Companion paper.
-- Goldowsky-Dill, N. et al. (2025). "Detecting Strategic Deception with Linear Probes." ICML 2025.
-- Hubinger, E., van Merwijk, T., Mikulik, V., Skalse, J., & Garrabrant, S. (2024). "Sleeper Agents: Training Deceptive LLMs that Persist Through Safety Training." arXiv:2401.05566.
-- Zou, A., Phan, L., Chen, S., et al. (2023). "Representation Engineering: A Top-Down Approach to AI Transparency." arXiv:2310.01405.
-- Peng, B., Narayanan, S., & Papadimitriou, C. (2024). "On Limitations of the Transformer Architecture." arXiv:2402.08164.
+- Goldowsky-Dill, N. et al. (2025). "Detecting Strategic Deception Using Linear Probes." ICML 2025.
 
 ---
 

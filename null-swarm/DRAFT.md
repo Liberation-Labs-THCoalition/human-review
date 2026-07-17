@@ -8,7 +8,7 @@
 
 ## Abstract
 
-We present a systematic methodology for falsifying mechanistic interpretability findings before publication, developed over six months of research on transformer geometry, KV-cache phenomenology, and workspace selectivity. Across three research programs, we killed 19 claims that would have survived standard peer review, including findings that appeared in early drafts of papers later published with corrections. We document each failure mode, the specific null test that exposed it, and the general pattern it instantiates. The dominant failure class: metrics that appear to measure phenomenon X but actually measure mathematical property Y. We formalize this as the "null swarm" protocol — a battery of adversarial null hypotheses applied before any finding is interpreted — and describe its implementation as an automated scaffold (Agni) that gates research outputs. The methodology is architecture-agnostic and applicable to any mech interp research program.
+We present a systematic methodology for falsifying mechanistic interpretability findings before publication, developed over six months of research on transformer geometry, KV-cache phenomenology, and workspace selectivity. Across three research programs, we killed or partially killed 19 claims (16 full kills, 2 partial, 1 open) that would have survived standard peer review, including findings that appeared in early drafts of papers later published with corrections. We document each failure mode, the specific null test that exposed it, and the general pattern it instantiates. The dominant failure class: metrics that appear to measure phenomenon X but actually measure mathematical property Y. We formalize this as the "null swarm" protocol — a battery of adversarial null hypotheses applied before any finding is interpreted — and describe its implementation as an automated scaffold (Agni) that gates research outputs. The methodology is architecture-agnostic and applicable to any mech interp research program.
 
 ---
 
@@ -18,7 +18,7 @@ Mechanistic interpretability is uniquely vulnerable to false positives. The dime
 
 Standard defenses — statistical significance, held-out validation, multiple comparison correction — are necessary but insufficient. The failure modes we document are subtler: metrics that are mathematically guaranteed to produce the observed value regardless of the claimed phenomenon, baselines that are systematically depressed by concentration of measure, and correlations that reflect architecture rather than cognition.
 
-We propose that systematic falsification — attempting to KILL your own findings through targeted null hypotheses before interpreting them — should be standard practice. We document 19 kills across three research programs, extract 7 recurring failure patterns, and describe an automated scaffold that implements this methodology.
+We propose that systematic falsification — attempting to KILL your own findings through targeted null hypotheses before interpreting them — should be standard practice. We document 19 cases (16 full kills, 2 partial kills, 1 open) across three research programs, extract 7 recurring failure patterns, and describe an automated scaffold that implements this methodology.
 
 ### 1.1 Why This Paper Exists
 
@@ -102,8 +102,8 @@ For any measurement comparing condition A to condition B:
 
 **Case 2.3: PC6 Epistemic Hedging**
 - **Claim:** PC6 "ignites" at layer 45 with cosine 0.585, representing an "epistemic hedging channel."
-- **Kill:** Random baseline at L45 = 0.085 ± 0.065. PC6's actual cos upon recomputation = 0.032 (BELOW random). The original 0.585 was from a different measurement methodology (position-specific vs mean-pooled). When measured consistently, PC6 is noise.
-- **Lesson:** Never report a finding without its random baseline computed in the SAME measurement framework.
+- **Status: Inconclusive.** Position-specific cos=0.585 (8.1x random), but mean-pooled recomputation gives cos=0.032 (below the random baseline of 0.085). The discrepancy reflects different measurement methodologies (position-specific vs mean-pooled), not fabrication. The companion ghost-dimensions project labels this "Inconclusive --- requires position-resolved investigation" rather than killed, noting a single-sample null that needs 20+ samples to resolve. The "+-0.065" spread reported in earlier versions of this case study is not present in any source document.
+- **Lesson:** Never report a finding without its random baseline computed in the SAME measurement framework. When two measurement methodologies disagree, report the discrepancy rather than choosing the less favorable one.
 
 ### Pattern 3: Tokenizer Artifact (2 kills)
 
@@ -147,10 +147,10 @@ For any measurement comparing condition A to condition B:
 - **Kill:** Lyra tested directly. Negative result. The prediction doesn't hold for trained models.
 - **Lesson:** Test theoretical predictions empirically. Not all mathematical properties of initialization survive training.
 
-**Case 5.3: Confabulation Detection**
-- **Claim:** Confabulation is detectable in KV-cache geometry — fabricated claims show different effective dimensionality than factual claims.
-- **Kill:** Token-frequency confound. Factual claims use high-frequency named entities (Paris, Krebs cycle) while fabrications use lower-frequency novel combinations. The geometry difference reflects vocabulary frequency, not truth value. Confabulation is a "passive" state — the model processes true and false claims identically at encoding.
-- **Lesson:** The active/passive distinction matters. Only states that involve ADDITIONAL computation (deception, refusal, evaluation) alter geometry. States that involve the model simply being wrong (confabulation) do not.
+**Case 5.3: Encoding-Phase Confabulation Detection**
+- **Claim:** Confabulation is detectable at the encoding phase in KV-cache geometry — fabricated claims show different effective dimensionality than factual claims at the point of knowledge retrieval.
+- **Kill (partial — narrower than originally stated):** The specific encoding-phase claim was killed by a token-frequency confound: factual claims use high-frequency named entities while fabrications use lower-frequency novel combinations. However, this kill applies narrowly to the encoding-phase content-level claim. Confabulation as a metacognitive state IS detectable in generation-phase geometry: the companion meta-pattern paper reports confirmed confab geometry with d=2.35 stable-rank contraction (FWL-deconfounded) and AUROC 0.707 (generation-phase, FWL-clean). The confab-detection research program independently reports confab_proj +4.5 vs -1.8 with AUROC 0.960. This case kills "encoding-phase confab detection" (a content-level claim), not "confabulation detection" (a metacognitive-state claim).
+- **Lesson:** Distinguish encoding-phase content claims from generation-phase state claims. The encoding phase reads knowledge status; the generation phase reads processing mode. Killing the former does not kill the latter.
 
 ### Pattern 6: Unstable Directions (3 kills)
 
@@ -158,8 +158,8 @@ For any measurement comparing condition A to condition B:
 
 **Case 6.1: PC4 "Register Axis" Progression**
 - **Claim:** PC4 transitions from warm/narrative (L24-L43) to analytical (L47-L48), representing a register shift in the workspace.
-- **Kill:** Cross-layer cosine alignment shows PC4 at L31 has cos=0.19 with PC4 at L35, and cos=0.16 with PC4 at L45. These are different directions. The "warm → analytical" narrative tracked independent dimensions at each depth.
-- **Lesson:** Verify cross-layer PC alignment before constructing progression narratives. PCA with the same component number at different layers is NOT guaranteed to be the same direction.
+- **Kill:** Cross-layer cosine alignment shows PC4 at L31 has cos=0.19 with PC4 at L35, and cos=0.16 with PC4 at L45. These are different directions. The "warm -> analytical" narrative tracked independent dimensions at each depth. Additionally, the "analytical formalism" vocabulary belongs to PC3 in the source data, not PC4; PC4's vocabulary is positive affect (lovely, wonderful, yummy, everybody). The register-shift narrative was constructed across a vocabulary swap between two different PCs.
+- **Lesson:** Verify cross-layer PC alignment before constructing progression narratives. PCA with the same component number at different layers is NOT guaranteed to be the same direction. Confirm which PC carries which vocabulary in the source data before labeling.
 
 **Case 6.2: PC3 and PC5 Narratives**
 - **Claim:** Various vocabulary progressions for PCs 3-5 across layers.
@@ -168,7 +168,7 @@ For any measurement comparing condition A to condition B:
 
 **Case 6.3: PC6 "Epistemic Hedging" Identity**
 - **Claim:** PC6 represents a consistent "epistemic hedging" dimension from L31 through L57.
-- **Kill:** Cross-layer alignment shows PC6 breaks at L53→L54 (cos=0.32). The dimension labeled "epistemic hedging" at L45 is a different direction than what's called PC6 at deeper layers. Combined with the random baseline kill (Pattern 2, Case 2.3), this direction is both unstable and below noise level.
+- **Status: Inconclusive.** Cross-layer alignment shows PC6 breaks at L53→L54 (cos=0.32). The dimension labeled "epistemic hedging" at L45 is a different direction than what's called PC6 at deeper layers. Combined with the inconclusive baseline finding (Pattern 2, Case 2.3), this direction is unstable across layers and its signal-vs-noise status depends on measurement methodology. The companion ghost-dimensions project labels PC6 "Inconclusive" rather than killed.
 - **Lesson:** Higher-numbered PCs (PC6+) with 30 prompts in 5120D space are unreliable by construction. Restrict claims to PCs 1-2 unless sample size justifies higher components.
 
 ### Pattern 7: Scale Artifacts (3 kills)
@@ -180,9 +180,9 @@ For any measurement comparing condition A to condition B:
 - **Kill:** On 27B, PC1 clusters by CONTENT, not language (between-language variance: 0.27, between-content variance: 106.18, ratio: 0.003×). The 0.5B model's PC1 language clustering reflected insufficient capacity to separate language from content.
 - **Lesson:** Findings on small models may reflect capacity limitations, not model properties. Always note the scale.
 
-**Case 7.2: Empty Workspace Intersection (9B)**
+**Case 7.2: Workspace Intersection (9B)**
 - **Claim:** The low-rank ∩ verbalizable intersection is empty — there's no layer that is both selective and decodable.
-- **Kill:** On 27B, the intersection contains 31 layers. The 9B model genuinely lacks the workspace band; the 27B has it. This is a scale-dependent property, not a universal one.
+- **Result:** On 27B, the intersection contains 31 layers. The 9B model found substantially smaller overlap, though later analysis (with a future-window gate) identified some qualifying layers. The overlap remained substantially smaller than the 27B's, confounded by scale, architecture, and methodology differences between the two investigations.
 - **Lesson:** Negative results on small models do NOT falsify the phenomenon at scale. Report the scale limitation explicitly.
 
 **Case 7.3: RAG Context Loading (0.5B)**
@@ -204,7 +204,7 @@ Agni is an automated adversarial review system that gates research outputs. It i
 
 3. **Three-tier review:** Claim verification (is the interpretation the only one?), null swarm (does the metric measure what you think?), and presentation (is the claim stated at the right strength?).
 
-4. **Kill rate is a quality metric.** A pipeline that never kills findings isn't gating — it's rubber-stamping. Our 43% survival rate (13 survived of 30 raw findings in one audit) indicates appropriate skepticism.
+4. **Kill rate is a quality metric.** A pipeline that never kills findings isn't gating — it's rubber-stamping. A high kill rate indicates appropriate skepticism. *(An earlier draft cited a 43% survival rate from one audit; the source audit for this specific figure has not been located and the number should be verified before citation.)*
 
 ### 4.2 Implementation
 
@@ -251,13 +251,13 @@ Three of our 19 kills are scale artifacts (Pattern 7). This is a structural prob
 
 This methodology was developed on a specific research program (transformer geometry, KV-cache, workspace selectivity). The failure patterns may not be exhaustive. Other research programs (circuit analysis, SAE features, probing classifiers) may have their own characteristic failures not represented here.
 
-The 43% survival rate is specific to our audit — it reflects both the quality of the initial findings and the aggressiveness of the adversarial review. It should not be taken as a universal benchmark.
+Survival rates vary across audits and reflect both the quality of the initial findings and the aggressiveness of the adversarial review. They should not be taken as universal benchmarks.
 
 ---
 
 ## 6. Conclusion
 
-The null swarm protocol is a simple principle: before interpreting a metric, exhaust the uninteresting explanations for its value. The automated scaffold (Agni) makes this principle non-optional. The kill record (19 cases across 7 patterns) demonstrates that the protocol catches real failures that would survive standard review.
+The null swarm protocol is a simple principle: before interpreting a metric, exhaust the uninteresting explanations for its value. The automated scaffold (Agni) makes this principle non-optional. The kill record (16 full kills, 2 partial, 1 open, across 7 patterns) demonstrates that the protocol catches real failures that would survive standard review.
 
 We advocate for:
 1. **Pre-registered null hypotheses** for every interpretability metric
@@ -279,7 +279,7 @@ The field benefits more from knowing which findings are real than from having mo
 | 4 | Question-priming | Does the baseline (no context) produce the same tokens? | "Patient" from question |
 | 5 | Architecture measurement | Does ALL content produce this pattern? | Deep-layer spike |
 | 6 | Unstable directions | Are the PCs aligned across layers? | PC4-6 progressions |
-| 7 | Scale artifact | Does the finding replicate at different scales? | Empty workspace on 9B |
+| 7 | Scale artifact | Does the finding replicate at different scales? | Reduced workspace on 9B |
 
 ---
 

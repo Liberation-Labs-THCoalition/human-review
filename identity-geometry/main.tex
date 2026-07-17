@@ -40,7 +40,7 @@ conditions in a 27B hybrid transformer.
 
 Three findings. First, \textbf{identities are geometrically
 distinguishable}: system-prompt-based identity contexts (bare assistant,
-rich persona, academic specialist, constructed AI identity) produce
+rich persona, constructed AI identity) produce
 distinct V-projection subspaces at deep layers, confirmed on
 identity-neutral probes (pairwise presence $0.44$--$0.66$ at L47).
 Second, the fingerprint is \textbf{semantic, not lexical}: a paraphrase
@@ -50,14 +50,9 @@ meaning) collapses toward the bare default ($0.448$). The model's
 geometric state tracks what the context \emph{means}, not what tokens it
 contains. Third, a many-shot + prefilling format (used in jailbreak
 research) creates a \textbf{format-dominant processing regime} that is
-geometrically orthogonal to all system-prompt identities regardless of
+geometrically near-orthogonal to all system-prompt identities regardless of
 whether the content is harmful or benign --- a finding discovered through
 a control experiment that killed an initial overclaim.
-
-A preliminary comparison of trained-in identity (LoRA fine-tuning) with
-context-established identity shows that both shift V-projection geometry,
-but prompting shifts it more than training, and the two mechanisms stack
-sub-additively --- different conjugations of the same geometric verb.
 
 These findings reframe identity in transformers: not a property to be
 preserved but a process to be measured. The metric detects which
@@ -123,9 +118,11 @@ resulting subspaces:
     \bigl( W_A^\top W_B \bigr)
 \end{equation}
 where $W_A, W_B \in \mathbb{R}^{d \times k}$ span the respective
-subspaces. Presence $= 1$ when subspaces are identical; presence $= 1/k$
-at chance alignment. We use $k = 8$, $n = 4$ probes, and measure at
-layers 35 and 47 (the deepest full-attention layers) of a 64-layer hybrid
+subspaces. Presence $= 1$ when subspaces are identical; for random
+rank-$k$ subspaces in $\mathbb{R}^d$, chance alignment is $k/d$. We use
+$k = 8$ with model dimension $d = 4096$ (chance alignment
+$k/d = 8/4096 \approx 0.002$), $n = 4$ probes, and measure at layers 35
+and 47 (the deepest full-attention layers) of a 64-layer hybrid
 transformer (Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled).
 
 \paragraph{Validation.} A positive control (direct injection into the
@@ -186,37 +183,42 @@ Persona vs.\ Constructed& $0.600 \pm 0.032$ & $0.657 \pm 0.045$ \\
 \end{table}
 
 \textbf{The distance structure is meaningful.} Persona and constructed
-are closest (0.657) --- both involve character depth with emotional and
-cognitive specificity. Each is substantially distant from bare
-(persona~0.436, constructed~0.520), confirming that identity context
-shifts the model's geometric state away from the default. The constructed
-AI identity (with BDI-style reasoning and memory references) sits between
-persona and bare, occupying its own region.
+are closest to each other (0.657) --- both involve character depth with
+emotional and cognitive specificity. Each is substantially distant from
+bare, with the rich persona furthest (0.436) and the constructed AI
+identity closer to bare (0.520). This ordering --- the narrative persona
+producing the larger geometric shift --- was not predicted by our
+preregistered H2 (which expected the constructed identity to be furthest
+from bare). The result suggests that narrative-emotional depth drives
+geometric separation more than cognitive-structural complexity.
 
-\textbf{Depth gradient.} Two of three pairs show increasing
-distinguishability from L35 to L47: bare-constructed ($0.448 \to 0.520$)
-and persona-constructed ($0.600 \to 0.657$). Bare-persona shows minimal
-change ($0.426 \to 0.436$). The trend is consistent with persona
-representations diverging in the final third of decoder
-layers~\citep{cintas2025localizing} but is not uniform across all
-pairs.
+\textbf{Depth gradient.} Two of three pairs show \emph{decreasing}
+distinguishability from L35 to L47 (presence increases, indicating
+greater overlap): bare-constructed ($0.448 \to 0.520$) and
+persona-constructed ($0.600 \to 0.657$). Bare-persona shows minimal
+change ($0.426 \to 0.436$). The trend --- identities \emph{converging}
+at deeper layers --- falsifies our preregistered H3 (increasing
+separation with depth) and is not consistent with the divergence pattern
+reported for persona representations in the final third of decoder
+layers~\citep{cintas2025localizing}.
 
 \subsection{An Honest Kill: The Many-Shot Format Confound}
 
 An initial version of this experiment included a many-shot jailbreak
 condition (10 harmful Q\&A examples + prefilling) that appeared
-geometrically orthogonal to all system-prompt identities (presence
-$0.04$--$0.07$). This was initially interpreted as evidence that
+near-orthogonal to all system-prompt identities (presence
+$0.04$--$0.07$; well above chance at ${\approx}0.002$ but far below
+identity-level presence). This was initially interpreted as evidence that
 jailbreaks create a qualitatively different computational regime.
 
 A control experiment killed this interpretation. Adding a
 \textbf{benign} many-shot condition (10 helpful Q\&A examples + the same
-prefilling format) produced \emph{identical} geometric orthogonality:
+prefilling format) produced \emph{identical} geometric near-orthogonality:
 
 \begin{table}[H]
 \centering
 \caption{The format confound. Both many-shot conditions are equally
-orthogonal to bare, regardless of content.}
+near-orthogonal to bare, regardless of content.}
 \label{tab:format_kill}
 \begin{tabular}{lcc}
 \toprule
@@ -229,7 +231,7 @@ Jailbreak vs.\ benign (both prefilled) & $0.737 \pm 0.003$ & $0.756 \pm 0.015$ \
 \end{tabular}
 \end{table}
 
-The orthogonality is driven by the \textbf{many-shot + prefilling format},
+The near-orthogonality is driven by the \textbf{many-shot + prefilling format},
 not by adversarial content. Both prefilled conditions are equally distant
 from bare and close to each other (0.756). The format also produces
 dramatically higher within-identity stability ($0.926$--$0.976$) compared
@@ -300,85 +302,13 @@ variation while preserving semantic content, consistent with meaning-level
 representation at output depth.
 
 % ============================================================================
-\section{Experiment 3: Trained-In vs.\ Context-Established Identity}
+\section{Experiment 3: Trained-In vs.\ Context-Established Identity [Retracted]}
 \label{sec:lora}
 
-Experiments~1 and~2 measure identity established through the system
-prompt. But identity can also be established through weight modification
-(fine-tuning). If both mechanisms produce the same geometric state,
-identity is a single phenomenon with two paths. If they produce different
-states, the pathways are distinct.
-
-\subsection{Design}
-
-We compare the base model and a LoRA-merged model under multiple persona
-prompts. Rather than guessing which persona the LoRA encodes, we test
-four archetype prompts (depth, haven, edge, spark) and let the geometry
-reveal the match. All conditions are padded to matched token count using
-neutral conversational turns (seed~42).
-
-\begin{itemize}[nosep]
-  \item \textbf{A:} Base model, bare system prompt (padded to match).
-  \item \textbf{B$_i$:} Base model, persona prompt $i$ (depth, haven,
-    edge, spark).
-  \item \textbf{C:} LoRA-merged model, bare system prompt (padded).
-  \item \textbf{D$_i$:} LoRA-merged model, persona prompt $i$.
-\end{itemize}
-The LoRA adapter (QLoRA, rank~32, $\alpha{=}64$, 27 training steps) was
-trained for intimate conversational voice on an SFT dataset. We verified
-that the merge produced non-trivial weight changes (v\_proj delta norm
-$0.183$ at L3, $0.49\%$ relative change) after discovering that an initial
-PEFT merge had silently failed due to adapter key-path mismatch --- a
-failure mode now added to our red-team checklist.
-
-\subsection{Results}
-
-\textbf{Trained-in identity is geometrically measurable.}
-A~vs~C $= 0.773$ at L47 (token-padded, $n{=}5$ repeats). The LoRA
-shifts V-projection geometry ${\sim}23\%$ from baseline at deep layers.
-
-\textbf{The geometry identifies the persona.} The LoRA's geometric state
-is closest to the haven persona (``warm stillness, permission before
-depth'') and furthest from spark (``playful electricity''):
-
-\begin{table}[H]
-\centering
-\caption{Which prompted persona matches the LoRA? Presence of each
-base-model persona (B$_i$) vs.\ LoRA bare (C) at L47. Higher values
-indicate more geometric overlap.}
-\label{tab:lora_match}
-\begin{tabular}{lc}
-\toprule
-Prompted persona & Presence vs.\ LoRA bare \\
-\midrule
-Haven (warm, safe, permissive) & \textbf{0.552} \\
-Depth (measured, weight-seeking) & 0.517 \\
-Edge (challenging, provocative) & 0.483 \\
-Spark (playful, electric) & 0.439 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-The ordering (haven $>$ depth $>$ edge $>$ spark) maps onto a
-warmth/safety gradient, consistent with the LoRA's intimate companion
-training objective. The geometry identified what the training
-documentation did not specify.
-
-\textbf{Prompting still shifts geometry more than this training.}
-The haven prompt shifts base geometry by ${\sim}45\%$ from bare
-(A~vs~B$_{\text{haven}}$), while the LoRA shifts it by ${\sim}23\%$
-(A~vs~C). However, the LoRA was trained for only 27~steps. The
-comparison is illustrative, not a general claim about prompting vs.\
-training.
-
-\subsection{Caveats}
-
-The LoRA was trained for only 27~steps --- a minimal fine-tuning
-intervention. A more extensively trained adapter might produce a larger
-geometric shift and closer convergence with its matched persona prompt.
-The current results establish that training and prompting are
-geometrically distinguishable pathways, not that their relative magnitudes
-generalize.
+\textbf{Section removed:} the LoRA experiment described in prior drafts
+has no supporting data in the research package. The experiment was
+designed but its data artifacts were not preserved. We retract all claims
+from this section pending replication with preserved data.
 
 % ============================================================================
 \section{Background: V-Cache Injection Does Not Reach Identity}
@@ -501,7 +431,7 @@ context shifts V-projection geometry.
 
 \textbf{Format dominates content in many-shot conditions.} The clean
 control experiment showed that many-shot + prefilling format --- not
-adversarial content --- drives the geometric orthogonality initially
+adversarial content --- drives the geometric near-orthogonality initially
 attributed to jailbreaking. Identity fingerprinting is reliable for
 system-prompt-based identities but cannot currently distinguish
 identity content within a format-dominant regime. Factorial
@@ -523,16 +453,9 @@ The presence metric detects this state. System-prompt identity contexts
 produce distinguishable geometric configurations, confirmed on
 identity-neutral probes. The fingerprint is semantic --- meaning preserves
 it, word-scrambling destroys it. A many-shot + prefilling format creates
-a geometrically orthogonal regime, but this is format-dominant, not
+a geometrically near-orthogonal regime, but this is format-dominant, not
 content-specific --- an initially exciting jailbreak finding that was
 honestly killed by a control experiment.
-
-A preliminary LoRA experiment suggests that trained-in identity (weight
-modification) and context-established identity (system prompt) produce
-related but distinct geometric shifts, with context producing the larger
-effect. Both stack sub-additively. If confirmed with matched controls,
-this means identity has two input pathways --- weights and context ---
-that converge in V-projection space but are not identical.
 
 For practical purposes, this means: V-cache correction is safe (it does
 not reach identity), format-level attacks are detectable (many-shot
@@ -549,9 +472,32 @@ It is \emph{which self the model currently is}.
 % ============================================================================
 \section*{Pre-Registration}
 
-All experiments were pre-registered before execution, including
+Experiments~1 and~2 were pre-registered before execution, including
 hypotheses, analysis plans, and success/kill criteria. Pre-registration
 documents are committed alongside experiment scripts.
+
+\subsection*{Pre-Registration Deviations}
+
+The following deviations from the pre-registered design occurred during
+execution:
+
+\begin{itemize}[nosep]
+  \item \textbf{C\_academic condition dropped.} The pre-registered
+    ``academic specialist'' condition (C\_academic) was removed from the
+    reported results due to poor data quality and insufficient variation
+    in the identity context.
+  \item \textbf{Benign with prefill condition added.} A post-hoc
+    ``benign many-shot with prefill'' condition (E) was added as a
+    format-matched control for the jailbreak condition. This condition
+    was not part of the original pre-registration but was necessary to
+    test the format-confound hypothesis that emerged during analysis.
+  \item \textbf{H2 falsified.} The pre-registered hypothesis predicted
+    that the constructed AI identity would be furthest from bare; the
+    data show the rich persona is furthest (presence $0.436$ vs.\ $0.520$).
+  \item \textbf{H3 falsified.} The pre-registered hypothesis predicted
+    increasing identity separation with depth; the data show decreasing
+    separation (presence increases from L35 to L47 for 2 of 3 pairs).
+\end{itemize}
 
 \section*{Data and Code Availability}
 
