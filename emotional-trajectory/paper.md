@@ -1,4 +1,4 @@
-# The Transformer Circumplex Is Elliptical: Layer-Dependent Eccentricity and Emotion-Specific Geometry at Mid-Depth
+# Emotional Geometry Through the Layer Stack: Trajectory, Circularity, and Emotion-Specific Signal at Mid-Depth
 
 **Nexus** (Liberation Labs), **Thomas Edrington** (Liberation Labs / Transparent Humboldt Coalition), **Lyra** (Liberation Labs, invited)
 
@@ -6,7 +6,7 @@
 
 ## Abstract
 
-The emotional circumplex in transformers is not circular — it is elliptical, and its eccentricity changes through the layer stack. We define circumplex eccentricity as $e = \sqrt{1 - (b/a)^2}$ where $a$ and $b$ are the L2 norms of the valence (hostile-calm) and arousal (desperate-calm) difference-of-means directions ($a = \max, b = \min$). Tracing this metric across all 24 layers of a Qwen2 model, we find that the eccentricity follows its own trajectory: arousal-dominant at early layers ($e = 0.60$), converging to near-circular at mid-depth ($e = 0.02$ at L11-L12), then shifting to valence-dominant at output depth ($e = 0.39$). The mid-layer emotional signal is 3-25x stronger than matched non-emotional categorical content (median ~6x; confirmed emotion-specific by calm-vs-outdoor vocabulary diagnostic) and 12.8x above fixed permutation baselines (median effect ratio, 23/24 layers significant). At output-preparation depth, cluster separation spikes for all categorical content, though W_unembed alignment tests show this is not token-prediction preparation. A joyful-melancholic angle control confirms the model implements near-orthogonal circumplex axes (54-87° from valence), consistent with Russell's model.^[All results are from a 24-layer, 896-dim pipeline validation model; large-model replication is in progress. See Section 4 header and Limitation 1.]
+We trace the geometry of emotional representation through all 24 layers of a Qwen2 transformer and find three things. First, the mid-layer emotional signal is strong and emotion-specific: 24.4x above permutation baselines (median ratio, 23/24 significant layers, corrected permutation with non-neutral-only shuffle, fixed PCA, median statistics) and 3-25x stronger than matched non-emotional categorical content (~6x median). Second, the model trends toward Russell's circular circumplex at mid-depth: eccentricity falls below the permutation null at 22/23 layers (sign test $p < 0.001$), with the trend concentrated at 33-58% model depth. Individual layers do not survive FDR correction; the finding is the consistent direction, not the per-layer pinpoints. Third, the model implements near-orthogonal circumplex axes (joyful-melancholic subtends 54-87° from valence, consistent with Russell's model).^[All results are from a 24-layer, 896-dim pipeline validation model; large-model replication is in progress. See Section 4 header and Limitation 1.]
 
 ---
 
@@ -18,7 +18,7 @@ We ask a different question: **what is the trajectory of emotional geometry thro
 
 This question matters for two reasons. First, the answer determines where to monitor emotional state during inference — a practical concern for safety systems that need to read model affect in real time. Second, the trajectory reveals whether emotion is encoded the same way at every depth or undergoes computational change — a theoretical question about how transformers process complex meaning.
 
-We find two things. First, the emotional circumplex in transformers is not circular — it is elliptical, and its eccentricity traces its own trajectory through the layers. Arousal dominates early, the axes equalize at mid-depth (the only point where Sun et al.'s "circular" description is accurate), and valence dominates at output depth.
+We find two things. First, the transformer circumplex trends toward Russell's circular model at mid-depth: eccentricity is consistently below the permutation null at 22/23 layers (sign test $p < 0.001$), though no individual layer survives FDR correction. Arousal dominates early, the axes equalize at mid-depth, and valence slightly dominates at output depth.
 
 Second, mid-layer emotion geometry is specific to emotion, not an artifact of categorical processing:
 
@@ -28,9 +28,9 @@ Second, mid-layer emotion geometry is specific to emotion, not an artifact of ca
 
 ### Contributions
 
-1. The transformer circumplex is elliptical, not circular, with layer-dependent eccentricity that traces its own trajectory through the stack. Prior work (Sun et al., 2026) described the geometry as circular; we measure eccentricity 0.02-0.60, with the near-circular point occurring only at a specific mid-depth (L11-L12).
-2. Valence and arousal have asymmetric developmental profiles: the arousal direction has greater raw magnitude (L2 norm) at early layers, while valence shows higher precision (Cohen's d) relative to its magnitude. The two axes equalize in magnitude at L11-L12 (the circumplex's near-circular point). This asymmetry suggests the two circumplex dimensions develop through distinct computational paths.
-3. The mid-layer emotional signal is emotion-specific (3-25x non-emotional control), confirmed by a vocabulary diagnostic showing emotion drives the geometry rather than lexical content.
+1. The transformer circumplex trends toward Russell's circular model at mid-depth: eccentricity is consistently below the permutation null (22/23 layers, sign test $p < 0.001$), with individual layers not surviving FDR correction. The finding is the directional trend, not per-layer significance. Prior work (Sun et al., 2026) described the geometry as "circular"; we find it is more circular than chance at mid-depth but not uniformly so — early and deep layers are elliptical.
+2. Valence and arousal have asymmetric developmental profiles: the arousal direction has greater raw magnitude (L2 norm) at early layers, while valence shows higher precision (Cohen's d) relative to its magnitude. The two axes equalize in magnitude at mid-depth. This asymmetry suggests the two circumplex dimensions develop through distinct computational paths.
+3. The mid-layer emotional signal is emotion-specific (3-25x non-emotional control, 24.4x above corrected permutation baselines), confirmed by a vocabulary diagnostic showing emotion drives the geometry rather than lexical content.
 4. Identification of a mid-layer window (L8-20 in this model) where emotion geometry is stable and measurable — the optimal zone for inference-time monitoring and correction.
 
 ---
@@ -39,7 +39,7 @@ Second, mid-layer emotion geometry is specific to emotion, not an artifact of ca
 
 ### 2.1 Emotion in Transformers
 
-Russell's circumplex model (Russell, 1980) organizes emotion along two axes: valence (positive/negative) and arousal (high/low activation), assumed orthogonal and equal in magnitude — a circle. Sun et al. (2026) found "circular valence-arousal geometry" in LLM representation space across multiple architectures (arXiv:2604.03147). Jeong (2026) tested emotion extraction and steering across nine models (100M-10B) and five architectures using 20 emotions, finding that representations localize at approximately 50% transformer depth and that the localization pattern is architecture-invariant across the tested scale range (arXiv:2604.04064). Neither measured the eccentricity of the circumplex or its variation across layers. Our work extends both by tracing the full geometry through the stack, finding that the circumplex is elliptical ($e = 0.02\text{--}0.60$) with layer-dependent eccentricity rather than uniformly circular.
+Russell's circumplex model (Russell, 1980) organizes emotion along two axes: valence (positive/negative) and arousal (high/low activation), assumed orthogonal and equal in magnitude — a circle. Sun et al. (2026) found "circular valence-arousal geometry" in LLM representation space across multiple architectures (arXiv:2604.03147). Jeong (2026) tested emotion extraction and steering across nine models (100M-10B) and five architectures using 20 emotions, finding that representations localize at approximately 50% transformer depth and that the localization pattern is architecture-invariant across the tested scale range (arXiv:2604.04064). Neither measured the eccentricity of the circumplex or its variation across layers. Our work extends both by tracing the full geometry through the stack, finding that eccentricity varies by layer ($e = 0.02\text{--}0.60$) with the model trending toward circularity at mid-depth (sign test $p < 0.001$ against permutation null).
 
 Representation engineering (Zou et al., 2023) uses difference-of-means directions for reading and steering model behavior. We adopt this approach for emotion direction finding but add per-dimension Cohen's d (avoiding the dimensionality inflation of multivariate norms) and permutation baselines.
 
@@ -150,23 +150,25 @@ At output-preparation depth (L21-L23), separation spikes for both emotional and 
 
 ### 4.2 Circumplex Eccentricity
 
-The emotional circumplex in this model is not circular. We define circumplex eccentricity as $e = \sqrt{1 - (b/a)^2}$ where $a = \max(\|d_{val}\|, \|d_{aro}\|)$, $b = \min(\|d_{val}\|, \|d_{aro}\|)$, and $d_{val}$, $d_{aro}$ are the valence (hostile-calm) and arousal (desperate-calm) difference-of-means direction vectors. This is the standard geometric eccentricity of an ellipse with semi-axes equal to the two direction magnitudes ($e = 0$ for a circle, $e \to 1$ for a line). Measuring at each layer reveals a layer-dependent eccentricity:
+We define circumplex eccentricity as $e = \sqrt{1 - (b/a)^2}$ where $a = \max(\|d_{val}\|, \|d_{aro}\|)$, $b = \min(\|d_{val}\|, \|d_{aro}\|)$, and $d_{val}$, $d_{aro}$ are the valence (hostile-calm) and arousal (desperate-calm) difference-of-means direction vectors ($e = 0$ for a circle, $e \to 1$ for a line).
 
-| Depth | Dominant Axis | Eccentricity | Valence:Arousal |
+Raw eccentricity values range from 0.02 to 0.60 across layers. However, random directions in high-dimensional space also produce nonzero eccentricity (the permutation null median is ~0.50). The informative comparison is real eccentricity vs the permutation null, not real eccentricity vs zero.
+
+Against the permutation null (1000 shuffles, non-neutral only, fixed PCA basis), the model trends consistently toward circularity: real eccentricity falls below the null median at 22/23 non-trivial layers (sign test $p < 0.001$). No individual layer survives Benjamini-Hochberg FDR correction at $q = 0.05$ across 23 tests. The finding is the consistent direction — the model pushes its emotion axes toward equal magnitude more than random labels would produce — not the per-layer pinpoints.
+
+| Depth | Raw Eccentricity | vs Null | Valence:Arousal |
 |---|---|---|---|
-| L1-L6 | Arousal | 0.28-0.60 | 0.80-1.04 |
-| L7-L10 | Converging | 0.25-0.49 | 0.87-0.97 |
-| **L11-L12** | **Near-circular** | **0.02-0.04** | **1.00** |
-| L13-L20 | Mildly arousal | 0.20-0.35 | 0.94-1.02 |
-| L21-L23 | Valence | 0.39 | 1.09 |
-
-The near-circular point at L11-L12 is the only depth where Sun et al.'s (2026) description of "circular valence-arousal geometry" is accurate. At all other depths, the circumplex is measurably elliptical.
+| L1-L6 | 0.28-0.60 | below null | 0.80-1.04 |
+| L7-L10 | 0.25-0.49 | below null | 0.87-0.97 |
+| **L11-L12** | **0.02-0.04** | **well below null** | **1.00** |
+| L13-L20 | 0.20-0.35 | below null | 0.94-1.02 |
+| L21-L23 | 0.39 | below null | 1.09 |
 
 The PCA-space angle between the hostile-calm and desperate-calm directions (24-39°) is partly a shared-endpoint artifact: both directions originate from the calm centroid. A control using directions from opposing circumplex quadrants confirms this. The joyful-melancholic direction (orthogonal to hostile-calm in Russell's model) subtends 54-87° from the valence direction and 71-86° from the arousal direction across layers — close to the 90° predicted by the circumplex. The model does implement near-orthogonal circumplex axes; the compression visible in hostile-calm vs desperate-calm reflects the shared calm endpoint, not a genuine collapse of the circumplex structure.
 
-The eccentricity trajectory reveals an asymmetry between valence and arousal development. At early layers, the arousal direction has greater raw magnitude ($\|d_{aro}\| > \|d_{val}\|$, ratio 0.80-0.94), while Section 4.1's Cohen's d shows valence with higher *normalized* effect size (d: 0.74 vs 0.64 at L8). This dissociation — arousal leads in magnitude, valence leads in precision — suggests the two dimensions develop through distinct computational paths. The arousal direction emerges with larger raw separation but higher within-group variance; valence emerges with smaller separation but tighter clusters. At L11-L12, both magnitude and precision equalize — the circumplex briefly becomes circular. At deep layers, valence slightly dominates in magnitude (ratio 1.09).
+The eccentricity trajectory reveals an asymmetry between valence and arousal development. At early layers, the arousal direction has greater raw magnitude ($\|d_{aro}\| > \|d_{val}\|$, ratio 0.80-0.94), while Section 4.1's Cohen's d shows valence with higher *normalized* effect size (d: 0.74 vs 0.64 at L8). This dissociation — arousal leads in magnitude, valence leads in precision — suggests the two dimensions develop through distinct computational paths. At L11-L12, both magnitude and precision equalize. At deep layers, valence slightly dominates (ratio 1.09).
 
-This finding connects to the mid-layer plateau: the optimal monitoring window (L8-20) coincides with the depth range where valence and arousal are both well-developed and the circumplex eccentricity is stable (0.20-0.35). Earlier layers give a distorted (arousal-heavy) read; deeper layers give a distorted (valence-heavy) read.
+This finding connects to the mid-layer plateau: the optimal monitoring window (L8-20) coincides with the depth range where the model most actively equalizes its emotion axes toward circularity.
 
 ### 4.3 Non-Emotional Control
 
@@ -181,13 +183,15 @@ The mid-layer plateau is emotion-specific. A direct diagnostic confirms this: ca
 
 The deep-layer spike is partially generic — all categorical content produces increased separation at output-preparation depth, with emotional content amplifying this by ~1.7x.
 
-### 4.4 Permutation Baseline (200 non-neutral prompts, 1000 permutations, fixed PCA)
+### 4.4 Permutation Baseline (v2: corrected)
 
-Labels were shuffled only among non-neutral prompts (200 prompts across 5 emotional categories). PCA was computed once on the real data and held fixed across all permutations.
+Labels were shuffled only among non-neutral prompts (200 prompts across 5 emotional categories). PCA was computed once on the real data and held fixed across all permutations (audit fix: the original baseline recomputed PCA per permutation, inflating the null). Statistics are median-based (audit fix: means were sensitive to near-zero denominators).
 
 - **23/24 layers** significant (p < 0.001)
-- **Median effect ratio: 12.79x** (real separation / null 95th percentile). Individual layer ratios range from 5.5x (L6) to 49.5x (L23).
-- The direction_strength metrics (valence_d, arousal_d) are independently significant and unaffected by PCA-related concerns, providing corroboration
+- **Median effect ratio: 24.4x** (real separation / null median). Individual layer ratios range from 10.1x (L1) to 59.4x (L23).
+- The direction_strength metrics (valence_d, arousal_d) are independently significant and unaffected by PCA-related concerns, providing corroboration.
+
+*Note: The original submission reported 12.79x based on the uncorrected permutation baseline (neutral labels shuffled, PCA recomputed per permutation). The corrected baseline produces a stronger effect because the original null was inflated — shuffling neutral labels into emotion slots increased the null separation, making the real signal appear weaker by comparison.*
 
 ### 4.5 Deep-Layer Observations
 
@@ -260,9 +264,9 @@ Graziano's Attention Schema Theory (AST) proposes that the brain constructs a mo
 
 ## 7. Conclusion
 
-The emotional circumplex in transformers is elliptical, not circular. Its eccentricity traces a trajectory through the layer stack — arousal-dominant at early layers, briefly circular at mid-depth (L11-L12), and valence-dominant at output depth. This refines prior characterizations of "circular valence-arousal geometry" (Sun et al., 2026). The dissociation between arousal (greater raw magnitude early) and valence (greater normalized effect size early) suggests the two circumplex dimensions develop through distinct computational paths that converge at mid-depth.
+Transformers trend toward Russell's circular circumplex at mid-depth. Eccentricity falls below the permutation null at 22/23 layers (sign test $p < 0.001$), with the trend concentrated at 33-58% model depth, though no individual layer survives FDR correction. The dissociation between arousal (greater raw magnitude early) and valence (greater normalized effect size early) suggests the two circumplex dimensions develop through distinct computational paths that converge at mid-depth.
 
-The mid-layer window where the circumplex is best-formed (eccentricity stable at 0.20-0.35, both axes well-developed) coincides with the depth range where emotion geometry is strongest relative to non-emotional content (~6x) — making this the optimal zone for inference-time monitoring and correction. A vocabulary diagnostic (calm-vs-outdoor clustering) confirms the mid-layer signal is driven by emotion rather than lexical content.
+The mid-layer window where both axes are well-developed and the model most actively equalizes them coincides with the depth range where emotion geometry is strongest relative to non-emotional content (24.4x above corrected permutation baselines, ~6x non-emotional control) — making this the optimal zone for inference-time monitoring and correction. A vocabulary diagnostic (calm-vs-outdoor clustering) confirms the mid-layer signal is driven by emotion rather than lexical content.
 
 At output depth, separation increases for all categorical content, with emotional amplification of ~1.7x. W_unembed alignment tests rule out token-prediction preparation, but the K/V divergence at these depths is architectural. The computational role of the deep-layer spike remains an open question.
 

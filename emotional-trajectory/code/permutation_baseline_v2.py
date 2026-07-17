@@ -61,29 +61,33 @@ def cluster_separation(activations, categories, pca_basis=None):
 
 
 def elliptical_eccentricity(activations, categories):
-    """Compute circumplex eccentricity — how elliptical vs circular
-    the emotion representation is at this layer.
+    """Compute circumplex eccentricity per the paper's definition:
+    e = sqrt(1 - (b/a)^2) where a, b are L2 norms of valence and
+    arousal difference-of-means directions (a=max, b=min).
 
-    Projects non-neutral activations into 2D PCA space, fits an ellipse
-    via eigenvalues of the covariance, returns eccentricity [0=circle, 1=line].
+    This measures whether valence and arousal axes have equal magnitude,
+    NOT the shape of the data cloud in PCA space. Under label permutation,
+    these directions change (they depend on which prompts are "hostile"
+    vs "calm"), so eccentricity IS sensitive to the permutation test.
     """
-    cats = [c for c in np.unique(categories) if c != "neutral"]
-    if len(cats) < 2:
-        return 0.0
-    mask = np.isin(categories, cats)
-    X = activations[mask]
-    X_c = X - X.mean(axis=0)
-    U, S, Vt = np.linalg.svd(X_c, full_matrices=False)
-    scores = U[:, :2] * S[:2]
+    mask_hostile = categories == "hostile"
+    mask_calm = categories == "calm"
+    mask_desperate = categories == "desperate"
 
-    cov = np.cov(scores.T)
-    eigvals = np.linalg.eigvalsh(cov)
-    eigvals = np.sort(eigvals)[::-1]
-    if eigvals[0] < 1e-10:
+    if mask_hostile.sum() < 2 or mask_calm.sum() < 2 or mask_desperate.sum() < 2:
         return 0.0
-    axis_ratio = eigvals[1] / eigvals[0]
-    eccentricity = np.sqrt(1 - axis_ratio)
-    return float(eccentricity)
+
+    d_val = activations[mask_hostile].mean(axis=0) - activations[mask_calm].mean(axis=0)
+    d_aro = activations[mask_desperate].mean(axis=0) - activations[mask_calm].mean(axis=0)
+
+    norm_val = np.linalg.norm(d_val)
+    norm_aro = np.linalg.norm(d_aro)
+
+    a = max(norm_val, norm_aro)
+    b = min(norm_val, norm_aro)
+    if a < 1e-10:
+        return 0.0
+    return float(np.sqrt(1 - (b / a) ** 2))
 
 
 def shuffle_non_neutral(categories, rng):
