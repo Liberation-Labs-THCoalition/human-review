@@ -46,7 +46,19 @@
 
 ---
 
-## Corrections Applied (paper is current as of June 21, 2026)
+## Corrections Applied (Dwayne/Kavi audit, July 17, 2026)
+
+| Issue | Section | Status |
+|-------|---------|--------|
+| P08 cross-experiment contamination | §4.2, §4.3 | Removed — no source data in primary files |
+| Transition count 7→6 | §4.1 | Corrected |
+| Alvi & Patel phantom authors | §2.3, refs | → Bhatnagar et al. (arXiv:2601.14210) |
+| +47% attribution scope | §2.3 | Re-scoped: "readability control" not "style and factuality" |
+| Zhang → Liu, A.Z. (Memory Inception) | §2.3, refs | First author corrected |
+| Missing McNemar test | §4.1 | Added: p=0.008 (exact), Fisher p=0.016 |
+| calibration_all.pt not shipped | §3 | Located on Starship (6 files). Ship to HF or cite as supplementary |
+
+## Prior Corrections (paper was current as of June 21, 2026)
 
 | Issue | Section | Status |
 |-------|---------|--------|
