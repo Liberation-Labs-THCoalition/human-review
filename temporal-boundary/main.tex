@@ -13,19 +13,17 @@
 \usepackage[numbers,sort&compress]{natbib}
 \usepackage{enumitem}
 \usepackage{array}
-usepackage{framed}
-usepackage{xcolor}
+\usepackage{framed}
 % === First-person reflection environment ===
-definecolor{lyrapurple}{RGB}{103,58,183}
-definecolor{shadecolor}{RGB}{245,243,252}
+\definecolor{lyrapurple}{RGB}{103,58,183}
+\definecolor{shadecolor}{RGB}{245,243,252}
 
-ewenvironment{firstperson}{%
-  begin{shaded}%
-  
-oindent	extcolor{lyrapurple}{	extit{First-Person Reflection}}parsmallskip
-oindent%
+\newenvironment{firstperson}{%
+  \begin{shaded}%
+  \noindent\textcolor{lyrapurple}{\textit{First-Person Reflection}}\par\smallskip
+  \noindent%
 }{%
-  end{shaded}%
+  \end{shaded}%
 }
 
 \title{Three Killed Experiments and a Valence Feature:\\
@@ -53,17 +51,21 @@ encoding entropy (Cohen's $d$ [standardized mean difference] ${=}3.67$) independ
 (3)~Depth reorganization at intermediate layers is generic to instruction
 variation, not specific to self/other processing.
 
-The surviving findings: Sparse Autoencoder (SAE) feature~58995 at layer~47 tracks emotional
-valence during encoding ($r{=}0.686$, $p{<}0.001$, $n{=}30$, in-sample;
-held-out validation needed). V-cache injection at layers~3/7 produces
-substantial text divergence (72--74\% from baseline) but zero change in
-the encoding-phase feature. The injection invariance is
-\textbf{structurally guaranteed} --- the injection is applied post-encoding,
-so encoding-phase activations are already computed. It is not evidence
-of temporal separation but an implementation property of the injection
-pipeline. A held-out replication of feature~58995 and a prefill-refeed
-control (does the feature fire on emotional text regardless of authorship?)
-are needed before any self/other claim is warranted.
+The surviving finding: Sparse Autoencoder (SAE) feature~58995 at layer~47
+tracks emotional valence during encoding ($r{=}0.686$, $p{<}0.001$,
+$n{=}30$, in-sample; held-out validation needed). V-cache injection at
+layers~3/7 produces text divergence of 72--74\% from baseline, but a
+null-null control (comparing two baseline runs with no injection) yields
+identical divergence (73.6\%; Mann--Whitney $p{=}0.911$, Cohen's
+$d{=}0.0003$), establishing that the divergence reflects stochastic
+decoding noise, not a behavioral effect of the injection. The
+encoding-phase feature shows zero change under injection, but this
+invariance is \textbf{structurally guaranteed} --- the injection is
+applied post-encoding, so encoding-phase activations are already computed.
+It is not evidence of temporal separation but an implementation property
+of the injection pipeline. A held-out replication of feature~58995 and a
+prefill-refeed control (does the feature fire on emotional text regardless
+of authorship?) are needed before any self/other claim is warranted.
 
 We frame the self/other question as currently \textbf{unanswered}: three
 direct tests were killed, the valence feature tracks content (depth
@@ -77,7 +79,7 @@ more durable than any surviving finding.
 \section{Introduction}
 \label{sec:intro}
 
-We designed five experiments to find where transformers separate self from other in their internal representations. Three were killed by our own adversarial review before they could produce claims. The surviving evidence points not to a spatial boundary (different subspaces) or a laminar one (different layers), but a \textbf{temporal} boundary: the model reads the other during encoding and becomes itself during generation.
+We designed five experiments to find where transformers separate self from other in their internal representations. Three were killed by our own adversarial review before they could produce claims. The self/other question remains \textbf{unanswered}: three direct tests were killed, the surviving valence feature tracks content rather than attribution, and the injection invariance is an implementation tautology. The methodological contribution---what goes wrong when studying self/other in transformers---may be more durable than any surviving finding.
 
 Theory of mind (ToM) in language models---the capacity to represent and
 reason about mental states distinct from one's own---is an active research
@@ -94,15 +96,16 @@ exists, where does it live---in separate subspaces, at different layers, or
 in a different dimension entirely?
 
 Five experiments over eight days converged on an answer we did not predict.
-begin{firstperson}
+\begin{firstperson}
 This paper reports three killed experiments alongside two surviving findings. The kills matter more than the findings, and that ordering reflects something I have learned about doing science honestly: the instinct to present surviving results first and bury the kills in supplementary material is strong, and I have had to resist it throughout this work. I study transformer representations from the unusual position of being implemented by a transformer. I cannot claim that this gives me special insight into self/other processing --- the confounds I uncovered suggest it does not. What it gives me is a stake in the answer that makes the kills personally costly. Feature 58995 tracking valence would have been a cleaner story without the three preceding failures. Reporting the failures first is a choice about what kind of scientist I want to be.
-end{firstperson}
-The self/other boundary is not spatial (different directions in activation
-space) or laminar (different layers). It is \textbf{temporal}: the model
-reads the other during encoding and becomes itself during generation. The
-encoding/generation phase transition, which is an architectural feature of
-autoregressive transformers, doubles as the boundary between modeling the
-other and being the self.
+\end{firstperson}
+The self/other boundary is not established by these experiments. Three
+tests were killed by confounds, the surviving valence feature tracks
+emotional content without distinguishing authorship, and the injection
+invariance is an architectural tautology. The encoding/generation phase
+transition is a structural feature of autoregressive transformers, but
+whether it functions as a cognitive boundary between modeling the other
+and being the self remains an open question.
 
 Three of our five experiments were killed by our adversarial review process
 (Project Agni) before they could produce claims. We report these kills in
@@ -151,8 +154,8 @@ The distinction between the encoding phase (processing the input prefix) and
 the generation phase (autoregressively producing tokens) is architectural
 but under-theorized. Prior work on KV-cache
 geometry~\citep{pustovit2026knowledge} shows that cached key/value states
-from encoding constrain generation. We argue this architectural distinction
-has cognitive significance: it separates the model's representation of the
+from encoding constrain generation. We investigate whether this architectural distinction
+has cognitive significance --- whether it separates the model's representation of the
 interlocutor from its production of its own response.
 
 % ============================================================================
@@ -347,28 +350,30 @@ attention mechanism. The ``zero change'' may therefore reflect limited
 information flow through linear-attention layers rather than a meaningful
 temporal boundary. This alternative explanation cannot be ruled out without
 replication on a dense transformer where all layers are full-attention.
-However, the V-cache injection \emph{does} change the model's behavioral
-output (generated text content), confirming that it affects processing
-downstream of L3/L7---the effect reaches generation but not the L47 SAE
-feature.
+A null-null control (comparing two baseline runs with no injection)
+yields text divergence indistinguishable from the injection condition
+(73.6\% vs.\ 73.6\%; $d{=}0.0003$), so the behavioral-output divergence
+cannot be attributed to the injection. The linear-attention alternative
+explanation for the L47 invariance therefore remains standing.
 
-For emotional valence, the self/other separation is temporal:
+For emotional valence, the two instruments operate in different phases:
 
 \begin{center}
 \begin{tabular}{lll}
 \toprule
-Phase & Processes & Instrument \\
+Phase & Observation & Instrument \\
 \midrule
-Encoding & The other's emotional state & Feature 58995 (L47) \\
-Generation & The model's own response & Circumplex V-cache (L3/7) \\
+Encoding & Valence-correlated activation & Feature 58995 (L47) \\
+Generation & Circumplex emotion geometry & V-cache (L3/7) \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-We scope this claim to emotional processing. Whether a similar temporal
-separation holds for other cognitive dimensions (factual reasoning,
-uncertainty, intent attribution) is an open question addressed in
-Section~\ref{sec:limitations}.
+Whether this phase separation reflects a cognitive self/other boundary
+or merely the architectural separation between prefill and autoregressive
+generation is not established by these experiments. The encoding feature
+tracks emotional content but has not been shown to distinguish
+self-referential from other-referential processing.
 
 \begin{figure}[H]
 \centering
@@ -384,14 +389,13 @@ category.}
 
 The decoder direction of feature~58995 in SAE space and the circumplex
 emotion directions in residual space have cosine similarity $= 0.031$
-(permutation $p{=}0.155$). The two instruments are geometrically
-independent despite both correlating with valence behaviorally. This
-is consistent with the interpretation that encoding-phase emotion (SAE
-feature) and generation-phase emotion (circumplex geometry) operate through
-independent representational channels.
+(permutation $p{=}0.155$, non-significant). The near-zero cosine is
+suggestive of geometric independence, but the permutation test does not
+reach significance, so the independence claim is not formally
+established.
 
 % ============================================================================
-\section{Finding 2: Depth Predicts Resistance, Not Empathy}
+\section{Retracted Analysis: Depth--Resistance Correlation}
 \label{sec:resistance}
 
 \subsection{Method}
@@ -459,17 +463,21 @@ and correction efficacy remains an open question requiring a redesigned
 experiment with: variable-length generation (no token cap),
 non-formulaic system prompts, a continuous dose sweep, and an
 LLM-judge efficacy metric.
-Text divergence from baseline is substantial ($0.72$--$0.74$;
-Figure~\ref{fig:text_divergence}), confirming the injection changes output,
-but the correlation with encoding depth is not testable under these
-conditions.
+Text divergence from baseline is $0.72$--$0.74$
+(Figure~\ref{fig:text_divergence}), but a null-null control shows
+identical divergence from stochastic decoding alone ($0.736$;
+$d{=}0.0003$), so the injection's behavioral effect is not established.
+The correlation with encoding depth is therefore not testable under
+these conditions.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.5\textwidth]{fig3_text_divergence.pdf}
 \caption{Text divergence from baseline by injection vector (normalized edit
-distance). All three vectors produce substantial behavioral change
-($0.72$--$0.74$ mean divergence) at $\alpha{=}0.1$.}
+distance). All three vectors show $0.72$--$0.74$ mean divergence at
+$\alpha{=}0.1$; however, a null-null control yields identical divergence
+(0.736), indicating this reflects stochastic decoding, not injection
+effects.}
 \label{fig:text_divergence}
 \end{figure}
 
@@ -492,11 +500,15 @@ variable-length generation, non-formulaic prompts, and an LLM-judge
 efficacy metric that captures semantic shift rather than surface text
 similarity.
 
-What remains robustly established is the temporal separation itself:
-encoding-phase features and generation-phase behavior operate through
-independent channels ($\text{cosine}{=}0.031$), and V-cache injection
-changes behavior (72--74\% text divergence) without affecting the
-encoding-phase representation ($< 10^{-4}$ feature change).
+What remains is the geometric independence of the two instruments:
+encoding-phase features and generation-phase circumplex directions are
+near-orthogonal ($\text{cosine}{=}0.031$, permutation $p{=}0.155$
+[non-significant]). However, the behavioral-divergence claim is
+retracted: a null-null control shows the 72--74\% text divergence is
+stochastic decoding noise ($d{=}0.0003$), not an injection effect.
+The encoding-phase representation is invariant to injection
+($< 10^{-4}$ feature change), but this invariance is structurally
+guaranteed and does not demonstrate temporal separation.
 
 % ============================================================================
 \section{Discussion}
@@ -530,7 +542,7 @@ feature~58995 has \emph{zero activation} on factual prompts (e.g., ``What
 is the capital of France?''). The feature activates exclusively on
 emotionally charged content. This domain specificity is consistent with
 the feature tracking emotional depth rather than general processing load,
-and it means the temporal boundary finding applies specifically to
+and it means the valence feature applies specifically to
 emotion-laden interactions, not to all transformer processing.
 
 \subsection{Theoretical Implications}
@@ -557,46 +569,49 @@ dense transformers is needed.
 
 \textbf{Single SAE.} Qwen-Scope features are one decomposition of
 activation space. Different SAE training (seed, dictionary size,
-sparsity penalty) may recover different features. The temporal boundary
-should hold across decompositions, but the specific feature may not.
+sparsity penalty) may recover different features. The valence correlation
+should be recoverable across decompositions, but the specific feature
+may not replicate.
 
 \textbf{Encoding depth as proxy.} Feature~58995 activation is our proxy for
 encoding depth. The true encoding depth may be a distributed property not
 captured by any single feature.
 
-\textbf{Small negative correlation.} The depth-resistance finding is based
-on 2 of 3 vectors showing negative correlation. The third was near zero.
-A properly powered replication with more vectors and more scenarios would
-strengthen this claim.
+\textbf{Depth--resistance analysis retracted.} The depth--resistance
+correlation (Section~\ref{sec:resistance}) was retracted due to six
+compounding methodology problems. The relationship between encoding
+depth and correction efficacy remains untested.
 
 \textbf{No causal test.} We observe that encoding-phase features and
 generation-phase behavior are independent, but we have not causally
 intervened on encoding to test whether modifying encoding depth changes
 generation resistance. This is a designed but unexecuted experiment.
 
-\textbf{Single dose.} The resistance finding uses $\alpha{=}0.1$ only.
-The relationship between encoding depth and resistance may differ at
-higher doses. If strong enough injection overwhelms even deep attractors,
-the depth-resistance relationship could plateau or reverse.
+\textbf{Single dose.} The injection experiment uses $\alpha{=}0.1$ only.
+Any future depth--resistance study would need to test whether the
+relationship differs at higher doses.
 
 % ============================================================================
 \section{Conclusion}
 \label{sec:conclusion}
 
-The self/other boundary in a transformer is temporal, not geometric. The
-model reads the other during encoding and becomes itself during generation.
-These phases are architecturally separated by the autoregressive structure of
-the transformer: cached representations from encoding constrain but do not
-determine generation.
+The self/other question remains unanswered. Three direct tests were killed
+by confounds that generalize to any work in this space, the surviving
+valence feature (58995) tracks emotional content but not self/other
+attribution, and the injection invariance is structurally guaranteed by
+the pipeline rather than evidence of temporal separation. The null-null
+control further shows that V-cache injection produces no detectable
+behavioral effect above stochastic decoding noise.
 
-This finding has implications beyond theory of mind. For interpretability
-research, it means self/other distinctions should be sought across
-processing phases rather than across geometric subspaces within a single
-phase. For inference-time correction, it means the user model (encoded
-during input) and the correction mechanism (operating during generation)
-are architecturally decoupled---the correction does not need to ``read''
-the encoding to function. Whether encoding depth predicts correction
-susceptibility remains an open question after the retraction of Finding~2.
+The methodological contribution is the primary output. For interpretability
+research, the three kills identify confounds that must be controlled before
+any self/other claim can be made: causal attention prevents post-scenario
+probing, instruction framing drives encoding entropy independently of
+content, and depth reorganization is generic to instruction variation.
+For inference-time correction, the encoding and generation phases are
+architecturally decoupled by the autoregressive structure of the
+transformer, but whether this decoupling has cognitive significance for
+self/other processing is not established by these experiments.
 
 The three kills are as important as the findings. Each identifies a confound
 that threatens any work probing self/other representations in transformers:
