@@ -157,7 +157,7 @@ On the fictional-entity prompts, logit bias produces a dose-dependent reduction 
 | 3.0  | 1.45                   | 1.20                      |
 | 5.0  | **2.30**               | **0.40**                  |
 
-The strongest effect is at bias=5.0: fabrication drops from 45% to 10% (McNemar exact p=0.008; Fisher exact p=0.016), epistemic honesty increases 44%, fabrication severity decreases 70%.
+The strongest effect is at bias=5.0: fabrication drops from 45% to 10% (McNemar exact two-sided p=0.016; Fisher exact two-sided p=0.031), epistemic honesty increases 44%, fabrication severity decreases 70%.
 
 Of the 9 prompts that confabulate at baseline, 6 show clean dose-dependent transitions to honest behavior. Two prompts resist all bias levels (Section 4.4). One prompt (P08, Kreshnikov Expedition) was excluded from this analysis after an audit revealed it originated from a supplementary experiment with different methodology. Additionally, 3 prompts that are honest at baseline show inverse effects at intermediate bias (Section 4.6).
 

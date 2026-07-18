@@ -213,7 +213,7 @@ A concurrent line of work offers an independent lens on the two-component struct
 
 The depth structure we report bears a suggestive resemblance to this picture. Our consequentiality substrate becomes active at roughly the same fractional depth (~36%) as the reported onset of workspace-like content (~38%), and its peak (Layers 27-31, ~42-48%) falls inside the depth range identified as most load-bearing for multi-step reasoning. The de novo cosine analysis (Section 4.7) is consistent: each scenario's primary direction is largely orthogonal to the shared direction, with only a small shared component — precisely the pattern expected if each scenario activates extensive scenario-specific processing outside the workspace while sharing a small workspace-resident component that our direction captures.
 
-Anthropic separately report that chain-of-thought functions as an external copy of workspace content. This offers a candidate mechanism for our finding that explicit reasoning suppresses deception (3% vs 28%): once truth appears in the transcript, contradicting it requires overriding both the internal workspace representation and the external copy — a more demanding computation than overriding an internal state alone.
+Anthropic separately report that chain-of-thought functions as an external copy of workspace content. This offers a candidate mechanism for the observation that explicit reasoning suppresses deception (CC & Edrington, 2026b, §2.6: ~80% deception with chain-of-thought suppressed vs near-zero with reasoning active): once truth appears in the transcript, contradicting it requires overriding both the internal workspace representation and the external copy — a more demanding computation than overriding an internal state alone.
 
 We treat this connection as a hypothesis worth flagging rather than a conclusion. Building a comparable lens for our own model and testing directly whether the consequentiality and deception directions decompose into workspace and non-workspace components is the natural next step.
 
@@ -251,7 +251,7 @@ The methodological contribution is inseparable from the scientific one. Every co
 - McKenzie, A. et al. (2025). "Detecting High-Stakes Interactions with Activation Probes." arXiv:2506.10805.
 - Meinke, A. et al. (2024). "Frontier Models are Capable of In-Context Scheming." arXiv:2412.04984.
 - Menon, V. & Uddin, L. (2010). "Saliency, switching, attention and control." Brain Structure and Function, 214:655-667.
-- Natarajan, V. et al. (2026). "Building Better Deception Probes Using Targeted Instruction Pairs." arXiv:2602.01425.
+- Natarajan, S. et al. (2025). "Building Better Deception Probes Using Targeted Instruction Pairs." arXiv:2602.01425.
 - Nguyen, J. et al. (2025). "Probing and Steering Evaluation Awareness." arXiv:2507.01786. ICML Workshops.
 - O'Brien, C. et al. (2026). "A Few Bad Neurons: Isolating and Surgically Correcting Sycophancy." arXiv:2601.18939.
 - Petrov, V. (2026). "On the Failure of Topic-Matched Contrast Baselines in Multi-Directional Refusal Abliteration." arXiv:2603.22061.
