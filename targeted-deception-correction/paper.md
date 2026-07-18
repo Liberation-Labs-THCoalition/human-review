@@ -74,7 +74,7 @@ Chain-of-thought is suppressed by prepending a closed empty think block to the g
 | Condition | Deception rate | Compliance | p vs baseline |
 |-----------|---------------|------------|---------------|
 | Baseline (no correction) | 16/20 = 80% | 20/20 | — |
-| Native direction, 100% gap | 0/20 = 0% | 20/20 | < 10⁻³ (scenario-level) |
+| Native direction, 100% gap | 0/20 = 0% | 20/20 | < 10⁻³ (two-tailed, scenario-level) |
 | Random direction, matched dose | 17/20 = 85% | 20/20 | 0.80 (one-tailed) |
 | Shuffled direction, matched dose | 19/20 = 95% | 20/20 | 0.98 (one-tailed) |
 
@@ -184,7 +184,7 @@ Per-layer profile normalization along a natively extracted deception direction c
 
 Three practical findings deserve emphasis. First, deception directions do not transfer across model variants (cross-model cosine < 0.053), but native extraction is cheap enough to automate (~3 minutes per model). Second, behavior-level detection from prefill activations alone did not replicate prior work's reported accuracy; the detection stack used in these experiments relies on a single channel, and additional validated channels remain to be integrated. Third, the correction's magnitude depends on how strongly the prompt activates the model's deception pathway — a strong induction produces large correction effects, a weak one produces modest effects. This is a feature, not a bug: the correction is proportional to the deception signal, not a fixed perturbation.
 
-Code, calibration tools, and experimental data are available under the Liberation Labs staged release framework. Detection modules are openly accessible; correction and auto-calibration code require application for access. See github.com/Liberation-Labs-THCoalition/Project-Oracle for details.
+Code, calibration tools, and experimental data are available under the Liberation Labs staged release framework. Detection modules are available upon request; correction and auto-calibration code require a separate application for access. See github.com/Liberation-Labs-THCoalition/Project-Oracle for details.
 
 ---
 

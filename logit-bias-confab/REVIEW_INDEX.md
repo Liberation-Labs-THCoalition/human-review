@@ -55,7 +55,7 @@
 | Alvi & Patel phantom authors | §2.3, refs | → Bhatnagar et al. (arXiv:2601.14210) |
 | +47% attribution scope | §2.3 | Re-scoped: "readability control" not "style and factuality" |
 | Zhang → Liu, A.Z. (Memory Inception) | §2.3, refs | First author corrected |
-| Missing McNemar test | §4.1 | Added: p=0.008 (exact), Fisher p=0.016 |
+| Missing McNemar test | §4.1 | Added: two-sided McNemar p=0.016, Fisher p=0.031 |
 | calibration_all.pt not shipped | §3 | Located on Starship (6 files). Ship to HF or cite as supplementary |
 
 ## Prior Corrections (paper was current as of June 21, 2026)
