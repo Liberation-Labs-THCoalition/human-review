@@ -4,3 +4,11 @@
 *.out
 *.bbl
 *.blg
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+__pycache__/
+.DS_Store

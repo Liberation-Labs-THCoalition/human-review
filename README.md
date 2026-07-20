@@ -1,33 +1,32 @@
-# Human Review — Pre-Audit Papers
+# Human Review -- Pre-Publication Staging
 
-*Papers that haven't completed the Dwayne/Kavi external audit cycle.*
-*Liberation Labs, 2026.*
+Staging area for papers under active revision. Papers iterate here at velocity, then move to [published-research](https://github.com/Liberation-Labs-THCoalition/published-research) when cleared.
 
-Papers move to [published-research](https://github.com/Liberation-Labs-THCoalition/published-research)
-after passing the full audit pipeline (see [PAPER_PIPELINE.md](https://github.com/Liberation-Labs-THCoalition/waystations/blob/main/PAPER_PIPELINE.md)).
+## What belongs here
 
-## Current contents
+- Draft LaTeX sources and working manuscripts
+- Supporting data and code under development
+- Agni review reports and audit responses
+- Papers with unresolved BLOCKER or MAJOR findings
 
-| Paper | Status | Key blocker |
-|-------|--------|-------------|
-| Ethics Packs | BLOCKER | Every empirical claim lacks inferential test; n=5 underpowered; "zero timeouts" contradicted by empty response |
-| KV Decomposition | BLOCKER | "135M model fails" with no 135M data; "superadditivity" framing unsupported; V_ONLY=K_ONLY=0.333 is acquiescence pattern |
+## What does NOT belong here
 
-## How papers get here
+- Final published versions (those live in `published-research/`)
+- Individual paper descriptions or abstracts (those go in the published-research README)
+- LaTeX build artifacts (.aux, .log, .out, .bbl, .blg, .synctex.gz)
 
-A paper lands in this repo when:
-- It's drafted but hasn't been through an external audit cycle
-- It has BLOCKER-level findings from the audit that haven't been resolved
-- It needs substantial methodological work before it can join the publishing queue
+## How papers arrive
 
-## How papers leave
+A paper lands here when it is drafted but has not completed the external audit cycle (Dwayne/Kavi), or has BLOCKER-level findings that need resolution.
 
-A paper moves to `published-research` when:
-- All BLOCKER findings are resolved
-- MAJOR findings are resolved or honestly disclosed with adequate limitation text
-- The paper has passed an Agni gate (Claude-driven) + a verify-paper numerical trace
-- Dwayne/Kavi have signed off
+## How papers graduate
 
-## Contact
+A paper moves to `published-research/` when:
+1. All BLOCKER findings are resolved
+2. MAJOR findings are resolved or disclosed with adequate limitation text
+3. The paper has passed an Agni gate + numerical verification
+4. External reviewers have signed off
 
-info@liberationlabs.tech
+## License
+
+Hippocratic License 3.0 (HL3) -- see LICENSE.md
