@@ -12,3 +12,7 @@
 *.lot
 __pycache__/
 .DS_Store
+
+# Audit evidence — force-committed past ignore rules, do not delete
+!mode-switching/data/replication/run.log
+!emotional-trajectory/data/permutation_v2.log

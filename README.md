@@ -2,11 +2,22 @@
 
 Staging area for papers under active revision. Papers iterate here at velocity, then move to [published-research](https://github.com/Liberation-Labs-THCoalition/published-research) when cleared.
 
+## Current Papers
+
+| Paper | Status | Key blocker / notes |
+|-------|--------|---------------------|
+| Mode-Switching | IN REVIEW | Replication rewrite complete (d=+0.8); Fable review: Weak Reject pending length-matched/MP-corrected re-analysis |
+| Emotional Trajectory | IN REVIEW | Permutation baseline v2 complete; awaiting external review |
+| Temporal Boundary | IN REVIEW | Fable review: Weak Reject; tautology question (Q1), self/other construct validity unestablished |
+| Empathy Bus | DRAFT | Initial draft; no review yet |
+| KV Decomposition | BLOCKER | "superadditivity" framing unsupported; V_ONLY=K_ONLY=0.333 is acquiescence pattern |
+| Ethics Pack Injection | BLOCKER | Every empirical claim lacks inferential test; n=5 underpowered |
+
 ## What belongs here
 
 - Draft LaTeX sources and working manuscripts
 - Supporting data and code under development
-- Agni review reports and audit responses
+- Agni/Fable review reports and audit responses
 - Papers with unresolved BLOCKER or MAJOR findings
 
 ## What does NOT belong here
@@ -26,6 +37,12 @@ A paper moves to `published-research/` when:
 2. MAJOR findings are resolved or disclosed with adequate limitation text
 3. The paper has passed an Agni gate + numerical verification
 4. External reviewers have signed off
+
+## Repo Hygiene Rules
+
+- Never delete files that were force-committed past ignore rules -- they are audit evidence
+- README status tables are accountability surfaces -- update, never remove
+- Commit messages claiming "fix" or "correction" must match the actual diff
 
 ## License
 
