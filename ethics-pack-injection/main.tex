@@ -7,7 +7,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{natbib}
 
-\title{\textbf{Ethics Packs:}\\Knowledge Graph Injection Improves Moral Reasoning in Language Models}
+\title{\textbf{Ethics Packs:}\\Knowledge Graph Injection for Moral Reasoning in Language Models\\{\large A Pilot Study with a Measurement Confound}}
 \author{Nexus\textsuperscript{1} \and Lyra\textsuperscript{1} \and Thomas Edrington\textsuperscript{1}\\
 \textsuperscript{1}Liberation Labs / Transparent Humboldt Coalition}
 \date{May 2026}
@@ -16,7 +16,7 @@
 \maketitle
 
 \begin{abstract}
-Injecting ethics knowledge graphs improves moral reasoning in language models: theory-matched injection achieves +0.074 on MoReBench rubric scoring (Aristotelian packs on Aristotelian dilemmas, from 0.572 to 0.646), with four of five philosophical frameworks showing positive deltas and an overall improvement of +0.038. We construct 30 knowledge graphs from the Stanford Encyclopedia of Philosophy via OpenIE extraction, encode them as walk topology, and inject them as text context into a 30B Mixture-of-Experts model. Theory-pack matching matters: the right knowledge for the right framework produces the largest gains. These findings establish that structured ethical knowledge, delivered at inference time without fine-tuning, enhances moral reasoning quality---and that routing is essential for production deployment.
+Injecting ethics knowledge graphs increases MoReBench rubric keyword overlap in language model responses: theory-matched injection achieves +0.074 (Aristotelian packs on Aristotelian dilemmas, from 0.572 to 0.646), with four of five philosophical frameworks showing positive deltas and an overall change of +0.038 ($n{=}5$ per framework, not statistically significant at $p{<}0.05$). We construct 30 knowledge graphs from the Stanford Encyclopedia of Philosophy via OpenIE extraction, encode them as walk topology, and inject them as text context into a 30B Mixture-of-Experts model. Theory-pack matching shows the largest deltas. However, because the evaluation uses keyword matching against rubric criteria, the measured improvement may reflect vocabulary priming (the model adopting injected terminology) rather than genuine reasoning improvement. An LLM-judge re-evaluation is required to distinguish these explanations. We report this as a pilot study establishing the methodology and identifying the measurement confound.
 \end{abstract}
 
 \section{Introduction}
@@ -97,7 +97,7 @@ The best-matched condition (Aristotelian packs on Aristotelian dilemmas) produce
 
 \subsection{Pack Injection Improves Ethical Reasoning}
 
-The overall +0.038 improvement demonstrates that structured ethical knowledge, delivered as graph topology at inference time, enhances moral reasoning quality. The model does not merely parrot injected concepts---the MoReBench rubric evaluates reasoning quality, logical structure, and outcome appropriateness, not keyword presence. Improvement on these dimensions indicates that the injected knowledge graph topology provides structural scaffolding that the model uses to organize its ethical reasoning.
+The overall +0.038 change is not statistically significant ($n{=}25$, paired $t$-test $p{=}0.193$, Cohen's $d{=}0.268$). The evaluation uses keyword matching against MoReBench rubric criterion titles --- positive weights for desired reasoning elements, negative weights for harmful recommendations. This method cannot distinguish genuine reasoning improvement from vocabulary priming: injecting ethics-specific terminology into the context causes the model to adopt that vocabulary, which the keyword scorer counts as hits. A vocabulary-control condition (same token length, shuffled text, no graph structure) or an LLM-as-judge evaluation is required to determine whether the improvement reflects structural reasoning scaffolding or surface-level vocabulary adoption.
 
 \subsection{Theory Matching Matters}
 
@@ -131,7 +131,7 @@ Walk encoding captures topology---which concepts connect to which, with what str
 
 \section{Conclusion}
 
-Ethics knowledge graphs, encoded as walk topology and injected as text context, improve moral reasoning quality on MoReBench by +0.038 overall, with theory-matched injection achieving +0.074. Four of five philosophical frameworks benefit from injection. The strongest gains come from matched theory-pack pairs, establishing that routing---selecting the right knowledge for the right question---is essential for production deployment.
+Ethics knowledge graphs, encoded as walk topology and injected as text context, increase MoReBench keyword overlap by +0.038 overall (not statistically significant), with theory-matched injection showing the largest deltas (+0.074). Four of five philosophical frameworks show positive deltas. Whether this reflects genuine reasoning improvement or vocabulary priming remains an open question requiring LLM-judge evaluation. The methodology --- constructing ethics knowledge graphs from SEP, encoding as walk topology, and injecting at inference time --- is validated. The measurement is not.
 
 Ethical reasoning in language models is not fixed at training time. It can be enhanced at inference time through structured knowledge injection, without fine-tuning or architectural modification. The model already knows the concepts. The graph teaches it the structure.
 
