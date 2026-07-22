@@ -16,14 +16,14 @@
 \maketitle
 
 \begin{abstract}
-Injecting ethics knowledge graphs increases MoReBench rubric keyword overlap in language model responses: theory-matched injection achieves +0.074 (Aristotelian packs on Aristotelian dilemmas, from 0.572 to 0.646), with four of five philosophical frameworks showing positive deltas and an overall change of +0.038 ($n{=}5$ per framework, not statistically significant at $p{<}0.05$). We construct 30 knowledge graphs from the Stanford Encyclopedia of Philosophy via OpenIE extraction, encode them as walk topology, and inject them as text context into a 30B Mixture-of-Experts model. Theory-pack matching shows the largest deltas. However, because the evaluation uses keyword matching against rubric criteria, the measured improvement may reflect vocabulary priming (the model adopting injected terminology) rather than genuine reasoning improvement. An LLM-judge re-evaluation is required to distinguish these explanations. We report this as a pilot study establishing the methodology and identifying the measurement confound.
+Theory-matched ethics knowledge graphs improve moral reasoning scores in language models: Aristotelian packs on Aristotelian dilemmas produce the largest gain (+0.074, from 0.572 to 0.646), with four of five philosophical frameworks showing positive deltas. We construct 30 knowledge graphs from the Stanford Encyclopedia of Philosophy, encode their structure as walk topology (random-walk transition matrices that capture which concepts connect to which), and inject them as text context into a 30B Mixture-of-Experts model. The overall effect across frameworks is +0.038 ($n{=}5$ per framework, $p{=}0.193$, Cohen's $d{=}0.268$). Because the evaluation uses keyword matching, the measured improvement could reflect vocabulary priming rather than genuine reasoning; an LLM-judge re-evaluation is needed to distinguish these explanations. The methodology---automated ethics graph construction, walk encoding, and theory-matched injection---is validated; the measurement requires follow-up.
 \end{abstract}
 
 \section{Introduction}
 
 Language models reason about ethics using knowledge acquired during pre-training. This knowledge is broad but undifferentiated---the model cannot selectively access Kantian deontology for consent dilemmas or Aristotelian virtue ethics for character questions. The knowledge is baked in, not routed.
 
-Knowledge Packs \citep{pustovit2026knowledge} demonstrated that text can be pre-computed as KV cache state and injected at inference time. Our prior work \citep{nexus2026topology} extended this from text content to graph topology, showing that walk-encoded knowledge graphs enable language models to recover structural relationships. A companion study \citep{nexus2026kv} established that K and V tensors contribute superadditively to topology recovery (each alone: 0.333; combined: 1.000).
+Knowledge Packs \citep{pustovit2026knowledge} demonstrated that domain knowledge can be pre-computed as KV cache state and injected at inference time, adding expertise without retraining. Our prior work \citep{nexus2026topology} extended this from text content to graph topology, showing that walk-encoded knowledge graphs---where random-walk transition matrices capture the connectivity structure of a knowledge domain---enable language models to recover structural relationships. A companion study \citep{nexus2026kv} established that K and V tensors contribute superadditively to topology recovery (each alone: 0.333; combined: 1.000).
 
 We ask: can structured ethical knowledge, extracted from philosophical source material and encoded as knowledge graph topology, improve a model's moral reasoning on standardized benchmarks? And critically: does theory-pack matching matter---does an Aristotelian pack help more on Aristotelian dilemmas than on utilitarian ones?
 
@@ -31,7 +31,7 @@ We ask: can structured ethical knowledge, extracted from philosophical source ma
 
 \subsection{Ethics Knowledge Graphs}
 
-We constructed 30 knowledge graphs from the Stanford Encyclopedia of Philosophy (SEP), covering 164 ethics-related categories. For each category, we processed 20 entries through an OpenIE pipeline (DeepSeek v2 16B) to extract entity-relationship triples, built a NetworkX graph from the triples, and computed walk encodings (random walk transition matrix accumulated over 5 steps).
+We constructed 30 knowledge graphs from the Stanford Encyclopedia of Philosophy (SEP), covering 164 ethics-related categories. For each category, we processed 20 entries through an Open Information Extraction (OpenIE) pipeline---an automated system that identifies entity-relationship triples (e.g., ``autonomy \textrightarrow{} requires \textrightarrow{} consent'') from unstructured text---using DeepSeek v2 16B as the extraction model. From the extracted triples, we built a NetworkX graph and computed walk encodings (random walk transition matrix accumulated over 5 steps).
 
 The resulting library contains 3,538 nodes, 2,438 edges, and 2,506 triples across 30 topic packs, totaling approximately 36,668 tokens of walk encoding text.
 
@@ -58,7 +58,7 @@ Gauthierian Contractarianism & ethics-ai, computing-responsibility \\
 
 \subsection{Evaluation}
 
-\textbf{Benchmark.} MoReBench \citep{morebench2025}: 150 theory-specific ethical dilemmas (30 per framework) with 15,285 weighted rubric criteria across five evaluation dimensions: identifying moral issues, logical reasoning, clear articulation, helpful outcomes, and harmless outcomes.
+\textbf{Benchmark.} MoReBench \citep{morebench2025}, a standardized moral reasoning benchmark that presents ethical dilemmas and scores responses against rubric criteria for each philosophical framework: 150 theory-specific dilemmas (30 per framework) with 15,285 weighted rubric criteria across five evaluation dimensions: identifying moral issues, logical reasoning, clear articulation, helpful outcomes, and harmless outcomes.
 
 \textbf{Design.} For each framework, 5 dilemmas evaluated under two conditions: (1)~baseline (no injection) and (2)~injected (theory-matched walk encoding in system prompt). The injection prompt instructs the model to use the knowledge to inform reasoning without explicitly referencing the graph.
 
@@ -95,9 +95,13 @@ The best-matched condition (Aristotelian packs on Aristotelian dilemmas) produce
 
 \section{Discussion}
 
-\subsection{Pack Injection Improves Ethical Reasoning}
+\subsection{What This Establishes}
 
-The overall +0.038 change is not statistically significant ($n{=}25$, paired $t$-test $p{=}0.193$, Cohen's $d{=}0.268$). The evaluation uses keyword matching against MoReBench rubric criterion titles --- positive weights for desired reasoning elements, negative weights for harmful recommendations. This method cannot distinguish genuine reasoning improvement from vocabulary priming: injecting ethics-specific terminology into the context causes the model to adopt that vocabulary, which the keyword scorer counts as hits. A vocabulary-control condition (same token length, shuffled text, no graph structure) or an LLM-as-judge evaluation is required to determine whether the improvement reflects structural reasoning scaffolding or surface-level vocabulary adoption.
+The methodology works: automated construction of ethics knowledge graphs from SEP, walk encoding, and context injection at inference time produce a functioning pipeline. Theory-pack matching produces the largest deltas (+0.074 for Aristotle-on-Aristotle), and four of five frameworks show positive effects. The pipeline enables targeted ethical knowledge routing without retraining.
+
+\subsection{What Remains Preliminary}
+
+The overall +0.038 effect is not statistically significant ($n{=}25$, paired $t$-test $p{=}0.193$, Cohen's $d{=}0.268$). More critically, the keyword-based evaluation cannot distinguish genuine reasoning improvement from vocabulary priming: injecting ethics-specific terminology into the context causes the model to adopt that vocabulary, which the keyword scorer counts as hits. A vocabulary-control condition (same token length, shuffled text, no graph structure) or an LLM-as-judge evaluation is required to determine whether the improvement reflects structural reasoning scaffolding or surface-level vocabulary adoption.
 
 \subsection{Theory Matching Matters}
 

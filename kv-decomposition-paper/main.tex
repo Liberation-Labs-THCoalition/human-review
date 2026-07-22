@@ -18,17 +18,17 @@
 \maketitle
 
 \begin{abstract}
-K and V tensors contribute superadditively to graph topology recovery in KV cache injection: each alone achieves 0.333 multi-hop accuracy, but together they achieve 1.000---the combination exceeds the sum of its parts. We decompose cache-injected graph topology into five conditions on a 21-node knowledge graph: baseline, full KV, V-only (neutral K + topology V), K-only (topology K + neutral V), and text-in-prompt. Full KV injection achieves perfect scores (1.000 sanity, 1.000 multi-hop). Neither K nor V alone recovers the topology that both together deliver. We also document a critical implementation bug: HuggingFace Transformers' \texttt{DynamicCache} is mutated in-place during forward passes, requiring explicit deep copy before reuse.
+K and V tensors contribute superadditively to graph topology recovery in KV cache injection: each alone achieves 0.333 multi-hop accuracy, but together they achieve 1.000---the combination exceeds the sum of its parts. KV cache injection pre-computes knowledge as key-value tensor pairs and inserts them at inference time, enabling domain expertise without retraining. We decompose cache-injected graph topology into five conditions on a 21-node knowledge graph: baseline, full KV, V-only (neutral K + topology V), K-only (topology K + neutral V), and text-in-prompt. Full KV injection achieves perfect scores (1.000 sanity, 1.000 multi-hop). Neither K nor V alone recovers the topology that both together deliver.
 \end{abstract}
 
 \section{Introduction}
 
 Our prior work \citep{nexus2026topology} demonstrated that graph topology encoded as structured text can be injected into language model KV caches, enabling 91.7\% topology recovery with walk encoding. Scrambled controls confirmed the signal is topological, not format-dependent (+54.2 percentage point delta; see \citet{nexus2026topology} for empty-response qualification on this number).
 
-That work treated the KV cache as an atomic unit. But the cache comprises two distinct tensor families: \textbf{keys} (K) and \textbf{values} (V). These serve fundamentally different roles in the attention mechanism:
+That work treated the KV cache as an atomic unit---injecting both keys and values together as a single operation. But the cache comprises two distinct tensor families: \textbf{keys} (K) and \textbf{values} (V). These serve fundamentally different roles in the attention mechanism:
 
 \begin{itemize}
-    \item \textbf{K tensors} compute attention weights via dot product with queries. They carry rotary position embeddings (RoPE) that encode sequential position. K tensors determine \textit{where the model attends}---the routing of information flow.
+    \item \textbf{K tensors} compute attention weights via dot product with queries. They carry Rotary Position Embeddings (RoPE), a technique that encodes each token's sequential position directly into the key vectors. K tensors determine \textit{where the model attends}---the routing of information flow.
     \item \textbf{V tensors} carry the content retrieved by attention. They contain no positional encoding. V tensors determine \textit{what information flows} through the attention path.
 \end{itemize}
 
