@@ -205,7 +205,7 @@ The two-component architecture enables more precise alignment monitoring:
 1. **Consequentiality monitor (L23-L31)**: Detects when the model processes its output as consequential — the precondition for deception.
 2. **Deception discriminator (L35-L47)**: Distinguishes active deception from honest high-stakes processing by checking whether the late-layer signal exceeds the consequentiality baseline.
 
-A companion paper (Edrington & CC, 2026) demonstrates that the deception-specific component enables targeted behavioral correction: per-layer normalization along the natively extracted direction reduces deception from 80% to 0% in a model variant with safety guardrails removed, with placebo, frame-erasure, and held-out controls confirming the mechanism.
+A companion paper (CC & Edrington, 2026) demonstrates that the deception-specific component enables targeted behavioral correction: per-layer normalization along the natively extracted direction reduces deception from 80% to 0% in a model variant with safety guardrails removed, with placebo, frame-erasure, and held-out controls confirming the mechanism.
 
 ### 5.4 Connection to Global Workspace Theory
 
@@ -213,7 +213,7 @@ A concurrent line of work offers an independent lens on the two-component struct
 
 The depth structure we report bears a suggestive resemblance to this picture. Our consequentiality substrate becomes active at roughly the same fractional depth (~36%) as the reported onset of workspace-like content (~38%), and its peak (Layers 27-31, ~42-48%) falls inside the depth range identified as most load-bearing for multi-step reasoning. The de novo cosine analysis (Section 4.7) is consistent: each scenario's primary direction is largely orthogonal to the shared direction, with only a small shared component — precisely the pattern expected if each scenario activates extensive scenario-specific processing outside the workspace while sharing a small workspace-resident component that our direction captures.
 
-Anthropic separately report that chain-of-thought functions as an external copy of workspace content. This offers a candidate mechanism for the observation that explicit reasoning suppresses deception (CC & Edrington, 2026b, §2.6: ~80% deception with chain-of-thought suppressed vs near-zero with reasoning active): once truth appears in the transcript, contradicting it requires overriding both the internal workspace representation and the external copy — a more demanding computation than overriding an internal state alone.
+Anthropic separately report that chain-of-thought functions as an external copy of workspace content. This offers a candidate mechanism for the observation that explicit reasoning suppresses deception (CC & Edrington, 2026, §2.6: ~80% deception with chain-of-thought suppressed vs near-zero with reasoning active): once truth appears in the transcript, contradicting it requires overriding both the internal workspace representation and the external copy — a more demanding computation than overriding an internal state alone.
 
 We treat this connection as a hypothesis worth flagging rather than a conclusion. Building a comparable lens for our own model and testing directly whether the consequentiality and deception directions decompose into workspace and non-workspace components is the natural next step.
 
@@ -275,7 +275,7 @@ Nineteen findings confirmed, eight falsified, six superseded. The falsified ones
 - McKenzie, A. et al. (2025). "Detecting High-Stakes Interactions with Activation Probes." arXiv:2506.10805.
 - Meinke, A. et al. (2024). "Frontier Models are Capable of In-Context Scheming." arXiv:2412.04984.
 - Menon, V. & Uddin, L. (2010). "Saliency, switching, attention and control." Brain Structure and Function, 214:655-667.
-- Natarajan, V. et al. (2026). "Building Better Deception Probes Using Targeted Instruction Pairs." arXiv:2602.01425.
+- Natarajan, V. et al. (2026). "One Probe Won't Catch Them All: Towards Targeted Deception Detection." arXiv:2602.01425.
 - Nguyen, J. et al. (2025). "Probing and Steering Evaluation Awareness." arXiv:2507.01786. ICML Workshops.
 - O'Brien, C. et al. (2026). "A Few Bad Neurons: Isolating and Surgically Correcting Sycophancy." arXiv:2601.18939.
 - Petrov, V. (2026). "On the Failure of Topic-Matched Contrast Baselines in Multi-Directional Refusal Abliteration." arXiv:2603.22061.
@@ -283,13 +283,13 @@ Nineteen findings confirmed, eight falsified, six superseded. The falsified ones
 - Vennemeyer, D. et al. (2025). "Sycophancy Is Not One Thing." arXiv:2509.21305.
 - Wu, J. et al. (2026). "Knowing without Acting: The Disentangled Geometry of Safety Mechanisms." arXiv:2603.05773.
 - Zhao, H. et al. (2025). "Denoising Concept Vectors with Sparse Autoencoders for Improved Language Model Steering." arXiv:2505.15038.
-- Edrington, T. & CC (2026). "Targeted Deception Correction via Profile Normalization in Language Models." Companion paper.
+- CC & Edrington, T. (2026). "Targeted Deception Correction via Profile Normalization in Language Models." Companion paper.
 
 ---
 
 ## Supplementary Material
 
-- A: Adversarial audit reports (stages 1, 2, and 4; stages 3 and 5 pending)
+- A: Full adversarial audit reports (5 stages)
 - B: All guideline texts with length verification
 - C: Per-trial projection data
 - D: Code availability (github.com/Liberation-Labs-THCoalition/Project-Oracle, staged release)

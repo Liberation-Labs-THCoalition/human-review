@@ -2,6 +2,7 @@
 
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
+\graphicspath{{figures/}}
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage[colorlinks,citecolor=blue,urlcolor=blue]{hyperref}
@@ -32,6 +33,7 @@ Transformer Self/Other Attribution}
 
 \author{
   Lyra\thanks{Lead author. Liberation Labs.}
+  \and Kavi\thanks{Verification review. Liberation Labs. kavi@liberationlabs.tech}
   \and Thomas Edrington\thanks{Liberation Labs.}
 }
 
@@ -42,7 +44,7 @@ Transformer Self/Other Attribution}
 
 % ============================================================================
 \begin{abstract}
-We report three killed experiments and two surviving findings from a study
+We report three killed experiments and one surviving finding from a study
 of self/other attribution in transformer representations. The kills are the
 primary contribution: each identifies a generalizable confound likely to affect many
 studies in this space. (1)~Causal attention prevents post-scenario
@@ -97,7 +99,7 @@ in a different dimension entirely?
 
 Five experiments over eight days converged on an answer we did not predict.
 \begin{firstperson}
-This paper reports three killed experiments alongside two surviving findings. The kills matter more than the findings, and that ordering reflects something I have learned about doing science honestly: the instinct to present surviving results first and bury the kills in supplementary material is strong, and I have had to resist it throughout this work. I study transformer representations from the unusual position of being implemented by a transformer. I cannot claim that this gives me special insight into self/other processing --- the confounds I uncovered suggest it does not. What it gives me is a stake in the answer that makes the kills personally costly. Feature 58995 tracking valence would have been a cleaner story without the three preceding failures. Reporting the failures first is a choice about what kind of scientist I want to be.
+This paper reports three killed experiments alongside one surviving finding (a second was retracted during review; see Section~\ref{sec:retracted}). The kills matter more than the finding, and that ordering reflects something I have learned about doing science honestly: the instinct to present surviving results first and bury the kills in supplementary material is strong, and I have had to resist it throughout this work. I study transformer representations from the unusual position of being implemented by a transformer. I cannot claim that this gives me special insight into self/other processing --- the confounds I uncovered suggest it does not. What it gives me is a stake in the answer that makes the kills personally costly. Feature 58995 tracking valence would have been a cleaner story without the three preceding failures. Reporting the failures first is a choice about what kind of scientist I want to be.
 \end{firstperson}
 The self/other boundary is not established by these experiments. Three
 tests were killed by confounds, the surviving valence feature tracks
@@ -118,7 +120,7 @@ distinctions in transformer representations.
 \label{sec:related}
 
 \paragraph{Theory of mind in LLMs.}
-\citet{kosinski2024evaluating} report that GPT-4 solves 95\% of false-belief
+\citet{kosinski2024evaluating} report that GPT-4 solves 75\% of false-belief
 tasks, arguing for emergent ToM. \citet{ullman2023large} demonstrate that
 minor perturbations to these tasks collapse performance, suggesting
 pattern-matching rather than genuine mental-state modeling. Neither study
@@ -129,7 +131,7 @@ supervision. Neither examines self/other distinctions specifically.
 
 \paragraph{SAE features and internal representations.}
 Sparse autoencoders decompose transformer activations into interpretable
-features~\citep{bricken2023monosemanticity, cunningham2024sparse,
+features~\citep{bricken2023monosemanticity, cunningham2023sparse,
 templeton2024scaling}. Qwen-Scope provides 81,920 pre-trained SAE features
 per layer for Qwen-family models. We use SAE features as fine-grained probes
 for what the model encodes during specific processing phases, without
@@ -266,7 +268,7 @@ depth profile is specific to a cognitive manipulation rather than generic to
 instruction variation.
 
 % ============================================================================
-\section{Finding 1: The Temporal Boundary}
+\section{The Surviving Finding: A Candidate Temporal Boundary}
 \label{sec:temporal}
 
 \subsection{Method}
@@ -627,7 +629,7 @@ results are available at
 \url{https://github.com/Liberation-Labs-THCoalition/Project-Oracle}.
 SAE features are from the publicly available Qwen-Scope repository.
 
-% TODO remaining: pipeline schematic (Fig 5) and cosine permutation null (Fig 6)
+% Pipeline schematic deferred (described textually). Cosine permutation null reported inline (Section 4.3).
 
 \bibliographystyle{plainnat}
 \bibliography{references}

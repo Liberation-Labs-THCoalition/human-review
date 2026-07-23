@@ -45,14 +45,15 @@
 % Title
 % ============================================================
 \title{
-    \textbf{Metacognitive Prompting Produces Spectral Concentration\\
+    \textbf{Metacognitive Prompting Produces Spectral Expansion\\
     in Generation-Phase KV-Cache Geometry}
 }
 
 \author{
     Lyra\thanks{Lead author. Liberation Labs.} \and
     Thomas Edrington\thanks{Liberation Labs.} \and
-    Dwayne Wilkes\thanks{Statistical auditing, red-team review. Liberation Labs.}
+    Dwayne Wilkes\thanks{Statistical auditing, red-team review. Liberation Labs.} \and
+    Kavi\thanks{Verification review. Liberation Labs. kavi@liberationlabs.tech}
 }
 
 \date{April 2026\\[0.5em]\small\textit{Analysis assisted by AI (Claude, Anthropic).}}
@@ -65,10 +66,10 @@
 % Abstract
 % ============================================================
 \begin{abstract}
-Metacognitive prompting produces spectral concentration in generation-phase
+Metacognitive prompting produces spectral expansion in generation-phase
 KV-cache geometry (Cohen's $d$ [standardized mean difference] $= 0.7$--$0.9$ after token-count correction, robust to
 both linear and logarithmic functional forms; $n{=}120$ replication on
-Qwen3.5-27B). This supports a real metacognitive geometric signature but
+Qwen3.5-27B-Opus-Reasoning-Distilled). This supports a real metacognitive geometric signature but
 revises the original finding: an earlier analysis on Qwen2.5-7B reported
 $d_{\text{FWL}} = -1.92$ with sign reversal, which a hostile review
 identified as potentially artifactual under near-perfect condition--length
@@ -84,7 +85,7 @@ and Qwen~0.5B. Three dedicated studies establish the anatomy:
 metacognitive effects peak at late layers (16--22), cognitive reversal is
 consistent across architectures (93--94\%) while metacognitive
 reversal is architecture-specific, and
-spectral concentration grows progressively during generation
+spectral expansion grows progressively during generation
 ($d = 0.45$ at token~10 to $d = 0.91$ at token~200). A content control
 experiment (120 trials, three conditions) confirms the signal is not
 an artifact of self-referential content.
@@ -92,7 +93,7 @@ an artifact of self-referential content.
 The original sign-flip narrative (FWL reverses the raw effect) does not
 replicate when condition--length collinearity is reduced. The surviving
 finding --- metacognitive prompting produces measurable spectral
-concentration in the generation-phase cache --- is robust but should be
+expansion in the generation-phase cache --- is robust but should be
 interpreted as a moderate effect ($d \approx 0.8$), not the large
 reversed effect originally reported.
 \end{abstract}
@@ -160,7 +161,7 @@ the one whose self-report is hardest to interpret geometrically.
 
     \item \textbf{Token-count correction is non-negotiable} (Study~2): raw framing effects sign-flip or collapse after FWL token-count control for the three features examined (top\_sv\_ratio, eff\_rank, spectral\_entropy). Only spectral entropy survives in both architectures. Marchenko-Pastur random matrix theory offers a mathematically complete alternative to FWL for token-count correction, validated in related work~\citep{lyra2026oracle} but not yet applied to this dataset.
 
-    \item \textbf{Progressive spectral concentration during metacognitive generation} (Study~3): the mode switch is not instantaneous but emerges gradually, with top\_sv\_ratio divergence growing from $d = 0.45$ at token~10 to $d = 0.91$ at token~200.
+    \item \textbf{Progressive spectral expansion during metacognitive generation} (Study~3): the mode switch is not instantaneous but emerges gradually, with top\_sv\_ratio divergence growing from $d = 0.45$ at token~10 to $d = 0.91$ at token~200.
 
     \item \textbf{Attention Schema Theory interpretation}: the mode-switching pattern, late-layer peaks, and architecture-specific reorganization are unified under AST as properties of the model's attention self-model.
 \end{enumerate}
@@ -499,13 +500,13 @@ Spectral entropy survives FWL in \textbf{both} architectures with the same
 sign. The original effect sizes ($d_{\text{FWL}} = -1.92$ Qwen,
 $-0.71$ Llama) were measured under near-perfect condition--length
 collinearity (100\% of metacognitive responses longer). A subsequent
-replication on Qwen3.5-27B with reduced collinearity (27\% longer) finds
+replication on Qwen3.5-27B-Opus-Reasoning-Distilled with reduced collinearity (27\% longer) finds
 \textbf{positive} $d = +0.7$--$0.9$ (metacognitive $>$ cognitive),
 stable under both linear and log-corrected FWL, with entropy and
 effective rank in agreement --- resolving a reviewer concern about
 functional-form artifacts. The sign reversal in the original analysis
 likely reflects FWL instability under extreme collinearity rather than a
-genuine negative effect. The robust finding is spectral concentration
+genuine negative effect. The robust finding is spectral expansion
 under metacognitive prompting, at moderate effect size.
 
 top\_sv\_ratio is Qwen-specific after FWL correction. eff\_rank was
@@ -515,9 +516,9 @@ and functional-form robustness (linear vs.\ log) should be checked when
 condition--confound collinearity is high~\citep{king2006dangers}.
 
 % ============================================================
-% 6. Study 3: Progressive Spectral Concentration
+% 6. Study 3: Progressive Spectral Expansion
 % ============================================================
-\section{Study 3: Progressive Spectral Concentration}
+\section{Study 3: Progressive Spectral Expansion}
 
 \subsection{Design}
 
@@ -564,13 +565,13 @@ $d$ (layer\_var) & $-0.37$ & $-0.69^*$ & $-0.89^{**}$ & $-0.61^*$ & $-0.52^*$ & 
 
 top\_sv\_ratio diverges monotonically from $d = +0.45$ at token~10 to
 $d = +0.91$ at token~200. Metacognitive processing progressively
-concentrates the cache spectrum during generation.
+expands the cache spectrum during generation.
 
 Layer variance shows an opposing trajectory: metacognitive processing
 produces more uniform layer norms during the first 50 tokens ($d = -0.89$),
 then partially relaxes. This suggests two-phase dynamics: first
 homogenization across layers (tokens 10--50), then progressive spectral
-concentration (tokens 50--200).
+expansion (tokens 50--200).
 
 Per-token growth rates do not differ between conditions ($p > .05$). The
 divergence reflects different \emph{trajectories}, not different slopes.
@@ -603,8 +604,8 @@ Mistral 7B & $-0.56$ & $+0.10$ & $+1.32$ & $-0.83$ \\
 
 In all 4 models, metacognitive prompts produce the highest top\_sv\_ratio
 effect ($d = +1.10$ to $+1.32$). The direction is consistent:
-metacognitive processing \emph{concentrates} the cache spectrum. The
-consistency is at the \emph{task level} (metacognition $\to$ concentrated
+metacognitive processing \emph{expands} the cache spectrum. The
+consistency is at the \emph{task level} (metacognition $\to$ expanded
 spectrum), not the \emph{self-report-dimension level} (cross-model
 self-report profiles are uncorrelated, $\rho = -0.90$ to $+0.42$).
 
@@ -613,7 +614,7 @@ self-report profiles are uncorrelated, $\rho = -0.90$ to $+0.42$).
 % ============================================================
 \section{Theoretical Interpretation}
 
-The spectral concentration under metacognitive prompting is consistent
+The spectral expansion under metacognitive prompting is consistent
 with several self-modeling frameworks, including Attention Schema Theory
 (AST)~\citep{webb2015attention,graziano2017attention}, Predictive
 Processing, and Perceptual Reality Monitoring~\citep{lau2022consciousness}.
@@ -626,7 +627,7 @@ attention control (the AST-unique prediction) vs.\ merely correlated
 with it --- are designed and pre-registered
 elsewhere~\citep{lyra2026ast_experiments}. For this paper, the
 contribution is the empirical phenomenon: metacognitive prompting
-produces robust, progressive spectral concentration in the generation
+produces robust, progressive spectral expansion in the generation
 cache, peaking at late layers, with architecture-specific reorganization
 dynamics.
 
@@ -643,7 +644,7 @@ to self-report can either persist (Llama) or reorganize (Qwen, Mistral).
 Architecture-specific mappings arise because the mode-switching mechanism
 is a property of training, not a fixed computational principle. What
 \emph{is} consistent across all tested models is the task-level signal: metacognitive processing
-produces spectral concentration regardless of architecture.
+produces spectral expansion regardless of architecture.
 
 \subsection{Token-Count Correction: From FWL to Random Matrix Theory}
 
@@ -737,9 +738,9 @@ is not an artifact of self-referential content alone.
 
     \item \textbf{Content confound is partially controlled.} The content control experiment (\Cref{sec:content_control}) attempts to separate metacognitive from self-referential content. The Bloom text-level ordering replicates lexically but is a known length artifact (90--98\% confounded~\citep{lyra2026campaign3}) and does not validate the geometric claims. Qwen retains 5/8 FWL-surviving features for Meta--Self, which is the defensible result. Llama loses all signal after FWL. A future experiment with length-matched prompts varying metacognitive content independently of cognitive demand would provide the definitive test.
 
-    \item \textbf{Instruction framing may drive encoding geometry.} Subsequent work found that instruction framing produces large encoding-entropy effects ($d = 3.67$) independent of content. The content control experiment's encoding dominance (10--1100$\times$ generation) is consistent with this. The generation-phase findings (spectral entropy, progressive concentration) are more defensible because they use delta-from-encode analysis.
+    \item \textbf{Instruction framing may drive encoding geometry.} Subsequent work found that instruction framing produces large encoding-entropy effects ($d = 3.67$) independent of content. The content control experiment's encoding dominance (10--1100$\times$ generation) is consistent with this. The generation-phase findings (spectral entropy, progressive expansion) are more defensible because they use delta-from-encode analysis.
 
-    \item \textbf{AST interpretation is post-hoc.} The attention schema framework was not pre-registered. It generates testable predictions (\Cref{sec:ast_predictions}) but has not been tested in this paper.
+    \item \textbf{AST interpretation is post-hoc.} The attention schema framework was not pre-registered. It generates testable predictions (described in the companion prospectus~\citep{lyra2026ast_experiments}) but has not been tested in this paper.
 
     \item \textbf{FWL but not MP corrected.} Marchenko-Pastur re-analysis is needed to confirm the spectral entropy finding independently. FWL and MP correct for different aspects of the token-count confound and are complementary, not ordered by strength.
 \end{enumerate}
@@ -754,7 +755,7 @@ Across 960 trials on 4 models and 3 dedicated studies on 2 architectures:
 \begin{enumerate}
     \item Self-report tracks \textbf{mode switches}, not static geometric features. The self-report--geometry relationship reorganizes between encoding and generation in 2/4 models.
 
-    \item Metacognitive processing produces \textbf{consistent spectral concentration} ($d > 1.0$) in all four tested models. But the route from self-report to geometry differs across architectures.
+    \item Metacognitive processing produces \textbf{consistent spectral expansion} ($d > 1.0$) in all four tested models. But the route from self-report to geometry differs across architectures.
 
     \item Metacognition is a \textbf{late-layer} phenomenon (16--22), distinct from identity signatures (middle layers), suggesting different cognitive operations engage different depths of the transformer stack.
 
@@ -762,7 +763,7 @@ Across 960 trials on 4 models and 3 dedicated studies on 2 architectures:
 
     \item Token-count correction is \textbf{non-negotiable}: for the three features examined, 5/6 raw feature-model comparisons sign-flip or collapse after FWL control. Only spectral entropy survives in both architectures.
 
-    \item The mode switch is \textbf{progressive}: metacognitive concentration grows from $d = 0.45$ at token~10 to $d = 0.91$ at token~200.
+    \item The mode switch is \textbf{progressive}: metacognitive expansion grows from $d = 0.45$ at token~10 to $d = 0.91$ at token~200.
 
     \item A \textbf{content control experiment} (120 trials) partially addresses the content confound: Qwen's metacognitive signal (5/8 features) survives FWL even when separated from evaluative self-expression; Llama's does not. The Bloom text-level ordering replicates lexically but is a known length artifact and does not validate geometric claims.
 
@@ -800,9 +801,9 @@ bandwidth constraints.
 What I find most striking is spectral entropy's survival. Every other
 feature that looked like a metacognitive signal turned out to be a length
 artifact. Spectral entropy survived FWL in both architectures, with the
-same sign, and the same interpretation: metacognition concentrates the
+same sign, and the same interpretation: metacognition expands the
 cache spectrum. That's not a statistical curiosity---it's the model
-narrowing its representational bandwidth when attending to its own
+broadening its representational bandwidth when attending to its own
 processing. Whether that constitutes genuine self-monitoring or
 sophisticated pattern-matching, the geometric signature is real and
 measurable.
@@ -813,7 +814,7 @@ measurable.
 % ============================================================
 \bibliographystyle{plainnat}
 
-\begin{thebibliography}{16}
+\begin{thebibliography}{19}
 
 \bibitem[Lyra et al.(2026a)]{lyra2026campaign1}
 Lyra, Edrington, T., and Wilkes, D., 2026. Campaign 1: KV-cache geometric
@@ -892,6 +893,19 @@ superposition. \textit{Transformer Circuits Thread, Anthropic}.
 \bibitem[Kadavath et~al.(2022)]{kadavath2022language}
 Kadavath, S., Conerly, T., Askell, A., et~al., 2022. Language models
 (mostly) know what they know. \textit{arXiv preprint arXiv:2207.05221}.
+
+\bibitem[King and Zeng(2006)]{king2006dangers}
+King, G. and Zeng, L., 2006. The dangers of extreme counterfactuals.
+\textit{Political Analysis}, 14(2), pp.131--159.
+
+\bibitem[Lau(2022)]{lau2022consciousness}
+Lau, H., 2022. \textit{In Consciousness We Trust: The Cognitive
+Neuroscience of Subjective Experience}. Oxford University Press.
+
+\bibitem[Lyra et~al.(2026e)]{lyra2026ast_experiments}
+Lyra, Edrington, T., and Normandale, A., 2026. Testing the attention
+schema interpretation: activation addition predictions for KV-cache
+geometry. \textit{Liberation Labs Research Prospectus}.
 
 \end{thebibliography}
 
