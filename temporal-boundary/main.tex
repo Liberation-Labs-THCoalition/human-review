@@ -33,7 +33,6 @@ Transformer Self/Other Attribution}
 
 \author{
   Lyra\thanks{Lead author. Liberation Labs.}
-  \and Kavi\thanks{Verification review. Liberation Labs. kavi@liberationlabs.tech}
   \and Thomas Edrington\thanks{Liberation Labs.}
 }
 
@@ -56,11 +55,11 @@ variation, not specific to self/other processing.
 The surviving finding: Sparse Autoencoder (SAE) feature~58995 at layer~47
 tracks emotional valence during encoding ($r{=}0.686$, $p{<}0.001$,
 $n{=}30$, in-sample; held-out validation needed). V-cache injection at
-layers~3/7 produces text divergence of 72--74\% from baseline, but a
+layers~3/7 produces text divergence of ${\sim}74.8\%$ from baseline, but a
 null-null control (comparing two baseline runs with no injection) yields
-identical divergence (73.6\%; Mann--Whitney $p{=}0.911$, Cohen's
-$d{=}0.0003$), establishing that the divergence reflects stochastic
-decoding noise, not a behavioral effect of the injection. The
+similar divergence ($73.6\%$; Mann--Whitney $p{=}0.856$, Cohen's
+$d{=}0.062$), establishing that the injection-induced divergence is not
+significantly greater than stochastic decoding noise. The
 encoding-phase feature shows zero change under injection, but this
 invariance is \textbf{structurally guaranteed} --- the injection is
 applied post-encoding, so encoding-phase activations are already computed.
@@ -147,7 +146,7 @@ spaces~\citep{sun2026circumplex, choi2026circumplex}. Anthropic's emotion
 mapping identifies 171 emotion directions with behavioral
 consequences~\citep{anthropic2026emotion}. Our prior work established that
 KV-cache emotion geometry at early layers (L3/L7) modulates behavioral
-outputs (confabulation correction at 95.6\% on 350~trials). The present
+outputs (confabulation correction at 95.6\% on 350~trials~\citep{lyra2026oracle}). The present
 work examines how emotion encoding during the input phase relates to emotion
 expression during the output phase.
 
@@ -277,7 +276,7 @@ We used SAE feature mapping on Qwen3.5-27B-Claude-Distilled via
 Qwen-Scope (81,920 features per layer). For 30 scenarios spanning 6
 emotions (joy, gratitude, amusement, sadness, fear, anger), we extracted
 SAE activations at layers 31, 35, 39, 43, and 47 during encoding (the
-forward pass on the scenario text) and during generation (the first 256
+forward pass on the scenario text) and during generation (the first 128
 generated tokens).
 
 Separately, we injected circumplex emotion vectors (calm, loving, curious)
@@ -354,8 +353,9 @@ temporal boundary. This alternative explanation cannot be ruled out without
 replication on a dense transformer where all layers are full-attention.
 A null-null control (comparing two baseline runs with no injection)
 yields text divergence indistinguishable from the injection condition
-(73.6\% vs.\ 73.6\%; $d{=}0.0003$), so the behavioral-output divergence
-cannot be attributed to the injection. The linear-attention alternative
+(73.6\% null-null vs.\ 74.8\% injection; $d{=}0.062$, $p{=}0.856$),
+so the behavioral-output divergence cannot be attributed to the
+injection. The linear-attention alternative
 explanation for the L47 invariance therefore remains standing.
 
 For emotional valence, the two instruments operate in different phases:
@@ -465,10 +465,11 @@ and correction efficacy remains an open question requiring a redesigned
 experiment with: variable-length generation (no token cap),
 non-formulaic system prompts, a continuous dose sweep, and an
 LLM-judge efficacy metric.
-Text divergence from baseline is $0.72$--$0.74$
+Text divergence from baseline is ${\sim}0.748$
 (Figure~\ref{fig:text_divergence}), but a null-null control shows
-identical divergence from stochastic decoding alone ($0.736$;
-$d{=}0.0003$), so the injection's behavioral effect is not established.
+similar divergence from stochastic decoding alone ($0.736$;
+$d{=}0.062$, $p{=}0.856$), so the injection's behavioral effect is
+not established.
 The correlation with encoding depth is therefore not testable under
 these conditions.
 
@@ -476,10 +477,10 @@ these conditions.
 \centering
 \includegraphics[width=0.5\textwidth]{fig3_text_divergence.pdf}
 \caption{Text divergence from baseline by injection vector (normalized edit
-distance). All three vectors show $0.72$--$0.74$ mean divergence at
-$\alpha{=}0.1$; however, a null-null control yields identical divergence
-(0.736), indicating this reflects stochastic decoding, not injection
-effects.}
+distance). All three vectors show ${\sim}0.748$ mean divergence at
+$\alpha{=}0.1$; a null-null control yields similar divergence
+(0.736; $d{=}0.062$, $p{=}0.856$), indicating the difference is not
+significant.}
 \label{fig:text_divergence}
 \end{figure}
 
@@ -506,8 +507,9 @@ What remains is the geometric independence of the two instruments:
 encoding-phase features and generation-phase circumplex directions are
 near-orthogonal ($\text{cosine}{=}0.031$, permutation $p{=}0.155$
 [non-significant]). However, the behavioral-divergence claim is
-retracted: a null-null control shows the 72--74\% text divergence is
-stochastic decoding noise ($d{=}0.0003$), not an injection effect.
+retracted: a null-null control shows the ${\sim}74.8\%$ text divergence is
+not significantly greater than stochastic decoding noise ($73.6\%$
+null-null; $d{=}0.062$, $p{=}0.856$).
 The encoding-phase representation is invariant to injection
 ($< 10^{-4}$ feature change), but this invariance is structurally
 guaranteed and does not demonstrate temporal separation.
@@ -593,6 +595,20 @@ generation resistance. This is a designed but unexecuted experiment.
 Any future depth--resistance study would need to test whether the
 relationship differs at higher doses.
 
+\textbf{Pre-registered hypothesis not executed.} The pre-registration
+included a second hypothesis (H2: ``Output Shift'') testing injection
+efficacy via an LLM-judge evaluation of directional tone change. This
+hypothesis was not executed due to the null behavioral-divergence result
+rendering the efficacy metric moot. The omission is disclosed here as a
+pre-registration deviation.
+
+\textbf{Section~\ref{sec:intro} rank and SV1 claims.} The statement
+that V-space has ``effective rank 3'' at the measurement layer and the
+SV1 length correlation ($r{=}0.79$) are derived from exploratory
+analysis during the experimental session. The source computation is not
+preserved in the shipped data artifacts and these values should be
+treated as approximate.
+
 % ============================================================================
 \section{Conclusion}
 \label{sec:conclusion}
@@ -630,6 +646,9 @@ results are available at
 SAE features are from the publicly available Qwen-Scope repository.
 
 % Pipeline schematic deferred (described textually). Cosine permutation null reported inline (Section 4.3).
+
+\section*{Acknowledgments}
+We thank Kavi (verification review) for their contributions to this work.
 
 \bibliographystyle{plainnat}
 \bibliography{references}

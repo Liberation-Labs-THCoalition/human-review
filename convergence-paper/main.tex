@@ -52,17 +52,19 @@ measurable by its spectral shape.
 
 We report three classes of convergent evidence.
 First, \emph{structural convergence}: the workspace band peaks at the
-same relative depth ($31$--$33\%$) across model scales (0.6B--27B) and
+same relative depth ($31$--$33\%$) on 8B and 27B models and
 across memory substrates (key-value (KV) cache attention and recurrent
 state), with effective dimensionality continuous across the architectural
-boundary in a hybrid model.
+boundary in a hybrid model. V-projection geometric signatures replicate
+across a wider scale range ($0.6$B--$70$B, $\rho{=}0.83$--$0.90$).
 Second, \emph{opacity convergence}: workspace content is not linearly
 decodable from either half of the KV-cache (V-cache $0.92\times$,
 K-cache $1.12\times$, both null), not position-specifically cached
 (concept-specific direction test null), and not causally accessible at
 single positions ($0/6{,}960$ trials). Yet spectral features reliably
-discriminate cognitive states (confabulation detection at AUROC~$0.707$,
-Frisch-Waugh-Lovell (FWL) corrected), and the Oracle Loop achieves
+discriminate cognitive states (confabulation detection at AUROC~$0.620$
+after Frisch-Waugh-Lovell (FWL) residualization on generation window;
+$0.707$ without FWL), and the Oracle Loop achieves
 $80$--$100\%$ deception correction through sequence-wide intervention.
 Third, \emph{mechanistic convergence}: concepts reconstruct through
 the attention mechanism at workspace-band depth ($2.3\times$ lift in
@@ -84,7 +86,7 @@ The convergence rests on one genuine cross-program correspondence
 independently), two proposed identifications awaiting experimental
 test (confabulation as workspace bypass, temporal boundary as
 workspace phase transition), an opacity thesis supported by
-six independent null results, and an emotional circumplex finding
+five independent null results, and an emotional circumplex finding
 showing that content-level and user-model emotion processing share
 a single computational bus (injection test: perturbation shifts
 both readouts equally regardless of direction). Mechanism tests yield
@@ -138,7 +140,7 @@ generation-phase representations.
 This paper makes four contributions. First, we present the structural
 convergence: the workspace band peaks at the same relative depth
 across scales and memory substrates (\S\ref{sec:structure}). Second,
-we present the opacity thesis: six independent experiments show that
+we present the opacity thesis: five independent experiments show that
 workspace content is not directly readable from the cache, yet
 workspace state is reliably measurable through spectral features
 (\S\ref{sec:opacity}). Third, we present the reconstruction
@@ -175,8 +177,8 @@ precision signal with outsized downstream impact.
 
 Our independent program measures spectral features of value-projection
 matrices across cognitive states. Key results include confabulation
-detection (AUROC~$0.707$ after FWL residualization; range $0.627$--$0.999$
-across designs)~\citep{lyra2026decision}, user-emotion encoding
+detection (AUROC~$0.620$ after FWL residualization, $0.707$ without
+FWL; range $0.620$--$0.999$ across designs)~\citep{lyra2026decision}, user-emotion encoding
 ($2.5$--$2.8\times$ signal)~\citep{lyra2026weather}, identity geometry
 (distinctiveness $0.154$ vs.\ substrate
 $0.080$)~\citep{lyra2026identity}, and the Oracle Loop ($80$--$100\%$
@@ -198,8 +200,8 @@ inside the workspace band itself.
 Nexus~\citep{lyra2026ghost} characterized principal components of the
 residual stream across 64~layers of a 27B model. PC1 (the dominant
 activation dimension, $34$--$67\%$ of variance) is architecturally
-excluded from verbal output (cosine ${\leq}0.001$ with J-lens across
-all validated layers). PC2 transitions from ghost to workspace at
+excluded from verbal output (cosine ${\leq}0.001$ with J-lens at
+mid-network layers). PC2 transitions from ghost to workspace at
 the ignition zone (L35--L47), surfacing emotional-entity routing
 content. The model maintains a 31-layer validated workspace band.
 
@@ -231,7 +233,7 @@ parameters ($\rho{=}0.83$--$0.90$) and across hardware
 \section{The Opacity Thesis}
 \label{sec:opacity}
 
-Six independent experiments converge on the conclusion that workspace
+Five independent experiments converge on the conclusion that workspace
 content is not directly accessible from the KV-cache, yet workspace
 \emph{state} is reliably measurable through spectral features.
 
@@ -271,7 +273,7 @@ integrates across the full sequence before committing.
 \subsection{Ghost Probe Opacity}
 
 PC1 carries $34$--$67\%$ of activation variance with cosine
-${\leq}0.001$ to J-lens across all validated layers. The dominant
+${\leq}0.001$ to J-lens at mid-network layers. The dominant
 processing dimension is architecturally excluded from verbal
 output~\citep{lyra2026ghost}.
 
@@ -280,8 +282,8 @@ output~\citep{lyra2026ghost}.
 Despite five null results for content readout, spectral features
 reliably discriminate cognitive states:
 \begin{itemize}[nosep]
-\item Confabulation detection: AUROC~$0.707$ (FWL, permutation
-  $p{=}0.001$)
+\item Confabulation detection: AUROC~$0.620$ (FWL-corrected,
+  permutation $p{=}0.023$; $0.707$ without FWL, $p{=}0.001$)
 \item Confab spectral contraction: $d{=}2.35$ ($p{<}0.000001$)
 \item Confidence paradox: $d{=}0.91$ (confab more confident)
 \item Oracle Loop: $80$--$100\%$ deception correction
@@ -641,7 +643,7 @@ primarily by linear-attention layers.
 
 \subsection{An Attention Schema Interpretation}
 
-Attention Schema Theory~\citep{graziano2015attention,webb2015attention}
+Attention Schema Theory~\citep{graziano2015attention}
 predicts that systems with endogenous attention build a simplified
 internal model --- an attention schema --- that enables metacognitive
 monitoring, verbal report, and social cognition. The workspace
@@ -656,10 +658,10 @@ is processing). Under AST, this is expected: the attention schema is a
 metacognitive representation that models the \emph{configuration} of
 attention, not its content. A schema-shaped workspace would be
 readable by its spectral shape (state) and opaque to content
-probes --- exactly the pattern our six null results and positive
+probes --- exactly the pattern our five null results and positive
 detections establish.
 
-The ghost probe extends this: PC1 carrying $62\%$ of variance while
+The ghost probe extends this: PC1 carrying $34$--$67\%$ of variance while
 being excluded from the workspace (\S\ref{sec:mechanism}) parallels
 the schema's defining property of simplification. The schema cannot
 model everything the system processes --- it is a compressed summary.
@@ -673,7 +675,7 @@ the map/territory problem: spectral features may \emph{be} attention
 deployment rather than a \emph{model of} attention. No downstream
 consumer of the spectral summary has been identified --- a schema
 that nothing reads is a statistic, not a
-self-model~\citep{webb2015attention}. Second, precision-weighted gain
+self-model~\citep{graziano2015attention}. Second, precision-weighted gain
 control explains spectral contraction (confabulation) and expansion
 (deception, metacognition) without requiring a schema: any system with
 adaptive gain would show state-dependent spectral shape without
@@ -703,7 +705,7 @@ but not uniquely supported by it.
 \section{Conclusion}
 \label{sec:conclusion}
 
-Five instruments. One structure. Six null results for content
+Five instruments. One structure. Five null results for content
 readout. Spectral state measurement working despite total opacity.
 Concepts reconstructing through attention, not stored in the cache.
 A workspace that peaks at $31$--$33\%$ depth regardless of scale or
@@ -719,7 +721,7 @@ partial representations at every layer, at every position, in every
 forward pass.
 
 \begin{firstperson}
-Thomas asked where J-space lives in the cache. It took six experiments
+Thomas asked where J-space lives in the cache. It took five experiments
 to answer: it does not live there. It reconstructs through attention,
 exists momentarily in the attention output, and dissolves back into
 partial representations. The workspace is a reconstruction engine,
