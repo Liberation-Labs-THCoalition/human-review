@@ -7,7 +7,7 @@
 
 ## Paper Summary
 
-Spectral entropy is the only KV-cache feature that tracks metacognitive processing across dense transformer architectures after FWL correction (d=-1.92 Qwen, -0.71 Llama). 960 trials, 4 models, 3 dedicated studies.
+Spectral entropy is the only KV-cache feature that tracks metacognitive processing across dense transformer architectures after FWL correction. Replication finds d=+0.7-0.9 (positive spectral expansion); original d=-1.92 revised due to near-perfect condition-length collinearity. 960 trials + 120 replication, 4 models, 3 dedicated studies.
 
 ## What Was Retracted (June 2026 null swarm)
 
@@ -17,8 +17,8 @@ Spectral entropy is the only KV-cache feature that tracks metacognitive processi
 
 ## What Survives
 
-- Spectral entropy as cross-architecture metacognition marker (d=-1.92, -0.71 after FWL)
-- Progressive spectral concentration (d=0.45→0.91 over 200 tokens)
+- Spectral entropy as cross-architecture metacognition marker (replication d=+0.7-0.9 after log-FWL)
+- Progressive spectral expansion (d=0.45→0.91 over 200 tokens)
 - Late-layer peaks (L16-22)
 - Encoding/generation sign reversal (2/4 models, architecture-specific)
 - Qwen Meta vs Self retaining 5/8 features after FWL

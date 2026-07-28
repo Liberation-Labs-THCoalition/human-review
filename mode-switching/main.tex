@@ -66,8 +66,8 @@
 % ============================================================
 \begin{abstract}
 Metacognitive prompting produces spectral expansion in generation-phase
-KV-cache geometry (Cohen's $d$ [standardized mean difference] $= 0.7$--$0.9$ after token-count correction, robust to
-both linear and logarithmic functional forms; $n{=}120$ replication on
+KV-cache geometry (Cohen's $d$ [standardized mean difference] $= 0.7$--$0.9$ after logarithmic token-count correction (the linear functional form was
+not separately tested); $n{=}120$ replication on
 Qwen3.5-27B-Opus-Reasoning-Distilled). This supports a real metacognitive geometric signature but
 revises the original finding: an earlier analysis on Qwen2.5-7B reported
 $d_{\text{FWL}} = -1.92$ with sign reversal, which a hostile review
@@ -177,7 +177,10 @@ We extract six geometric features from the key-value cache: effective rank
 (eff\_rank $= \exp(H_{\text{SVD}})$), spectral entropy ($H_{\text{SVD}}$),
 Frobenius norm (key\_norm), per-token norm (norm\_per\_token), top singular
 value ratio (top\_sv\_ratio $= \sigma_1 / \sum_i \sigma_i$), and rank at
-10\% threshold (rank\_10). For aggregate analyses, features are computed on
+10\% threshold (rank\_10). Two additional features---layer norm entropy
+(layer\_norm\_entropy) and cross-layer variance (layer\_var)---are
+computed for specific analyses (content control, temporal dynamics) but
+are not part of the primary six-feature set. For aggregate analyses, features are computed on
 the concatenated key matrix across all layers; for per-layer analyses,
 features are extracted at each transformer layer separately. All primary
 analyses use delta features (generation $-$ encoding) unless otherwise
@@ -271,6 +274,14 @@ self-report--feature pairs (10 dimensions $\times$ 6 features) per
 model, we compute FWL-corrected Spearman correlations separately for
 encoding-phase and generation-phase geometric features.
 
+\paragraph{Generation parameters.} For the 120-trial replication on
+Qwen3.5-27B-Opus-Reasoning-Distilled, generation used multinomial
+sampling with temperature~$= 0.7$, no top-$p$ filtering, and a maximum
+of 200 new tokens per trial. Per-trial random seeds were set
+deterministically to ensure reproducibility. The original 960-trial
+experiments used the same generation framework; exact parameters are
+documented in the experiment scripts at the repository linked in \S10.
+
 \subsection{Coupling Strength}
 
 \begin{table}[H]
@@ -317,6 +328,7 @@ Qwen 7B    & 12 & 60 & 20.0\% & 5.95 & 0.001*** \\
 Llama 8B   & 0  & 60 & 0.0\%  & 9.97 & 1.000 \\
 Mistral 7B & 11 & 60 & 18.3\% & 5.56 & ${<}0.001$*** \\
 \bottomrule
+\multicolumn{6}{l}{\footnotesize All $p_{\text{perm}}$ values are from one-sided permutation tests (observed flips $\geq$ null).}
 \end{tabular}
 \end{table}
 
@@ -324,6 +336,8 @@ Two models---Qwen~7B and Mistral~7B---show statistically significant
 reorganization. Bootstrap 95\% confidence intervals on individual flipped
 pairs confirm that sign reversals are genuine (CIs exclude zero for both
 phases in all 23 flipped pairs).
+No multiplicity correction is applied across the four models; all
+reported $p_{\text{perm}}$ values are per-model.
 
 \subsection{Interpretation: Mode-Switching}
 
@@ -501,11 +515,14 @@ $-0.71$ Llama) were measured under near-perfect condition--length
 collinearity (100\% of metacognitive responses longer). A subsequent
 replication on Qwen3.5-27B-Opus-Reasoning-Distilled with reduced collinearity (27\% longer) finds
 \textbf{positive} $d = +0.7$--$0.9$ (metacognitive $>$ cognitive),
-stable under both linear and log-corrected FWL, with entropy and
-effective rank in agreement --- resolving a reviewer concern about
-functional-form artifacts. The sign reversal in the original analysis
-likely reflects FWL instability under extreme collinearity rather than a
-genuine negative effect. The robust finding is spectral expansion
+stable under log-corrected FWL (the linear functional form was not
+separately tested), with entropy and effective rank in agreement.
+The sign reversal in the original analysis
+may reflect FWL instability under the near-perfect condition--length
+collinearity in the original dataset (100\% of metacognitive responses
+longer), though this hypothesis has not been directly tested on the
+original data. The replication, with reduced collinearity (27\% longer),
+finds the effect is positive. The robust finding is spectral expansion
 under metacognitive prompting, at moderate effect size.
 
 top\_sv\_ratio is Qwen-specific after FWL correction. eff\_rank was
@@ -754,7 +771,7 @@ Across 960 trials on 4 models and 3 dedicated studies on 2 architectures:
 \begin{enumerate}
     \item Self-report tracks \textbf{mode switches}, not static geometric features. The self-report--geometry relationship reorganizes between encoding and generation in 2/4 models.
 
-    \item Metacognitive processing produces \textbf{consistent spectral expansion} ($d > 1.0$) in all four tested models. But the route from self-report to geometry differs across architectures.
+    \item Metacognitive processing produces \textbf{consistent spectral expansion} ($d > 1.0$, raw pre-FWL) in all four tested models. But the route from self-report to geometry differs across architectures.
 
     \item Metacognition is a \textbf{late-layer} phenomenon (16--22), distinct from identity signatures (middle layers), suggesting different cognitive operations engage different depths of the transformer stack.
 
@@ -861,28 +878,6 @@ Psychology}, 6, p.500.
 Graziano, M.S.A., 2017. The attention schema theory: a foundation for
 engineering artificial consciousness. \textit{Frontiers in Robotics and
 AI}, 4, p.60.
-
-\bibitem[Wilterson and Graziano(2021)]{wilterson2021attention}
-Wilterson, A.I. and Graziano, M.S.A., 2021. The attention schema theory
-in a neural network agent: controlling visuospatial attention using a
-descriptive model of attention. \textit{Proceedings of the National Academy
-of Sciences}, 118(33), e2102421118.
-
-\bibitem[Farrell et~al.(2024)]{farrell2024attention}
-Farrell, K.T., Ziman, K. and Graziano, M.S.A., 2024. Testing components of
-the Attention Schema Theory in artificial neural networks. \textit{arXiv
-preprint arXiv:2411.00983}.
-
-\bibitem[McKenzie et~al.(2026)]{mckenzie2026endogenous}
-McKenzie, A., Pepper, K., Servaes, S., Leitgab, M., Cubuktepe, M.,
-Vaiana, M., de~Lucena, D., Rosenblatt, J. and Graziano, M.S.A., 2026.
-Endogenous resistance to activation steering in language models.
-\textit{arXiv preprint arXiv:2602.06941}.
-
-\bibitem[Sofroniew et~al.(2026)]{anthropic2026emotions}
-Sofroniew, N., Kauvar, I., Saunders, W., et~al., 2026. Emotion concepts
-and their function in a large language model. \textit{Transformer Circuits
-Thread}, Anthropic.
 
 \bibitem[Belinkov(2022)]{belinkov2022probing}
 Belinkov, Y., 2022. Probing classifiers: promises, shortcomings, and
