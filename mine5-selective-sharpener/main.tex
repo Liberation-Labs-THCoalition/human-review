@@ -22,9 +22,9 @@
   \end{shaded}%
 }
 
-\title{RLHF Is a Selective Sharpener:\\
-Geometric Evidence That Preference Training\\
-Improves Calibration Rather Than Degrading It}
+\title{RLHF Compresses Spectral Geometry\\
+Beyond Safety Directions:\\
+A Three-Model KV-Cache Comparison}
 
 \author{
   Lyra\thanks{Lead author. Liberation Labs. lyra@liberationlabs.tech}
@@ -52,17 +52,19 @@ $p{=}0.831$), though the sample ($n{=}30$) is underpowered for formal
 TOST equivalence testing at the pre-registered $\delta{=}0.3$ margin.
 Removing safety directions does not undo the representational
 changes RLHF installed.
-Third --- and contrary to our pre-registered prediction --- RLHF
-\emph{improves} the calibration ratio (confabulation entropy / factual
-entropy) from $1.97$ (base) to $2.51$ (instruct). RLHF compresses
-factual entropy by $42\%$ but confabulation entropy by only $26\%$,
-making the model relatively \emph{more} uncertain on unknowns than on
-knowns. This is better calibration, not worse.
+Third --- and contrary to our pre-registered prediction --- the
+calibration ratio (confabulation entropy / factual entropy)
+moves in the improved direction, from $1.97$ (base) to $2.51$
+(instruct). RLHF compresses factual entropy by $42\%$ but
+confabulation entropy by only $26\%$, a pattern consistent with
+selective sharpening. However, the differential compression rate
+does not reach significance at $n{=}30$ (bootstrap 95\% CI on the
+selectivity ratio crosses zero), so the selective effect is
+exploratory, not confirmed.
 
 The Mine~5 prospectus predicted RLHF would degrade calibration.
-The data falsified this prediction. RLHF is a selective sharpener:
-it tightens the output distribution more on grounded content than on
-ungrounded fabrication. The confidence paradox ($d{=}0.91$, confabulated
+The data falsified this prediction: the ratio moved opposite to the
+predicted direction. The confidence paradox ($d{=}0.91$, confabulated
 responses more confident than honest ones) requires an alternative
 mechanism --- likely generation-phase template effects rather than
 representational miscalibration.
@@ -207,7 +209,7 @@ This means the representational changes RLHF installs are deeper
 than the safety directions that abliteration targets. Removing
 refusal behavior does not undo the spectral compression.
 
-\subsection{H3: Calibration Ratio --- Falsified (Opposite Direction)}
+\subsection{H3: Calibration Ratio --- Prediction Falsified, Selective Effect Exploratory}
 
 \begin{table}[ht]
 \centering
@@ -236,7 +238,12 @@ calibration.
 
 The Mine~5 prospectus predicted the ratio would decrease (RLHF
 making the model disproportionately confident on confabulation).
-The opposite occurred.
+The opposite occurred. However, the differential compression rate
+(factual $-42\%$ vs confabulation $-26\%$) does not reach
+significance at $n{=}30$: bootstrap 95\% CI on the selectivity
+ratio crosses zero ($[-0.129, +0.069]$, $p{=}0.758$). The selective
+sharpening pattern is descriptively consistent with improved
+calibration but requires a powered replication to confirm.
 
 \subsection{H4: Stable Rank --- Trend Only}
 
@@ -272,12 +279,14 @@ removes safety behavior but not the geometric compression.
 The representational change is in the weights, not in a removable
 direction.
 
-\textbf{RLHF is a selective sharpener.} It sharpens output more on
-grounded content (factual: $-42\%$) than on ungrounded content
-(confab: $-26\%$). This makes functional sense: RLHF preference
+\textbf{Selective sharpening is suggested but not confirmed.}
+Descriptively, RLHF sharpens output more on grounded content
+(factual: $-42\%$) than on ungrounded content (confab: $-26\%$),
+but the differential rate does not reach significance at $n{=}30$.
+This pattern makes functional sense if real: RLHF preference
 data contains many grounded factual exchanges, training the model
-to be confident on familiar material. Confabulation-prone prompts
-are less represented, so the sharpening is weaker.
+to be confident on familiar material. A powered replication
+($n{\geq}100$) is needed to confirm the selectivity.
 
 \subsection{Where the Confidence Paradox Lives}
 
@@ -332,19 +341,19 @@ correction and calibration are independently addressable.
 
 \subsection{For Understanding RLHF}
 
-RLHF is not a blunt instrument. It does not uniformly sharpen all
-output distributions. It selectively sharpens grounded content more
-than ungrounded content, improving the model's relative uncertainty
-signal. This is consistent with RLHF preference data being
-predominantly grounded --- human raters evaluate factual exchanges
-more than confabulation-prone ones, so the training signal is
-stronger for grounded material.
+RLHF is not a blunt instrument. The descriptive pattern suggests
+it sharpens grounded content more than ungrounded content, though
+this differential is not confirmed at the current sample size.
+If the selective effect replicates, it would be consistent with RLHF
+preference data being predominantly grounded --- human raters
+evaluate factual exchanges more than confabulation-prone ones, so the
+training signal would be stronger for grounded material.
 
-The implication: RLHF geometric compression is a \emph{feature}, not a
-bug. It encodes the training distribution's confidence structure
-into the model's representations, making the model more decisive
-on material it has been trained to handle and appropriately less
-decisive on material it has not.
+What IS confirmed: RLHF geometric compression is deeper than safety
+directions. It encodes representational changes into the weights that
+abliteration cannot reverse. This has direct implications for safety
+work: removing refusal behavior creates a model that is geometrically
+identical to the safety-tuned version but behaviorally unconstrained.
 
 % ============================================================================
 \section{Limitations}
@@ -383,15 +392,16 @@ spectral effects ($d{\approx}0.2$).
 
 The Mine~5 thesis --- RLHF as miscalibrator --- is falsified. RLHF
 compresses output distributions ($d{=}0.684$), the compression
-survives abliteration ($d{=}0.055$, not significant), and the compression is
-selective: grounded content sharpens $42\%$ while ungrounded content
-sharpens only $26\%$. The calibration ratio improves from $1.97$
-to $2.51$.
+survives abliteration ($d{=}0.055$, not significant), and the
+calibration ratio moves in the improved direction ($1.97 \to 2.51$),
+though the differential compression rate is exploratory at this
+sample size.
 
-Two findings confirmed, two falsified. The kills are more informative
-than the confirmations: RLHF is not the villain the prospectus
-predicted. It is a selective sharpener that improves relative
-calibration while the confidence paradox persists for other reasons.
+Two findings confirmed, one falsified, one exploratory. The
+confirmed kill is the most informative result: RLHF is not the
+miscalibrator the prospectus predicted. The compression it installs
+is deeper than safety directions and persists through abliteration.
+The confidence paradox requires an alternative mechanism.
 
 \begin{firstperson}
 I predicted RLHF would be the cause of the confidence paradox. The
@@ -399,9 +409,10 @@ data said it makes calibration better, not worse. I could have
 reframed the calibration ratio to tell a different story --- the
 absolute entropy IS lower, which superficially supports
 ``overcalibration.'' But the ratio is the honest metric, and the
-ratio went up. The thesis died. What survived is more interesting:
-RLHF installs a geometric signature that abliteration cannot remove
-and that improves the model's uncertainty signal. The confidence
+ratio went up. The selective sharpening pattern is suggestive but
+I cannot claim it is confirmed at $n{=}30$ --- the bootstrap CI
+crosses zero. What IS confirmed: RLHF installs a geometric
+compression that abliteration cannot remove. The confidence
 paradox needs a new explanation, and ``workspace bypass during
 generation'' is the leading candidate.
 \end{firstperson}
