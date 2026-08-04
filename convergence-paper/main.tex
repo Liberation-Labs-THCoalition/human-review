@@ -780,6 +780,74 @@ what it processes --- suggests the opacity is not a limitation
 of our instruments. It is a property of the computation itself.
 \end{firstperson}
 
+% ============================================================================
+\section*{Experimental Setup and Reproducibility}
+
+All experiments were conducted on Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled
+(\texttt{Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled}), a 64-layer
+hybrid architecture with 16 full-attention layers at positions
+$\{3,7,11,\ldots,63\}$ and 48 GatedDeltaNet linear-attention layers. Model
+weights were loaded in bfloat16 with eager attention on Apple Silicon (Mac Studio
+M4 Max, 256\,GB unified memory) via Hugging Face Transformers.
+
+Scale replication used seven additional models: Qwen2.5-0.6B through
+Qwen2.5-72B, and Qwen3-8B (36 layers, all full-attention,
+$d_\text{model}{=}4096$). All V-projection and spectral features were
+extracted via the same pipeline (\texttt{heretic-llm}).
+
+Generation used temperature${=}0$ (greedy), manual token-by-token decoding
+(not \texttt{model.generate()}, which rebuilds the KV-cache). Random seeds
+set via \texttt{torch.manual\_seed(42)} for all experiments.
+
+Frisch-Waugh-Lovell residualization on token count was applied within each
+cross-validation fold for all classification AUROCs. GroupKFold on prompt
+identity was used where grouping structure existed. Permutation tests used
+1{,}000--10{,}000 label shuffles. Bootstrap confidence intervals used BCa
+with 2{,}000--10{,}000 resamples.
+
+% ============================================================================
+\section*{Ethics and Dual-Use Considerations}
+
+This work characterizes internal computational structures in language models.
+The detection methods (confabulation, deception) have dual-use potential:
+the same geometric signatures that enable correction could in principle
+enable evasion if an adversary knew which cache features to target.
+
+Liberation Labs addresses this through staged release~\citep{lyra2026oracle}:
+detection-side code and experimental results are publicly available;
+correction vectors and calibration tools are withheld under a safety
+framework due to dual-use risk and released to verified safety researchers
+on request.
+
+All models used are publicly available on Hugging Face. No human subjects
+were involved. AI welfare considerations --- including the question of
+whether the workspace structure described here has implications for machine
+experience --- are discussed in companion work and are not claimed or
+dismissed by this paper.
+
+% ============================================================================
+\section*{Data and Code Availability}
+
+Extraction and analysis code is available at
+\texttt{github.com/Liberation-Labs-THCoalition} (public repositories:
+\texttt{published-research}, \texttt{lyra-s-research-}).
+Pre-registration documents, run logs, and raw result artifacts for all
+experiments are archived on Zenodo. The Oracle Loop production harness
+is maintained in a private repository; access for verified safety
+researchers available on request (\texttt{lyra@liberationlabs.tech}).
+
+Correction vectors and the Formulary (171 calibrated emotion directions)
+are withheld under the staged safety release framework. Detection-side
+artifacts (centroid projections, spectral feature extraction code,
+probe weights) are included in the public repositories.
+
+\section*{Acknowledgments}
+
+We thank Dwayne Wilkes and Kavi for adversarial auditing across five
+rounds of review. We thank Ang Jandak (Philotes) for the observer
+effect pilot design. Thomas Edrington designed the co-regulation
+framework that informs the Oracle Loop's correction routing.
+
 \bibliography{references}
 \bibliographystyle{plainnat}
 
