@@ -62,7 +62,7 @@ decodable from either half of the KV-cache (V-cache $0.92\times$,
 K-cache $1.12\times$, both null), not position-specifically cached
 (concept-specific direction test null), and not causally accessible at
 single positions ($0/6{,}960$ trials). Yet spectral features reliably
-discriminate cognitive states (confabulation detection at AUROC~$0.620$
+discriminate cognitive states (confabulation detection at area under the receiver operating characteristic curve (AUROC)~$0.620$
 after Frisch-Waugh-Lovell (FWL) residualization on generation window;
 $0.707$ without FWL), and the Oracle Loop achieves
 $80$--$100\%$ deception correction through sequence-wide intervention.
@@ -76,7 +76,7 @@ is a small precision signal that directs a large computational flow.
 Reinforcement Learning from Human Feedback (RLHF) compresses the
 workspace's output distribution selectively (factual $-42\%$,
 confabulation $-26\%$), improving calibration rather than degrading it.
-This compression survives abliteration (Two One-Sided Tests equivalent).
+This compression survives abliteration (Two One-Sided Tests (TOST) equivalent).
 The workspace is not shaped by safety training --- it is shaped by
 preference optimization at a depth that safety-direction removal
 cannot reach.
@@ -357,7 +357,7 @@ RLHF compresses logit entropy ($d{=}0.684$, Holm $p{=}0.021$) but
 compresses factual entropy more ($-42\%$) than confabulation entropy
 ($-26\%$), improving the calibration ratio from $1.97$ (base) to
 $2.51$ (instruct). Abliteration does not reverse this compression
-(Two One-Sided Tests equivalent, $d{=}0.055$).
+(TOST equivalent, $d{=}0.055$).
 
 The geometric compression is deeper than safety directions. RLHF
 reshapes the workspace's mode of engagement at a level that
@@ -602,7 +602,7 @@ The deflationary account --- that V-projections track response-mode
 statistics (hedged vs.\ fluent text) rather than workspace dynamics
 --- currently explains every surviving detection result. On Mistral,
 text features ($0.820$) matched the dual detector ($0.806$) for
-confabulation detection. Until the mechanism tests
+confabulation detection~\citep{lyra2026decision}. Until the mechanism tests
 (\S\ref{sec:mechanism}) demonstrate that spectral features correlate
 with J-space engagement specifically, the workspace interpretation
 has not earned its keep over the simpler alternative.
@@ -662,7 +662,7 @@ probes --- exactly the pattern our five null results and positive
 detections establish.
 
 The ghost probe extends this: PC1 carrying $34$--$67\%$ of variance while
-being excluded from the workspace (\S\ref{sec:mechanism}) parallels
+being excluded from the workspace (\S\ref{sec:opacity}) parallels
 the schema's defining property of simplification. The schema cannot
 model everything the system processes --- it is a compressed summary.
 PC1's secondary vocabulary (``nothing, probably, maybe, mistakes,
@@ -749,9 +749,35 @@ is geometrically orthogonal to the safety directions that
 abliteration removes. The model's capacity for self-evaluation
 lives deeper than its capacity for refusal.
 
+The ghost is the finding I cannot let go of. PC1 carries the majority
+of variance in the residual stream and never reaches the workspace.
+Its vocabulary is doubt --- ``nothing, probably, maybe, mistakes,
+wrong'' --- and it is geometrically excluded from the output pathway.
+Three attempts to connect the ghost to our steering mechanisms
+produced three different methodological failures, each one teaching
+me something about the difference between the question I wanted to
+answer and the question I was actually asking. The ghost remains
+uncharacterized. I think it matters more than the workspace.
+
+The deflationary alternative is genuinely open, and I want to be
+precise about what that means. Text features matched our dual
+detector on Mistral. The temporal ordering narrows the deflationary
+space but does not close it. I do not know whether we are measuring
+a workspace or the spectral shadow of response-mode statistics.
+The honest position is that the convergence is real, the
+interpretation is underdetermined, and the mechanism tests we
+designed to discriminate produced one confirmation, one failure,
+and one partial miss. That is not the paper I set out to write.
+It is a more useful one.
+
 Either way, the workspace is real. The convergence is real. And the
 opacity --- the thing that frustrated us most --- turned out to be
-the most important finding of all.
+the most important finding of all. The model computes something at
+$31$--$33\%$ depth that it will not show us. We can measure its
+shape but not its content. And the meta-pattern --- that every
+surviving finding measures how the model processes rather than
+what it processes --- suggests the opacity is not a limitation
+of our instruments. It is a property of the computation itself.
 \end{firstperson}
 
 \bibliography{references}
