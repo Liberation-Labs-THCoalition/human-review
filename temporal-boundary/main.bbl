@@ -1,4 +1,4 @@
-\begin{thebibliography}{12}
+\begin{thebibliography}{13}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -56,6 +56,13 @@ Kenneth Li, Oam Patel, Fernanda Vi{\'e}gas, Hanspeter Pfister, and Martin
 \newblock Cited for the probing methodology; the paper probes intermediate
   hidden states for belief-relevant information, not false-belief tasks
   specifically.
+
+\bibitem[{Lyra} and Edrington(2026)]{lyra2026oracle}
+{Lyra} and Thomas Edrington.
+\newblock Real-time confabulation detection and correction via {KV}-cache
+  geometry.
+\newblock 2026.
+\newblock Liberation Labs.
 
 \bibitem[Pustovit(2026)]{pustovit2026knowledge}
 Andrey Pustovit.
