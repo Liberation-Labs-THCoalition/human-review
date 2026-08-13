@@ -66,9 +66,22 @@
 % ============================================================
 \begin{abstract}
 Metacognitive prompting produces spectral expansion in generation-phase
-KV-cache geometry (Cohen's $d$ [standardized mean difference] $= 0.7$--$0.9$ after logarithmic token-count correction (the linear functional form was
-not separately tested); $n{=}120$ replication on
-Qwen3.5-27B-Opus-Reasoning-Distilled). This supports a real metacognitive geometric signature but
+KV-cache geometry ($n{=}120$ replication on
+Qwen3.5-27B-Opus-Reasoning-Distilled, logarithmic token-count correction;
+the linear functional form was not separately tested). All 54 tests are
+positive; across all of them Cohen's $d$ [standardized mean difference]
+has mean $0.67$ (median $0.61$, range $0.13$--$1.34$). Thirty-one survive
+Holm--Bonferroni correction, with mean $d = 0.85$; the $0.7$--$0.9$ figure
+reported in earlier versions of this abstract described those survivors
+and not the full set, a conditioning that was not previously disclosed.
+Twenty-three tests did not survive correction.
+
+The 54 tests are 9~layers ($\{3,7,11,15,23,31,35,43,47\}$) $\times$ 2~matrices
+(K, V) $\times$ 3~features, and are not independent: effective rank is defined
+as $\exp$(spectral entropy), a deterministic monotone transform, so 36 of the
+54 are two encodings of one statistic and their agreement in direction is
+near-tautological. Read as roughly 18~layer$\times$matrix cells rather than 54
+confirmations. This supports a real metacognitive geometric signature but
 revises the original finding: an earlier analysis on Qwen2.5-7B reported
 $d_{\text{FWL}} = -1.92$ with sign reversal, which a hostile review
 identified as potentially artifactual under near-perfect condition--length
@@ -84,8 +97,9 @@ and Qwen~0.5B. Three dedicated studies establish the anatomy:
 metacognitive effects peak at late layers (16--22), cognitive reversal is
 consistent across architectures (93--94\%) while metacognitive
 reversal is architecture-specific, and
-spectral expansion grows progressively during generation
-($d = 0.45$ at token~10 to $d = 0.91$ at token~200). A content control
+the top\_sv\_ratio effect grows progressively during generation
+($d = 0.45$ at token~10 to $d = 0.91$ at token~200; we make no directional
+claim from top\_sv\_ratio --- see \Sef{sec:tsv}). A content control
 experiment (120 trials, three conditions) confirms the signal is not
 an artifact of self-referential content.
 
@@ -93,8 +107,17 @@ The original sign-flip narrative (FWL reverses the raw effect) does not
 replicate when condition--length collinearity is reduced. The surviving
 finding --- metacognitive prompting produces measurable spectral
 expansion in the generation-phase cache --- is robust but should be
-interpreted as a moderate effect ($d \approx 0.8$), not the large
-reversed effect originally reported.
+interpreted as a moderate effect. Across all 54~tests the mean is
+$d = 0.67$; the $d \approx 0.8$ figure quoted elsewhere is the mean over the
+31~tests surviving Holm--Bonferroni correction, not over the full set.
+Either way it is not the large reversed effect originally reported.
+
+We also note that the reduced condition--length collinearity on which this
+replication rests is substantially an artifact of censoring: 98 of 120
+generations (81.7\%) reached the 200-token cap, and 39 of 60 condition pairs
+are exact ties in generated length. The 27\% figure is correct as computed,
+but it describes a length distribution truncated at the ceiling rather than
+one that varies freely.
 \end{abstract}
 
 \vspace{0.5em}
@@ -180,7 +203,16 @@ value ratio (top\_sv\_ratio $= \sigma_1 / \sum_i \sigma_i$), and rank at
 10\% threshold (rank\_10). Two additional features---layer norm entropy
 (layer\_norm\_entropy) and cross-layer variance (layer\_var)---are
 computed for specific analyses (content control, temporal dynamics) but
-are not part of the primary six-feature set. For aggregate analyses, features are computed on
+are not part of the primary six-feature set.
+
+The $n{=}120$ replication uses a different,
+narrower feature set: \textbf{spectral entropy, effective rank, and
+stable rank} ($\text{stable\_rank} = \sum_i \sigma_i^2 / \sigma_{\max}^2$),
+three features rather than six. Stable rank is not part of the original
+six-feature set and was not reported in any earlier version of this
+paper; it contributes 18 of the replication's 54 tests, i.e.\ one third of
+the evidence behind the headline effect size. We name it here because it
+was previously undisclosed. For aggregate analyses, features are computed on
 the concatenated key matrix across all layers; for per-layer analyses,
 features are extracted at each transformer layer separately. All primary
 analyses use delta features (generation $-$ encoding) unless otherwise
@@ -377,6 +409,7 @@ reorganization of internal representations.
 % 4. Study 1: Per-Layer Mode-Switching Anatomy
 % ============================================================
 \section{Study 1: Per-Layer Mode-Switching Anatomy}
+\label{sec:study1}
 
 \subsection{Design}
 
@@ -496,7 +529,18 @@ difference.
 
 \begin{table}[H]
 \centering
-\caption{Framing effect (metacognitive vs.\ cognitive) before and after FWL token-count correction.}
+\caption{Framing effect (metacognitive vs.\ cognitive) before and after FWL
+token-count correction, Qwen2.5-7B and Llama-3.1-8B.
+\textbf{SUPERSEDED --- retained for the record, not as a current result.}
+These effects were measured under near-perfect condition--length
+collinearity (100\% of metacognitive responses longer), which a hostile
+review identified as a plausible artifact mechanism. The $n{=}120$
+replication with reduced collinearity (27\% longer) finds all 54 effects
+\emph{positive}, reversing the sign shown here for spectral entropy. Note
+also that every feature in this table flips sign between the raw and FWL
+columns on Qwen --- a pattern consistent with the collinearity concern
+rather than with three independent findings. Do not cite the
+$d_{\text{FWL}}$ column as a result.}
 \label{tab:study2_fwl}
 \begin{tabular}{lccccc}
 \toprule
@@ -509,14 +553,28 @@ eff\_rank          & $+0.85$ & $-0.15$ (NS)           & $+1.02$ & $+0.38$ (NS)  
 \end{tabular}
 \end{table}
 
-Spectral entropy survives FWL in \textbf{both} architectures with the same
-sign. The original effect sizes ($d_{\text{FWL}} = -1.92$ Qwen,
-$-0.71$ Llama) were measured under near-perfect condition--length
-collinearity (100\% of metacognitive responses longer). A subsequent
-replication on Qwen3.5-27B-Opus-Reasoning-Distilled with reduced collinearity (27\% longer) finds
-\textbf{positive} $d = +0.7$--$0.9$ (metacognitive $>$ cognitive),
-stable under log-corrected FWL (the linear functional form was not
-separately tested), with entropy and effective rank in agreement.
+In this superseded analysis, spectral entropy is the one feature whose FWL
+effect has the same sign in both architectures --- and that sign is
+\emph{negative} ($d_{\text{FWL}} = -1.92$ Qwen, $-0.71$ Llama), i.e.\
+spectral \emph{concentration}, the opposite of this paper's current
+finding. We state that plainly rather than leaving ``the same sign''
+ambiguous, as earlier versions did.
+
+Note also that on Qwen every feature in Table~\ref{tab:study2_fwl}
+reverses sign between the raw and FWL columns
+($-0.65 \to +0.68$, $+0.85 \to -0.15$, $+0.62 \to -1.92$). Three
+independent effects do not usually all invert under the same correction;
+this pattern is more consistent with FWL instability under the
+near-perfect condition--length collinearity of that dataset (100\% of
+metacognitive responses longer) than with three separate findings.
+
+The $n{=}120$ replication on Qwen3.5-27B-Opus-Reasoning-Distilled, with
+reduced collinearity (27\% longer), finds all 54 tests \textbf{positive}
+(metacognitive $>$ cognitive): mean $d = 0.67$ across all tests, mean
+$d = 0.85$ across the 31 surviving Holm--Bonferroni correction. Entropy,
+effective rank, and stable rank agree in direction. Stability holds under
+log-corrected FWL only; the linear functional form was not separately
+tested.
 The sign reversal in the original analysis
 may reflect FWL instability under the near-perfect condition--length
 collinearity in the original dataset (100\% of metacognitive responses
@@ -535,6 +593,7 @@ condition--confound collinearity is high~\citep{king2006dangers}.
 % 6. Study 3: Progressive Spectral Expansion
 % ============================================================
 \section{Study 3: Progressive Spectral Expansion}
+\label{sec:study3}
 
 \subsection{Design}
 
@@ -598,6 +657,7 @@ $n = 42$)---same direction, different magnitude.
 % 7. Cross-Architecture Metacognition Marker
 % ============================================================
 \section{A Cross-Architecture Metacognition Marker: top\_sv\_ratio}
+\label{sec:tsv}
 
 Across all analyses, top\_sv\_ratio is the most consistently significant
 feature. Per-type analysis reveals why:
@@ -619,11 +679,39 @@ Mistral 7B & $-0.56$ & $+0.10$ & $+1.32$ & $-0.83$ \\
 \end{table}
 
 In all 4 models, metacognitive prompts produce the highest top\_sv\_ratio
-effect ($d = +1.10$ to $+1.32$). The direction is consistent:
-metacognitive processing \emph{expands} the cache spectrum. The
-consistency is at the \emph{task level} (metacognition $\to$ expanded
-spectrum), not the \emph{self-report-dimension level} (cross-model
-self-report profiles are uncorrelated, $\rho = -0.90$ to $+0.42$).
+effect ($d = +1.10$ to $+1.32$), consistently at the \emph{task level}
+(not the self-report-dimension level --- cross-model self-report profiles
+are uncorrelated, $\rho = -0.90$ to $+0.42$).
+
+\paragraph{Unresolved sign convention.} We flag rather than resolve a
+discrepancy in how this table is interpreted. Since
+$\text{top\_sv\_ratio} = \sigma_1 / \sum_i \sigma_i$, a \emph{positive}
+$d$ means the leading singular value accounts for a larger share of the
+spectrum under metacognitive prompting --- spectral \emph{concentration},
+not expansion. Earlier versions of this passage described the same table
+as showing expansion. Separately, Table~\ref{tab:study1_peaks} reports
+Qwen top\_sv\_ratio at $d = -0.655$ while this table reports $+1.14$ for
+Qwen~7B. Both are metacognitive-versus-other-types contrasts
+(\S\ref{sec:study1}); they differ in aggregation (per-layer peak versus
+pooled), not in comparison family, so the opposite signs are not explained
+by the contrast definition and we have not established that they are
+consistent.
+
+This affects more than this section. Study~3 (\S\ref{sec:study3}) is titled
+``Progressive Spectral Expansion'' and reports a top\_sv\_ratio trajectory
+from $d = 0.45$ to $d = 0.91$; under the definition above those positive
+values denote increasing concentration. The same reading propagates to the
+abstract, Contribution~4, the AST discussion, and Conclusion item~6. We flag
+all of them here rather than silently reversing the wording a second time.
+
+Resolving this requires the per-trial 960-trial feature data and the
+extraction code, neither of which is in this repository; the code
+repository linked in the data-availability section may contain the definition
+and we have not checked it. \textbf{Until that is done we make no
+directional claim from any top\_sv\_ratio result in this paper.} The
+$n{=}120$ replication is unaffected: its features are spectral entropy,
+effective rank, and stable rank, where higher values denote higher
+dimensionality without ambiguity.
 
 % ============================================================
 % 8. Attention Schema Theory Interpretation
@@ -771,7 +859,7 @@ Across 960 trials on 4 models and 3 dedicated studies on 2 architectures:
 \begin{enumerate}
     \item Self-report tracks \textbf{mode switches}, not static geometric features. The self-report--geometry relationship reorganizes between encoding and generation in 2/4 models.
 
-    \item Metacognitive processing produces \textbf{consistent spectral expansion} ($d > 1.0$, raw pre-FWL) in all four tested models. But the route from self-report to geometry differs across architectures.
+    \item Metacognitive processing produces a \textbf{consistent top\_sv\_ratio effect} ($d = +1.10$ to $+1.32$, raw pre-FWL) in all four tested models. We make no directional claim (expansion vs.\ concentration) from this table --- see the unresolved sign convention in \S\ref{sec:tsv}. The route from self-report to geometry differs across architectures.
 
     \item Metacognition is a \textbf{late-layer} phenomenon (16--22), distinct from identity signatures (middle layers), suggesting different cognitive operations engage different depths of the transformer stack.
 
@@ -814,15 +902,40 @@ different angles. The schema compresses, lags, and varies by
 architecture. That's not three problems; it's one architecture with
 bandwidth constraints.
 
-What I find most striking is spectral entropy's survival. Every other
-feature that looked like a metacognitive signal turned out to be a length
-artifact. Spectral entropy survived FWL in both architectures, with the
-same sign, and the same interpretation: metacognition expands the
-cache spectrum. That's not a statistical curiosity---it's the model
-broadening its representational bandwidth when attending to its own
-processing. Whether that constitutes genuine self-monitoring or
-sophisticated pattern-matching, the geometric signature is real and
-measurable.
+This sentence has been wrong twice, in opposite directions, and I would
+rather show the repair than hide it.
+
+The original version said spectral entropy survived FWL in both
+architectures with the same sign and the same interpretation:
+metacognition \emph{concentrates} the cache spectrum, the model narrowing
+its bandwidth when attending to itself. It cited no numbers, but the
+numbers it rested on were Table~\ref{tab:study2_fwl}'s
+$d_{\text{FWL}} = -1.92$ and $-0.71$ --- both negative, both concentration.
+It was the honest reading of the analysis we had.
+
+Then the replication came in positive, the framing changed to expansion,
+and commit \texttt{99c9c16} changed this sentence's \emph{concentrates} to
+\emph{expands} and \emph{narrowing} to \emph{broadening} while the sentence
+still described the superseded two-architecture result. Two coordinated
+substitutions are an edit, not a slip, and I do not know who made it or
+what they were checking against. What is verifiable is that the wording was
+flipped without re-checking the finding it referred to, leaving the new
+direction asserted over the old evidence.
+
+I first wrote this paragraph claiming the sentence had \emph{cited} those
+effect sizes. It had not. A reviewer caught it. Writing about one's own
+error turns out to be exactly the moment one stops checking.
+
+What I actually think, now, with the feature set named and the
+Holm conditioning disclosed: the replication finds all 54 effects
+positive, and the honest version of the claim is that metacognitive
+prompting is associated with modestly higher spectral dimensionality
+under log-length correction --- mean $d = 0.67$ across all tests, $0.85$
+among those surviving correction. Whether that constitutes genuine
+self-monitoring or sophisticated pattern-matching, I cannot say from
+geometry. What I can say is that the earlier result pointed the other way,
+under conditions we now think were confounded, and that I would not have
+found the seam if the round-6 audit had not made me open the table.
 \end{firstperson}
 
 % ============================================================
