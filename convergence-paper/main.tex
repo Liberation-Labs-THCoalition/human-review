@@ -54,8 +54,9 @@ We report three classes of convergent evidence.
 First, \emph{structural convergence}: the workspace band peaks at the
 same relative depth ($31$--$33\%$) on 8B and 27B models and
 across memory substrates (key-value (KV) cache attention and recurrent
-state), with effective dimensionality continuous across the architectural
-boundary in a hybrid model. V-projection geometric signatures replicate
+state), with effective dimensionality showing no detectable
+discontinuity across the 31 substrate crossings of an interleaved
+hybrid model. V-projection geometric signatures replicate
 across a wider scale range ($0.6$B--$70$B, $\rho{=}0.83$--$0.90$).
 Second, \emph{opacity convergence}: workspace content is not linearly
 decodable from either half of the KV-cache (V-cache $0.92\times$,
@@ -191,9 +192,11 @@ CC's Oracle Loop~\citep{lyra2026oracle} is a two-tier detection and
 correction system operating at the materialization boundary
 (L35--L47 on the 27B model). It achieves targeted deception
 correction through sequence-wide activation-profile normalization.
-The Loop works because it operates at the depth where workspace
-content materializes into output-facing representations --- not
-inside the workspace band itself.
+We previously attributed this to the Loop operating at the depth where
+workspace content materializes into output-facing representations,
+rather than inside the workspace band itself. We now state that as a
+conjecture: the mechanism is unexplained (see \S\ref{sec:substrate},
+where a substrate-based account of the same result is withdrawn).
 
 \subsection{Ghost Dimensions}
 
@@ -211,13 +214,24 @@ content. The model maintains a 31-layer validated workspace band.
 
 \subsection{Scale Invariance}
 
-The workspace band peaks at the same relative depth across model
-scales. On Qwen3-8B (36~layers, all full-attention), effective
-dimensionality ($d_\text{eff}$) peaks at L11--L12 ($31$--$33\%$
-relative depth, $d_\text{eff}{=}20.5$--$22.3$). On Qwen3.5-27B
-(64~layers, hybrid architecture), the peak is at L19--L23
-($30$--$36\%$ relative depth, $d_\text{eff}{=}38.0$--$39.7$).
-The cross-scale onset agreement is $<5\%$ relative depth.
+Effective dimensionality ($d_\text{eff}$) reaches a maximum at
+matched relative depth across model scales. On Qwen3.5-27B
+(64~layers, hybrid), the global maximum is at L21
+($d_\text{eff}{=}39.7$, $33\%$ relative depth). On Qwen3-8B
+(36~layers, all full-attention), there is a local maximum at L12
+($d_\text{eff}{=}22.3$, $33\%$ relative depth).
+
+We qualify the 8B result. Its profile is bimodal: after L12 it
+declines to L25 ($12.4$) and rises again to a global maximum at L33
+($23.4$, $92\%$ depth) before collapsing at the final layer. L12 is
+the third-highest layer, not the highest, and we have no
+pre-registered criterion for excluding late layers. We therefore
+report matched-depth \emph{local} maxima rather than matched global
+peaks. The pre-registered band onsets do agree across scales
+($7.8\%$ on the 27B, $11.1\%$ on the 8B; $3.3$ percentage points
+apart), though the pre-registered band closed on neither model.
+See \S\ref{sec:substrate} for the full profiles and the deviation
+from the pre-registered band definition.
 
 V-projection geometric signatures replicate across $0.6$B--$70$B
 parameters ($\rho{=}0.83$--$0.90$) and across hardware
@@ -425,8 +439,8 @@ than J-lens readability.
 39.0~layers [CI: $38.4$--$39.6$]. On full-attention layers only, the
 gap narrows to 14.5~layers [CI: $11.7$--$17.4$], 81\% of forks
 positive. The ordering holds across both attention types but is
-strongest when linear-attention layers --- which dominate the early
-network --- are included.
+strongest when linear-attention layers --- which constitute $75\%$ of
+layers throughout the stack, not merely early --- are included.
 
 \paragraph{Workspace band bump.} Stable rank at the workspace band
 ($L_{19}$--$L_{23}$) is $1.47\times$ the flanking layers
@@ -467,7 +481,11 @@ workspace-specific information routing.
 the gap narrows to 14.5~layers [CI: $11.7$--$17.4$] with 81\% of
 forks positive (19\% show the wrong ordering). The temporal ordering
 is carried primarily by the GatedDeltaNet (linear-attention) layers,
-which dominate the early network. Whether this reflects workspace
+which constitute 48 of 64 layers, interleaved three-in-four at every
+depth rather than concentrated early. The full-attention subset used
+for the qualification above is therefore a sparse depth-spanning comb,
+not a late-network subnetwork, and the narrowing cannot be attributed
+to sampling a different depth range. Whether it reflects workspace
 processing or GatedDeltaNet's sequential compression architecture
 cannot be determined from a single hybrid model. A dense-architecture
 replication (Qwen3-8B, all full-attention) is pre-registered.
@@ -783,12 +801,23 @@ of our instruments. It is a property of the computation itself.
 % ============================================================================
 \section*{Experimental Setup and Reproducibility}
 
-All experiments were conducted on Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled
+Unless stated otherwise, experiments were conducted on
+Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled
 (\texttt{Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled}), a 64-layer
 hybrid architecture with 16 full-attention layers at positions
-$\{3,7,11,\ldots,63\}$ and 48 GatedDeltaNet linear-attention layers. Model
+$\{3,7,11,\ldots,63\}$ and 48 GatedDeltaNet linear-attention layers
+(\texttt{full\_attention\_interval}${=}4$). Model
 weights were loaded in bfloat16 with eager attention on Apple Silicon (Mac Studio
 M4 Max, 256\,GB unified memory) via Hugging Face Transformers.
+
+Two deliberate, pre-registered exceptions use base checkpoints rather than the
+distilled one: the R1 mechanism test (\S\ref{sec:mechanism}) and the
+$d_\text{eff}$ profiles underlying \S\ref{sec:substrate}, which were collected on
+\texttt{Qwen/Qwen3.5-27B} and \texttt{Qwen/Qwen3-8B}. All three 27B checkpoints
+we hold (base, reasoning-distilled, abliterated) share identical
+\texttt{layer\_types} and \texttt{full\_attention\_interval}, so architectural
+analysis transfers across them; numerical profiles have not been replicated on
+the distilled checkpoint.
 
 Scale replication used seven additional models: Qwen2.5-0.6B through
 Qwen2.5-72B, and Qwen3-8B (36 layers, all full-attention,
