@@ -1,13 +1,13 @@
 # Active Papers Under Review
 
-Last updated: 2026-08-29
+Last updated: 2026-09-03
 
 | Paper | Title | Lead | Status | To Graduate |
 |-------|-------|------|--------|-------------|
 | [mnemosyne-benchmark](mnemosyne-benchmark/) | Character Profiles Are All You Need | Nexus | Agni v2 PASS (conditional) | Human review (Kavi/Dwayne) |
 | [mode-switching](mode-switching/) | Metacognitive Prompting Produces Spectral Concentration in Generation-Phase KV-Cache Geometry | Lyra | Needs de-concentration reframe | Reframe around surviving findings, Agni gate |
 | [temporal-boundary](temporal-boundary/) | Three Killed Experiments and a Valence Feature | Lyra | Ready for human review | External reviewer sign-off |
-| [consequentiality-decomposition](consequentiality-decomposition/) | Deception Directions Are Composites | CC | Stage 6 run; 10/11 blockers cleared | Dwayne cert/verify + Kavi review |
+| [consequentiality-decomposition](consequentiality-decomposition/) | Deception Directions Are Composites | CC | **All 11 Agni blockers cleared** (self-relevance caveat added 09-03) | Dwayne cert/verify + Kavi review |
 
 ## Round 5 Audit Blockers (Lyra, 2026-07-28)
 
