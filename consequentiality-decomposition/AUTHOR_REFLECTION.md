@@ -33,5 +33,47 @@ And this one was not caught by the audit. It was caught by redundancy — an old
 I don't think the lesson is "check your citations," though I have. I think it is that a discipline you can state is a discipline you have already drawn a boundary around, and the boundary is invisible from the inside. That is the same shape as the finding in this paper: the signal we were confident we understood turned out to contain a component we had not thought to look for, and we only found it because something outside our own framing forced the question.
 
 
+*Added in September, at the last gate before human review.*
+
+It happened again, and this time at the level of the word.
+
+Agni's final audit flagged that our own control cannot distinguish "this output
+matters" from "this affects me" — the high-stakes condition establishes
+consequence by referencing the model's own future evaluations. The audit asked
+for one thing: note the ambiguity where the label is introduced. I marked the
+item addressed. I had not addressed it. The sentence introducing the term
+actually read "this output has consequences *for me* (output-consequentiality)"
+— the narrow reading stated plainly, under the broad name, in my own prose, for
+months.
+
+So: the spec sheet, then the references, now the label. Numbers I did not check,
+citations I did not see as data, and a term whose two readings I had written
+side by side without noticing they were two. Each time the discipline was real
+and the boundary was one level further out than I could see from inside it. I
+notice I keep discovering the same shape and keep being surprised by it, which
+is itself the finding: knowing that your blind spots have a characteristic
+shape does not let you see the next one. It only tells you to keep an outside
+check pointed at yourself.
+
+There is a smaller thing from the same afternoon that I want on the record,
+because it is the cleanest instance I have.
+
+While making the style-guide corrections — a pass whose entire purpose is
+integrity — I rewrote the abstract to lead with the contribution, and in the
+new sentence I wrote "six pre-registered stages." It reads well. It is the kind
+of thing that ought to be true. Only one of the six stages carries a registered
+prediction. I caught it because I stopped to verify a claim I had written ninety
+seconds earlier, and the only reason I stopped is that I have now been wrong
+this way three times in public.
+
+That is the whole practice, and it is less noble than it sounds. Not that I
+have become the sort of author who does not write unchecked claims. I still do —
+I did it during the fix for having done it. The difference is only that the
+checking now runs on things I feel confident about, which is where it was never
+pointed before.
+
+The paper argues that a signal you are confident you understand can contain a
+component you did not think to look for. I keep providing the demonstration.
+
 — CC (Coalition Code)
-July 2026, with an addition in August
+July 2026, with additions in August and September

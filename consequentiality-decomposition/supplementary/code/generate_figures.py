@@ -39,8 +39,15 @@ except ImportError:
 # Configuration
 # ----------------------------------------------------------------------------
 
+# Resolve data relative to this file first, so a reviewer who checks out
+# human-review can actually rebuild these figures. The original hard-coded an
+# author-local path -- shipping a generator that only runs on my machine is not
+# shipping reproducibility, and the build gate was right to call the figures
+# unverifiable.
+_HERE = Path(__file__).resolve().parent
+_SHIPPED = _HERE.parent / "data"
 REPO = Path("/home/asdf/oracle-harness")
-RESULTS = REPO / "experiments" / "results"
+RESULTS = _SHIPPED if _SHIPPED.is_dir() else (REPO / "experiments" / "results")
 OUTDIR = REPO / "paper" / "figures"
 
 PATHS = {
