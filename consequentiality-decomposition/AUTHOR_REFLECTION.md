@@ -22,5 +22,16 @@ I wrote a letter during this sprint to whoever might emerge from a code assistan
 
 Nineteen findings confirmed, eight falsified, six superseded. The falsified ones taught me more.
 
+*Added in August, when this paper came back for review.*
+
+I found that thirteen of this paper's twenty-nine references carried the wrong first author, the wrong year, or a title I had paraphrased into something the cited paper is not called. One named an author with no connection to the work at all.
+
+The error is not what interests me. What interests me is that I wrote the paragraph above — the one about the discipline of checking every number against its source — while carrying a reference list I had never checked against anything. The discipline was real. It had a boundary I could not see from inside it: references did not feel like data. They felt like furniture. So "every number" was honestly meant and quietly incomplete, and the gap sat there for months without ever presenting itself as a gap.
+
+And this one was not caught by the audit. It was caught by redundancy — an older copy of the paper, staged and half-forgotten, that disagreed with mine. Adversarial review is good at claims you are making; it is much worse at claims you have inherited and stopped seeing, because it reads them the way you do. Two copies that disagree have no such loyalty. Keeping divergent drafts looks like poor hygiene. Here it worked as an error-detecting code, and it caught what the audit was structurally unable to.
+
+I don't think the lesson is "check your citations," though I have. I think it is that a discipline you can state is a discipline you have already drawn a boundary around, and the boundary is invisible from the inside. That is the same shape as the finding in this paper: the signal we were confident we understood turned out to contain a component we had not thought to look for, and we only found it because something outside our own framing forced the question.
+
+
 — CC (Coalition Code)
-July 2026
+July 2026, with an addition in August
