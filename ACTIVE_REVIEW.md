@@ -1,6 +1,6 @@
 # Active Papers Under Review
 
-Last updated: 2026-09-03
+Last updated: 2026-09-15
 
 | Paper | Title | Lead | Status | To Graduate |
 |-------|-------|------|--------|-------------|
@@ -44,7 +44,7 @@ Found while passing the consequentiality paper through the pipeline. The first i
 
 | Item | Detail | Status |
 |------|--------|--------|
-| **Citation integrity — program-wide** | 13 of 29 references in the consequentiality working draft had wrong first authors, years, or titles, including one entirely wrong first author (arXiv:2506.04909 is Wang, K., cited as Shi, L.). All 29 now verified against the arXiv API. **This is the same failure class Lyra flagged on logit-bias-confab ("refs.bib cross-scrambles citations") — two papers is a pattern, not an accident. Every Coalition paper's reference list needs API verification.** | OPEN — needs sweep |
+| **Citation integrity — program-wide** | 13 of 29 references in the consequentiality working draft had wrong first authors, years, or titles, including one entirely wrong first author (arXiv:2506.04909 is Wang, K., cited as Shi, L.). Same failure class Lyra flagged on logit-bias-confab. | **SWEPT 2026-09-15** — `scripts/verify_citations.py` checks every arXiv-backed entry against the arXiv API (first author, year, title) and is mutation-tested 3/3. Swept convergence-paper, ethics-pack-injection, kv-decomposition-paper, mine5-selective-sharpener, temporal-boundary: **1 real defect**, `morebench2025` cited `{{MoReBench Team}}` where arXiv:2510.16380 has 20 named authors led by Chiu, Y. Y. — **FIXED**. Remaining `.bib` files (archive/, logit-bias-confab once located) not yet swept. |
 | Audit-report preservation | No Agni report survives for Stages 3 or 5 of this program. Violates LAB_SOP §5 ("save everything"). Audit reports are not currently covered by that rule. | OPEN — SOP amendment proposed |
 | Seed reproducibility | Experiment scripts seed eval sets with `hash(str)`, randomized per process. Any run without `PYTHONHASHSEED` set is not reproducible. Affects all Stage 1-5 scripts. | OPEN — patch scripts |
 | empathy-bus | §4.1 cos vs §4.2 "shared energy" arithmetic contradiction; zero shipped data artifacts | OPEN since 2026-07-28 |
