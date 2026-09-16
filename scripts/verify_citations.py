@@ -115,6 +115,16 @@ def surname(s):
     return s.split()[-1].lower() if s.split() else ""
 
 
+def given_initial(s):
+    """First letter of the given name, for 'Surname, Given' or 'Given Surname'."""
+    s = s.strip().strip("{}").strip()
+    if "," in s:
+        rest = s.split(",", 1)[1].strip()
+        return rest[0].lower() if rest else ""
+    parts = s.split()
+    return parts[0][0].lower() if len(parts) > 1 else ""
+
+
 def norm(t):
     return re.sub(r"[^a-z0-9]+", " ", t.lower()).strip()
 
@@ -152,6 +162,15 @@ def main(paths):
             if cited_first and surname(cited_first) != surname(g["first"]):
                 probs.append(f"first author: cited {surname(cited_first)!r}, "
                              f"arXiv {surname(g['first'])!r}")
+            elif cited_first:
+                # Surname alone is not enough. 'Fu, Yuxin' for Tianyu Fu and
+                # 'Kim, Seungone' for Junsol Kim both passed a surname check
+                # while naming the wrong person (found 2026-09-15 in
+                # oracle-harness/papers/references.bib).
+                gi, ai = given_initial(cited_first), given_initial(g["first"])
+                if gi and ai and gi != ai:
+                    probs.append(f"first author given name: cited "
+                                 f"{cited_first.strip()!r}, arXiv {g['first']!r}")
             cy = f.get("year", "")
             # arXiv year is the PREPRINT year; a citation may legitimately carry
             # the later conference/journal year. Only flag a gap that convention
