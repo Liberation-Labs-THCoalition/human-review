@@ -12,6 +12,7 @@ Staging area for papers under active revision. Papers iterate here at velocity, 
 | Empathy Bus | DRAFT | Initial draft; no review yet |
 | KV Decomposition | BLOCKER | "superadditivity" framing unsupported; V_ONLY=K_ONLY=0.333 is acquiescence pattern |
 | Ethics Pack Injection | BLOCKER | Every empirical claim lacks inferential test; n=5 underpowered |
+| Mnemosyne v10 LongMemEval | GRADUATED | 2026-09-25 → published-research `mnemosyne-longmemeval-v10/` (merge b905064), integrity + academic editions, code and data. Second reads: numbers and text (WARN, confirmed with caveats; every number reproduced); style pass `STYLE_PASS.md`; release fixes listed in that directory's `REVIEW_INDEX.md`. External sign-off (Dwayne/Kavi) waived by Thomas 2026-09-25: a technical result. The `paper.md` here is the reviewed draft, kept as the review record. Zenodo deposit: Thomas |
 
 ## What belongs here
 
