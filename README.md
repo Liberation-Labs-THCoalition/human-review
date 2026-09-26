@@ -12,6 +12,7 @@ Staging area for papers under active revision. Papers iterate here at velocity, 
 | Empathy Bus | DRAFT | Initial draft; no review yet |
 | KV Decomposition | BLOCKER | "superadditivity" framing unsupported; V_ONLY=K_ONLY=0.333 is acquiescence pattern |
 | Ethics Pack Injection | BLOCKER | Every empirical claim lacks inferential test; n=5 underpowered |
+| Mnemosyne v10 LongMemEval | IN REVIEW | 2026-09-25: numbers and text second-read (both WARN, confirmed with caveats; every number reproduced); 9 text fixes applied except title (F8). Open, all Thomas's: §1.1 LoCoMo withdrawal, author list, release scope, title, reflection |
 
 ## What belongs here
 
