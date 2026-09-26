@@ -14,7 +14,16 @@ direction aligns with the user-model's first principal component at
 $\cos = 0.83$--$0.87$ (mid-to-late layers), peaking at near-identity
 ($d = 0.987$) at L20. The valence direction aligns at
 $\cos = 0.70$--$0.80$. Both systems exhibit identical developmental timecourses:
-volatile eccentricity at L0--L16, stable geometry from L17 onward. Permutation
+volatile eccentricity at L0--L16, stable geometry from L17 onward.\footnote{%
+\textbf{Unverified breakpoint.} This L16/L17 split coincides exactly with an
+``architectural boundary at L16'' that \S\ref{sec:substrate} corrects as
+non-existent: Qwen3.5-27B interleaves full-attention every fourth layer
+($\{3,7,\ldots,63\}$), so there is no contiguous transition at L16. We have not
+established whether this breakpoint was derived empirically from the
+eccentricity profile or inherited from the incorrect architectural model, and
+the underlying per-layer profile was not available to us at revision time.
+Readers should treat the specific breakpoint location as provisional; the
+23-of-24-layer permutation result below does not depend on it.} Permutation
 testing (1{,}000 shuffles, non-neutral prompts only) confirms significance at
 23 of 24 layers, with separation ratios climbing from $10\times$ null at L1 to
 $59\times$ null at L23.

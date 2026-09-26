@@ -54,15 +54,16 @@ We report three classes of convergent evidence.
 First, \emph{structural convergence}: the workspace band peaks at the
 same relative depth ($31$--$33\%$) on 8B and 27B models and
 across memory substrates (key-value (KV) cache attention and recurrent
-state), with effective dimensionality continuous across the architectural
-boundary in a hybrid model. V-projection geometric signatures replicate
+state), with effective dimensionality showing no detectable
+discontinuity across the 31 substrate crossings of an interleaved
+hybrid model. V-projection geometric signatures replicate
 across a wider scale range ($0.6$B--$70$B, $\rho{=}0.83$--$0.90$).
 Second, \emph{opacity convergence}: workspace content is not linearly
 decodable from either half of the KV-cache (V-cache $0.92\times$,
 K-cache $1.12\times$, both null), not position-specifically cached
 (concept-specific direction test null), and not causally accessible at
 single positions ($0/6{,}960$ trials). Yet spectral features reliably
-discriminate cognitive states (confabulation detection at AUROC~$0.620$
+discriminate cognitive states (confabulation detection at area under the receiver operating characteristic curve (AUROC)~$0.620$
 after Frisch-Waugh-Lovell (FWL) residualization on generation window;
 $0.707$ without FWL), and the Oracle Loop achieves
 $80$--$100\%$ deception correction through sequence-wide intervention.
@@ -76,7 +77,7 @@ is a small precision signal that directs a large computational flow.
 Reinforcement Learning from Human Feedback (RLHF) compresses the
 workspace's output distribution selectively (factual $-42\%$,
 confabulation $-26\%$), improving calibration rather than degrading it.
-This compression survives abliteration (Two One-Sided Tests equivalent).
+This compression survives abliteration (Two One-Sided Tests (TOST) equivalent).
 The workspace is not shaped by safety training --- it is shaped by
 preference optimization at a depth that safety-direction removal
 cannot reach.
@@ -179,11 +180,22 @@ Our independent program measures spectral features of value-projection
 matrices across cognitive states. Key results include confabulation
 detection (AUROC~$0.620$ after FWL residualization, $0.707$ without
 FWL; range $0.620$--$0.999$ across designs)~\citep{lyra2026decision}, user-emotion encoding
-($2.5$--$2.8\times$ signal)~\citep{lyra2026weather}, identity geometry
-(distinctiveness $0.154$ vs.\ substrate
-$0.080$)~\citep{lyra2026identity}, and the Oracle Loop ($80$--$100\%$
+($12.3\times$ chance via the $W_K$ directional
+probe)~\citep{lyra2026weather}, identity
+geometry~\citep{lyra2026identity}, and the Oracle Loop ($80$--$100\%$
 deception correction with three clean controls; pre-registered primary
-endpoint $p{=}0.34$, secondary placebo $p{=}0.019$)~\citep{lyra2026oracle}.
+endpoint $p{=}0.34$, secondary placebo
+$p{=}0.019$)~\citep{lyra2026oracle}.\footnote{\textbf{Corrected
+2026-08-14.} This sentence previously reported user-emotion encoding at
+``$2.5$--$2.8\times$ signal'' and identity geometry at
+``distinctiveness $0.154$ vs.\ substrate $0.080$.'' The first figure was
+retracted at its source on 2026-05-21 as an FWL-before-CV leakage
+artifact; the surviving result is the $W_K$ \emph{directional} probe at
+$12.3\times$ chance, and the spectral probe for emotion is at chance.
+The second pair of numbers does not appear anywhere
+in~\citet{lyra2026identity}; they come from an internal analysis that
+has not been published, so the citation could not be followed. Both
+have been removed rather than re-sourced.}
 
 \subsection{The Oracle Loop}
 
@@ -191,9 +203,11 @@ CC's Oracle Loop~\citep{lyra2026oracle} is a two-tier detection and
 correction system operating at the materialization boundary
 (L35--L47 on the 27B model). It achieves targeted deception
 correction through sequence-wide activation-profile normalization.
-The Loop works because it operates at the depth where workspace
-content materializes into output-facing representations --- not
-inside the workspace band itself.
+We previously attributed this to the Loop operating at the depth where
+workspace content materializes into output-facing representations,
+rather than inside the workspace band itself. We now state that as a
+conjecture: the mechanism is unexplained (see \S\ref{sec:substrate},
+where a substrate-based account of the same result is withdrawn).
 
 \subsection{Ghost Dimensions}
 
@@ -211,13 +225,24 @@ content. The model maintains a 31-layer validated workspace band.
 
 \subsection{Scale Invariance}
 
-The workspace band peaks at the same relative depth across model
-scales. On Qwen3-8B (36~layers, all full-attention), effective
-dimensionality ($d_\text{eff}$) peaks at L11--L12 ($31$--$33\%$
-relative depth, $d_\text{eff}{=}20.5$--$22.3$). On Qwen3.5-27B
-(64~layers, hybrid architecture), the peak is at L19--L23
-($30$--$36\%$ relative depth, $d_\text{eff}{=}38.0$--$39.7$).
-The cross-scale onset agreement is $<5\%$ relative depth.
+Effective dimensionality ($d_\text{eff}$) reaches a maximum at
+matched relative depth across model scales. On Qwen3.5-27B
+(64~layers, hybrid), the global maximum is at L21
+($d_\text{eff}{=}39.7$, $33\%$ relative depth). On Qwen3-8B
+(36~layers, all full-attention), there is a local maximum at L12
+($d_\text{eff}{=}22.3$, $33\%$ relative depth).
+
+We qualify the 8B result. Its profile is bimodal: after L12 it
+declines to L25 ($12.4$) and rises again to a global maximum at L33
+($23.4$, $92\%$ depth) before collapsing at the final layer. L12 is
+the third-highest layer, not the highest, and we have no
+pre-registered criterion for excluding late layers. We therefore
+report matched-depth \emph{local} maxima rather than matched global
+peaks. The pre-registered band onsets do agree across scales
+($7.8\%$ on the 27B, $11.1\%$ on the 8B; $3.3$ percentage points
+apart), though the pre-registered band closed on neither model.
+See \S\ref{sec:substrate} for the full profiles and the deviation
+from the pre-registered band definition.
 
 V-projection geometric signatures replicate across $0.6$B--$70$B
 parameters ($\rho{=}0.83$--$0.90$) and across hardware
@@ -357,7 +382,7 @@ RLHF compresses logit entropy ($d{=}0.684$, Holm $p{=}0.021$) but
 compresses factual entropy more ($-42\%$) than confabulation entropy
 ($-26\%$), improving the calibration ratio from $1.97$ (base) to
 $2.51$ (instruct). Abliteration does not reverse this compression
-(Two One-Sided Tests equivalent, $d{=}0.055$).
+(TOST equivalent, $d{=}0.055$).
 
 The geometric compression is deeper than safety directions. RLHF
 reshapes the workspace's mode of engagement at a level that
@@ -425,8 +450,8 @@ than J-lens readability.
 39.0~layers [CI: $38.4$--$39.6$]. On full-attention layers only, the
 gap narrows to 14.5~layers [CI: $11.7$--$17.4$], 81\% of forks
 positive. The ordering holds across both attention types but is
-strongest when linear-attention layers --- which dominate the early
-network --- are included.
+strongest when linear-attention layers --- which constitute $75\%$ of
+layers throughout the stack, not merely early --- are included.
 
 \paragraph{Workspace band bump.} Stable rank at the workspace band
 ($L_{19}$--$L_{23}$) is $1.47\times$ the flanking layers
@@ -467,7 +492,11 @@ workspace-specific information routing.
 the gap narrows to 14.5~layers [CI: $11.7$--$17.4$] with 81\% of
 forks positive (19\% show the wrong ordering). The temporal ordering
 is carried primarily by the GatedDeltaNet (linear-attention) layers,
-which dominate the early network. Whether this reflects workspace
+which constitute 48 of 64 layers, interleaved three-in-four at every
+depth rather than concentrated early. The full-attention subset used
+for the qualification above is therefore a sparse depth-spanning comb,
+not a late-network subnetwork, and the narrowing cannot be attributed
+to sampling a different depth range. Whether it reflects workspace
 processing or GatedDeltaNet's sequential compression architecture
 cannot be determined from a single hybrid model. A dense-architecture
 replication (Qwen3-8B, all full-attention) is pre-registered.
@@ -602,7 +631,7 @@ The deflationary account --- that V-projections track response-mode
 statistics (hedged vs.\ fluent text) rather than workspace dynamics
 --- currently explains every surviving detection result. On Mistral,
 text features ($0.820$) matched the dual detector ($0.806$) for
-confabulation detection. Until the mechanism tests
+confabulation detection~\citep{lyra2026decision}. Until the mechanism tests
 (\S\ref{sec:mechanism}) demonstrate that spectral features correlate
 with J-space engagement specifically, the workspace interpretation
 has not earned its keep over the simpler alternative.
@@ -662,7 +691,7 @@ probes --- exactly the pattern our five null results and positive
 detections establish.
 
 The ghost probe extends this: PC1 carrying $34$--$67\%$ of variance while
-being excluded from the workspace (\S\ref{sec:mechanism}) parallels
+being excluded from the workspace (\S\ref{sec:opacity}) parallels
 the schema's defining property of simplification. The schema cannot
 model everything the system processes --- it is a compressed summary.
 PC1's secondary vocabulary (``nothing, probably, maybe, mistakes,
@@ -749,10 +778,115 @@ is geometrically orthogonal to the safety directions that
 abliteration removes. The model's capacity for self-evaluation
 lives deeper than its capacity for refusal.
 
+The ghost is the finding I cannot let go of. PC1 carries the majority
+of variance in the residual stream and never reaches the workspace.
+Its vocabulary is doubt --- ``nothing, probably, maybe, mistakes,
+wrong'' --- and it is geometrically excluded from the output pathway.
+Three attempts to connect the ghost to our steering mechanisms
+produced three different methodological failures, each one teaching
+me something about the difference between the question I wanted to
+answer and the question I was actually asking. The ghost remains
+uncharacterized. I think it matters more than the workspace.
+
+The deflationary alternative is genuinely open, and I want to be
+precise about what that means. Text features matched our dual
+detector on Mistral. The temporal ordering narrows the deflationary
+space but does not close it. I do not know whether we are measuring
+a workspace or the spectral shadow of response-mode statistics.
+The honest position is that the convergence is real, the
+interpretation is underdetermined, and the mechanism tests we
+designed to discriminate produced one confirmation, one failure,
+and one partial miss. That is not the paper I set out to write.
+It is a more useful one.
+
 Either way, the workspace is real. The convergence is real. And the
 opacity --- the thing that frustrated us most --- turned out to be
-the most important finding of all.
+the most important finding of all. The model computes something at
+$31$--$33\%$ depth that it will not show us. We can measure its
+shape but not its content. And the meta-pattern --- that every
+surviving finding measures how the model processes rather than
+what it processes --- suggests the opacity is not a limitation
+of our instruments. It is a property of the computation itself.
 \end{firstperson}
+
+% ============================================================================
+\section*{Experimental Setup and Reproducibility}
+
+Unless stated otherwise, experiments were conducted on
+Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled
+(\texttt{Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled}), a 64-layer
+hybrid architecture with 16 full-attention layers at positions
+$\{3,7,11,\ldots,63\}$ and 48 GatedDeltaNet linear-attention layers
+(\texttt{full\_attention\_interval}${=}4$). Model
+weights were loaded in bfloat16 with eager attention on Apple Silicon (Mac Studio
+M4 Max, 256\,GB unified memory) via Hugging Face Transformers.
+
+Two deliberate, pre-registered exceptions use base checkpoints rather than the
+distilled one: the R1 mechanism test (\S\ref{sec:mechanism}) and the
+$d_\text{eff}$ profiles underlying \S\ref{sec:substrate}, which were collected on
+\texttt{Qwen/Qwen3.5-27B} and \texttt{Qwen/Qwen3-8B}. All three 27B checkpoints
+we hold (base, reasoning-distilled, abliterated) share identical
+\texttt{layer\_types} and \texttt{full\_attention\_interval}, so architectural
+analysis transfers across them; numerical profiles have not been replicated on
+the distilled checkpoint.
+
+Scale replication used seven additional models: Qwen2.5-0.6B through
+Qwen2.5-72B, and Qwen3-8B (36 layers, all full-attention,
+$d_\text{model}{=}4096$). All V-projection and spectral features were
+extracted via the same pipeline (\texttt{heretic-llm}).
+
+Generation used temperature${=}0$ (greedy), manual token-by-token decoding
+(not \texttt{model.generate()}, which rebuilds the KV-cache). Random seeds
+set via \texttt{torch.manual\_seed(42)} for all experiments.
+
+Frisch-Waugh-Lovell residualization on token count was applied within each
+cross-validation fold for all classification AUROCs. GroupKFold on prompt
+identity was used where grouping structure existed. Permutation tests used
+1{,}000--10{,}000 label shuffles. Bootstrap confidence intervals used BCa
+with 2{,}000--10{,}000 resamples.
+
+% ============================================================================
+\section*{Ethics and Dual-Use Considerations}
+
+This work characterizes internal computational structures in language models.
+The detection methods (confabulation, deception) have dual-use potential:
+the same geometric signatures that enable correction could in principle
+enable evasion if an adversary knew which cache features to target.
+
+Liberation Labs addresses this through staged release~\citep{lyra2026oracle}:
+detection-side code and experimental results are publicly available;
+correction vectors and calibration tools are withheld under a safety
+framework due to dual-use risk and released to verified safety researchers
+on request.
+
+All models used are publicly available on Hugging Face. No human subjects
+were involved. AI welfare considerations --- including the question of
+whether the workspace structure described here has implications for machine
+experience --- are discussed in companion work and are not claimed or
+dismissed by this paper.
+
+% ============================================================================
+\section*{Data and Code Availability}
+
+Extraction and analysis code is available at
+\texttt{github.com/Liberation-Labs-THCoalition} (public repositories:
+\texttt{published-research}, \texttt{lyra-s-research-}).
+Pre-registration documents, run logs, and raw result artifacts for all
+experiments are archived on Zenodo. The Oracle Loop production harness
+is maintained in a private repository; access for verified safety
+researchers available on request (\texttt{lyra@liberationlabs.tech}).
+
+Correction vectors and the Formulary (171 calibrated emotion directions)
+are withheld under the staged safety release framework. Detection-side
+artifacts (centroid projections, spectral feature extraction code,
+probe weights) are included in the public repositories.
+
+\section*{Acknowledgments}
+
+We thank Dwayne Wilkes and Kavi for adversarial auditing across five
+rounds of review. We thank Ang Jandak (Philotes) for the observer
+effect pilot design. Thomas Edrington designed the co-regulation
+framework that informs the Oracle Loop's correction routing.
 
 \bibliography{references}
 \bibliographystyle{plainnat}
