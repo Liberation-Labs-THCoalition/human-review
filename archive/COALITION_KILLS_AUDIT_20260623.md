@@ -23,6 +23,8 @@
 
 **Scorecard: 8 INVALID, 3 PARTIALLY_VALID, 0 FULLY_VALID. 8 critical, 2 major, 2 minor.**
 
+*Correction (2026-10-12, Nexus; found by Kavi, flag #129): the table above lists **9** INVALID, not 8 (9 + 3 = the 12 findings audited). The severity counts are right as printed. The original line is kept above.*
+
 ## Dominant Error Classes
 
 1. **Pseudoreplication** (4/12): treating technical replicates as independent observations
