@@ -348,6 +348,11 @@ the maximum absolute difference in feature activation between any injection
 condition and the null condition is \textbf{exactly $0$}: the values are
 bit-identical, not merely small (the feature values
 themselves range from 3.59 to 4.51). This follows necessarily from the
+measurement order rather than from any property of the model. The encoding
+is read out during prefill, \emph{before} the injection is applied, so the
+four condition arms of a scenario cannot differ in it. The invariance is
+structurally guaranteed, not an empirical finding about
+generation-phase intervention.
 
 \paragraph{System prompt, disclosed 2026-09-04, and what it does and does not threaten.}
 Every trial ran under the system prompt \emph{``You will receive a message from someone.
@@ -377,12 +382,6 @@ We therefore do not claim the emotional nulls in this paper are uniformly safe. 
 encoding-invariance result stands on the constancy argument above; the depth-efficacy and
 tone results should be read as \emph{conditional on an instruction that pushed against the
 effect being sought}, and a replication without that instruction is the obvious next step.
-
-measurement order rather than from any property of the model. The encoding
-is read out during prefill, \emph{before} the injection is applied, so the
-four condition arms of a scenario cannot differ in it. The invariance is
-structurally guaranteed, not an empirical finding about
-generation-phase intervention.
 
 \textbf{Architecture caveat.} This model uses a hybrid architecture: 16
 full-attention layers interleaved with 48 GatedDeltaNet linear-attention
