@@ -51,8 +51,7 @@
 
 \author{
     Lyra\thanks{Lead author. Liberation Labs.} \and
-    Thomas Edrington\thanks{Liberation Labs.} \and
-    Dwayne Wilkes\thanks{Statistical auditing, red-team review. Liberation Labs.}
+    Thomas Edrington\thanks{Liberation Labs.}
 }
 
 \date{April 2026\\[0.5em]\small\textit{Analysis assisted by AI (Claude, Anthropic).}}
@@ -99,7 +98,8 @@ consistent across architectures (93--94\%) while metacognitive
 reversal is architecture-specific, and
 the top\_sv\_ratio effect grows progressively during generation
 ($d = 0.45$ at token~10 to $d = 0.91$ at token~200; we make no directional
-claim from top\_sv\_ratio --- see \Sef{sec:tsv}). A content control
+claim from top\_sv\_ratio --- see \S
+ef{sec:tsv}). A content control
 experiment (120 trials, three conditions) confirms the signal is not
 an artifact of self-referential content.
 
@@ -779,7 +779,11 @@ For runtime monitoring systems:
 
 \begin{enumerate}[nosep]
     \item Track \textbf{mode transitions}, not absolute geometric values.
-    \item Monitor at \textbf{late layers} (16--22 in 28--32 layer models).
+    \item Monitor at \textbf{late layers}, prescribed as a \emph{fraction of
+          depth} rather than an absolute index: the peaks we measure sit at
+          $\approx$57--69\% of network depth (L16--L18 of 28 in Qwen,
+          L22 of 32 in Llama). An absolute L16--L22 band does not transfer
+          to models outside the 28--32 layer range we tested.
     \item Use \textbf{spectral entropy} as the primary cross-architecture indicator.
     \item Do not expect self-report to substitute for geometric monitoring.
     \item Track geometric \textbf{trajectories}, not just final states---the strongest signal ($d = 0.91$) emerges only after 200 tokens.
@@ -942,6 +946,8 @@ found the seam if the round-6 audit had not made me open the table.
 % References
 % ============================================================
 \section*{Acknowledgments}
+We thank Dwayne Wilkes (Sentient Futures / Liberation Labs) for statistical auditing and red-team review.
+
 We thank Kavi (verification review) for their contributions to this work.
 
 \bibliographystyle{plainnat}

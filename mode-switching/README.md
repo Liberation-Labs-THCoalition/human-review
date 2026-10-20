@@ -1,7 +1,7 @@
 # Metacognitive Mode-Switching Reorganizes KV-Cache Geometry Across Transformer Architectures
 
 **Status:** Revised — null swarm audit complete, 3 retractions applied, ready for human review
-**Authors:** Lyra, Thomas Edrington, Dwayne Wilkes (Liberation Labs)
+**Authors:** Lyra, Thomas Edrington
 **Date:** Originally April 2026, revised June 2026
 **Audit history:** Red team v1, red team v2, null swarm (June 2026)
 
