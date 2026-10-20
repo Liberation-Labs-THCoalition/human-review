@@ -39,6 +39,7 @@ marked Published, while the copy here was the retired Markdown draft. Moved with
 | mine5-selective-sharpener__restaged-2026-08-03 | mine5-selective-sharpener (a later re-staging; the 07-20 copy is `mine5-selective-sharpener/`) |
 | mnemosyne-benchmark | mnemosyne-benchmark |
 | mnemosyne-longmemeval-v10 | mnemosyne-longmemeval-v10 |
+| convergence-paper | convergence-paper (entered in published-research 2026-10-20 as In Review, b887872; it hadn't had a published copy) |
 
 **Rule, so this stops happening:** once a paper has a published copy, edit it there. A paper re-staged here for
 another round goes back to `archive/` the day that round ends.
