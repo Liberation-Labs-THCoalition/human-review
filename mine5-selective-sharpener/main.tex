@@ -185,10 +185,17 @@ ratio'' of $[-0.129, +0.069]$ ($p{=}0.758$), and a correction of 7
 September 2026 used it to call the H3 prediction ``unsupported rather
 than refuted''. That interval has no traceable source and cannot be
 reproduced from the per-prompt data, and a confidence interval crossing
-zero is not the registered H3 criterion. This version applies the
-registered criteria to the per-prompt data (file
-\texttt{mine5\_three\_model\_20260715\_021501.json}, SHA-256 beginning
-\texttt{2d950924}): H2 is confirmed and H3 is falsified.
+zero is not the registered H3 criterion. H4 was misreported from the
+first version of this paper (July 2026): it was headed ``Trend Only''
+and reported ``instruct lower than base: $d{=}-0.219$ for confab,
+$d{=}-0.235$ overall'', which ``did not reach significance after FWL
+correction ($p{=}0.41$)''. Those numbers are within-model
+confabulation-versus-factual effects (instruct $d = -0.219$,
+$p = 0.41$; abliterated $d = -0.235$), not the base-versus-instruct
+comparison H4 registers, which gives $d = 1.04$. This version applies
+the registered criteria to the per-prompt data, which are committed
+with this paper (see Data and Code): H1, H2 and H4 are confirmed, and
+H3 is falsified.
 
 \subsection{H1: RLHF Compresses Entropy --- Confirmed}
 
@@ -286,13 +293,18 @@ criterion. The interval on the spread reaches below 10\%, so 30 prompts
 per category do not exclude a spread within the registered bound.
 Selective sharpening was not pre-registered and remains exploratory.
 
-\subsection{H4: Stable Rank --- Trend Only}
+\subsection{H4: Stable Rank --- Confirmed}
 
-V-projection stable rank at workspace-band layers showed the
-predicted direction (instruct lower than base: $d{=}-0.219$ for
-confab, $d{=}-0.235$ overall) but did not reach significance after
-FWL correction ($p{=}0.41$). The spectral contraction is real but
-small at $N{=}30$.
+H4 was pre-registered with the criterion Cohen's $d > 0.3$ for the
+base-versus-instruct difference in V-projection stable rank. Averaged
+over the workspace-band layers (L12, L15, L18, L21) and all 60 prompts,
+stable rank is lower in the instruct model than in the base model:
+$1.683$ against $1.963$, $d = 1.04$ (paired BCa 95\% interval
+$[+0.893, +1.224]$). The criterion is met in each category
+(confabulation $d = 1.44$, factual $d = 1.08$) and at every layer
+separately ($d = 0.63$ to $1.22$). The abliterated model's stable rank
+is lower than the base model's by a similar margin ($d = 1.05$). H4 is
+confirmed.
 
 % ============================================================================
 \section{What This Falsifies and What Survives}
@@ -450,7 +462,7 @@ instruct, $d = 0.746$ against base); and the calibration ratio rises
 registered point criterion, the prediction that it would be preserved
 within 10\%.
 
-Two findings confirmed, one falsified, one exploratory. The
+Three findings confirmed and one falsified. The
 falsification is the most informative result: RLHF did not degrade
 the calibration ratio, and it moved in the opposite direction to the
 one the prospectus proposed. The compression RLHF installs
@@ -473,6 +485,24 @@ is schema commitment, a template commitment that relaxes by token~20;
 ``workspace bypass during generation'' remains a candidate for why
 the commitment happens.
 \end{firstperson}
+
+\section*{Data and Code}
+
+Every result reported in Section~\ref{sec:results} can be recomputed
+from files in this paper's directory:
+\begin{itemize}[nosep]
+\item Per-prompt features for all three models (SHA-256 beginning
+  \texttt{2d950924}): \path{data/mine5_three_model_20260715_021501.json}.
+\item The pre-registration whose criteria Section~\ref{sec:results}
+  applies: \path{data/mine5_three_model_prereg.json}.
+\item The experiment and analysis script that produced the data:
+  \path{code/mine5_three_model.py}.
+\item A script that recomputes every result reported in
+  Section~\ref{sec:results}, the supplementary intervals included,
+  checks each against both editions of this paper, and includes one
+  deliberately false value that it must catch:
+  \path{code/recompute_registered.py}.
+\end{itemize}
 
 \section*{Acknowledgments}
 We thank Dwayne Wilkes (Sentient Futures / Liberation Labs) for statistical auditing and red-team review.
