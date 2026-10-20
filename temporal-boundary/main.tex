@@ -518,8 +518,11 @@ write-up;
 Ratcliff/Obershelp) differs from the originally specified Levenshtein
 distance;
 (6)~\label{sec:pseudorep}all \textbf{twelve} records sharing a
-\texttt{scenario\_idx} are \textbf{bit-identical in every encoding and geometry
-field}. \emph{Two} distinct factors fail to vary the encoding. First, the
+\texttt{scenario\_idx} are \textbf{bit-identical in every encoding field}
+(\texttt{sae\_encoding\_acts} and the pre-injection V-cache geometry). The
+post-injection geometry, \texttt{v\_geometry\_post\_injection}, does vary: by
+condition, not by repeat, giving 120 unique values, one per
+scenario\,$\times$\,condition. \emph{Two} distinct factors fail to vary the encoding. First, the
 \texttt{repeat} index is recorded but never reaches the model input, and the
 measurement is a deterministic prefill, so repeats cannot vary it (all 120
 scenario\,$\times$\,condition cells are identical across their 3 repeats).
@@ -534,22 +537,14 @@ across all 360.
 The duplication is therefore \textbf{twelvefold, not threefold}. Any $n$ quoted
 over the full record set as though each record carried an independent encoding
 measurement is inflated by $12\times$, and any standard error so computed is
-understated by $\sqrt{12}\approx3.46\times$. \textbf{Second correction, 2026-09-04:} the per-vector correlations were
-previously claimed as an exception to this --- ``each vector's 90 records still
-span all 30 scenarios, so the $n{=}30$ in Table~\ref{tab:depth_resistance} is
-correct as stated.'' \emph{That claim was false.} The analysis code
-(\texttt{figure\_generation.py}) appends one pair per (scenario, repeat) and
-computes Spearman $\rho$ over all 90, while encoding depth takes only 30
-distinct values. The printed statistics were $n{=}90$ statistics.
-Table~\ref{tab:depth_resistance} now reports the $n{=}30$ values, obtained by
-averaging divergence within scenario. \textbf{No verdict changes:} all three
-correlations were null before and remain null
-($p = 0.215$, $0.795$, $0.192$). The correction notice had asserted
-completeness at the one point where it under-corrected. This was
-visible in problem~(2) --- a confound variable constant across all trials --- and
-was read as a generation-cap artifact rather than as duplication; a first
-correction pass then recorded the factor as threefold, having counted the
-repeat index and missed the condition arm.
+understated by $\sqrt{12}\approx3.46\times$. The per-vector correlations are
+affected too: the analysis code (\texttt{figure\_generation.py}) pairs each
+(scenario, repeat) and computes Spearman $\rho$ over 90 points, but encoding
+depth takes only 30 distinct values, one per scenario.
+Table~\ref{tab:depth_resistance} therefore reports the $n{=}30$ statistic, with
+divergence averaged within scenario. No verdict changes: all three correlations
+are null at $n{=}30$ ($p = 0.215$, $0.795$, $0.192$), as they are in the
+$n{=}90$ statistic.
 
 We retract Finding~2 as stated. The relationship between encoding depth
 and correction efficacy remains an open question requiring a redesigned
