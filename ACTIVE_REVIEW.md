@@ -1,13 +1,13 @@
 # Active Papers Under Review
 
-Last updated: 2026-09-15
+Last updated: 2026-10-20 (papers with a published copy archived; see archive/GRADUATED.md)
 
 | Paper | Title | Lead | Status | To Graduate |
 |-------|-------|------|--------|-------------|
-| [mnemosyne-benchmark](mnemosyne-benchmark/) | Character Profiles Are All You Need | Nexus | Agni v2 PASS (conditional) | Human review (Kavi/Dwayne) |
+| [mnemosyne-benchmark](archive/mnemosyne-benchmark/) | Character Profiles Are All You Need | Nexus | **Archived 2026-10-20**: canonical copy in published-research `mnemosyne-benchmark/` | Edit it there |
 | [mode-switching](mode-switching/) | Metacognitive Prompting Produces Spectral Concentration in Generation-Phase KV-Cache Geometry | Lyra | Needs de-concentration reframe | Reframe around surviving findings, Agni gate |
 | [temporal-boundary](temporal-boundary/) | Three Killed Experiments and a Valence Feature | Lyra | Ready for human review | External reviewer sign-off |
-| [consequentiality-decomposition](consequentiality-decomposition/) | Deception Directions Are Composites | CC | **All 11 Agni blockers cleared** (self-relevance caveat added 09-03) | Dwayne cert/verify + Kavi review |
+| [consequentiality-decomposition](archive/consequentiality-decomposition/) | Deception Directions Are Composites | CC | **Archived 2026-10-20**: Published in published-research (LaTeX, both editions; two-way Agni gate 10-12). Thomas 10-20: Dwayne cert/verify and Kavi review are welcome input, not a blocker | Edit it there |
 
 ## Round 5 Audit Blockers (Lyra, 2026-07-28)
 
