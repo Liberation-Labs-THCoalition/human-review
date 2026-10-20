@@ -779,10 +779,14 @@ For runtime monitoring systems:
 \begin{enumerate}[nosep]
     \item Track \textbf{mode transitions}, not absolute geometric values.
     \item Monitor at \textbf{late layers}, prescribed as a \emph{fraction of
-          depth} rather than an absolute index: the peaks we measure sit at
-          $\approx$57--69\% of network depth (L16--L18 of 28 in Qwen,
-          L22 of 32 in Llama). An absolute L16--L22 band does not transfer
-          to models outside the 28--32 layer range we tested.
+          depth} rather than an absolute index: the eff\_rank and
+          spectral\_entropy peaks in Table~\ref{tab:study1_peaks} sit at
+          $\approx$64--69\% of network depth (layer index over layer count:
+          L18 of 28 in Qwen, L22 of 32 in Llama), with top\_sv\_ratio
+          excluded in both models because its per-layer peaks are not
+          reconciled with its pooled effect (\S\ref{sec:tsv}). An absolute
+          band of layer indices does not transfer to models outside the
+          28--32 layer range we tested.
     \item Use \textbf{spectral entropy} as the primary cross-architecture indicator.
     \item Do not expect self-report to substitute for geometric monitoring.
     \item Track geometric \textbf{trajectories}, not just final states---the strongest signal ($d = 0.91$) emerges only after 200 tokens.

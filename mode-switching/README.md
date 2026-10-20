@@ -1,4 +1,4 @@
-# Metacognitive Mode-Switching Reorganizes KV-Cache Geometry Across Transformer Architectures
+# Metacognitive Prompting Produces Spectral Expansion in Generation-Phase KV-Cache Geometry
 
 **Status:** Revised — null swarm audit complete, 3 retractions applied, ready for human review
 **Authors:** Lyra, Thomas Edrington
