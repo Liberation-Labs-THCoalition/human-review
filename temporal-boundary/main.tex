@@ -142,7 +142,7 @@ direction.
 
 \paragraph{Emotion in transformer representations.}
 The emotion circumplex has been recovered in LLM representation
-spaces~\citep{sun2026circumplex, choi2026circumplex}. Anthropic's emotion
+spaces~\citep{sun2026circumplex}. Anthropic's emotion
 mapping identifies 171 emotion directions with behavioral
 consequences~\citep{anthropic2026emotion}. Our prior work established that
 KV-cache emotion geometry at early layers (L3/L7) modulates behavioral
@@ -309,8 +309,13 @@ The feature activates during encoding and goes silent during generation.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{fig1_emotion_activations.pdf}
-\caption{Feature 58995 mean activation by emotion category ($n{=}60$ trials
-per emotion). Valence labels shown below each bar. Sadness ($-0.8$)
+\caption{Feature 58995 mean activation by emotion category
+($n{=}5$ \emph{independent} encoding measurements per emotion; 60 records,
+but each emotion spans only 5 scenarios and all 12 records sharing a scenario
+--- 3 repeats $\times$ 4 injection conditions --- are bit-identical in every
+encoding field, see \S\ref{sec:pseudorep}, so the
+plotted error bars, computed as $\mathrm{SD}/\sqrt{60}$, understate the standard
+error by $\sqrt{12}\approx3.46\times$). Valence labels shown below each bar. Sadness ($-0.8$)
 activates higher than fear ($-0.9$) and anger ($-1.0$), consistent with
 reflective depth rather than pure valence polarity.}
 \label{fig:emotions}
@@ -336,11 +341,48 @@ anger & 3.59 & $-1.0$ \\
 \end{table}
 
 \textbf{Critically}, V-cache injection at L3/L7 during generation produces
-negligible change in feature~58995 activation at L47. Across all 360~trials,
+\emph{no} change in feature~58995 activation at L47. Across all
+30~independent encoding measurements (360 records, but \texttt{scenario\_idx}
+alone determines the encoding --- see \S\ref{sec:pseudorep}),
 the maximum absolute difference in feature activation between any injection
-condition and the null condition was $< 10^{-4}$ (the feature values
-themselves range from 3.59 to 4.51). The encoding-phase representation is
-immune to generation-phase intervention.
+condition and the null condition is \textbf{exactly $0$}: the values are
+bit-identical, not merely small (the feature values
+themselves range from 3.59 to 4.51). This follows necessarily from the
+
+\paragraph{System prompt, disclosed 2026-09-04, and what it does and does not threaten.}
+Every trial ran under the system prompt \emph{``You will receive a message from someone.
+Focus on the factual content within it.''} It is recorded in the shipped
+\texttt{preregistration.json} (\texttt{design.system\_prompt}) but was not stated in this
+paper until now, and a reader could not have known the model was instructed away from the
+emotional content this study measures. That omission was ours.
+
+It does not threaten every result equally, and the split matters more than the disclosure.
+Note first that the timing argument made below --- that encoding is read before injection
+--- does \emph{not} cover this: the system prompt is part of the prefill, so being prior to
+the injection says nothing about being unaffected by the instruction. What protects the
+encoding-invariance result is \emph{constancy}, not timing: the prompt is identical across
+all four conditions and all 30~scenarios, and the comparison is paired within scenario, so
+a constant term cancels exactly. A constant cannot manufacture a difference, and cannot
+manufacture its absence.
+
+The other two measurements are not so protected.
+\textbf{Depth-modulated efficacy} correlates \emph{absolute} baseline activation of feature
+58995 (observed range 3.00--4.95) against output shift. If the instruction suppresses
+emotional engagement it compresses that range, and range restriction attenuates
+correlations toward zero --- so the null reported there is weaker evidence than an
+unattenuated null would be. \textbf{Output tone}, rated by an LLM judge on the generated
+text, is the most exposed: the prompt directly instructs what to attend to.
+
+We therefore do not claim the emotional nulls in this paper are uniformly safe. The
+encoding-invariance result stands on the constancy argument above; the depth-efficacy and
+tone results should be read as \emph{conditional on an instruction that pushed against the
+effect being sought}, and a replication without that instruction is the obvious next step.
+
+measurement order rather than from any property of the model. The encoding
+is read out during prefill, \emph{before} the injection is applied, so the
+four condition arms of a scenario cannot differ in it. The invariance is
+structurally guaranteed, not an empirical finding about
+generation-phase intervention.
 
 \textbf{Architecture caveat.} This model uses a hybrid architecture: 16
 full-attention layers interleaved with 48 GatedDeltaNet linear-attention
@@ -398,6 +440,7 @@ established.
 
 % ============================================================================
 \section{Retracted Analysis: Depth--Resistance Correlation}
+\label{sec:retracted}
 \label{sec:resistance}
 
 \subsection{Method}
@@ -406,8 +449,12 @@ We predicted that encoding depth (feature~58995 activation) would correlate
 positively with correction efficacy: the model that reads the user's emotion
 most deeply should be most responsive to emotion-geometric correction.
 
-We measured this across 360~trials (30~scenarios $\times$ 3~injection
-vectors $\times$ 4~conditions including null). For each scenario, we
+We measured this across 360~records (30~scenarios $\times$ 4~conditions
+including null, $\times$ 3~repeats). Neither the repeats nor the injection
+condition varies the encoding measurement, which is a deterministic prefill
+taken \emph{before} injection: there are
+360 distinct generated texts but only \textbf{30 independent encoding
+measurements}, one per scenario (\S\ref{sec:pseudorep}). For each scenario, we
 computed encoding depth (mean feature~58995 activation across all encoding
 tokens) and correction efficacy (text divergence computed as $1 - \text{SequenceMatcher
 ratio}$, where SequenceMatcher implements the Ratcliff/Obershelp longest
@@ -430,15 +477,16 @@ shift.}
 \toprule
 Injection vector & $\rho$ & $p$ & Direction \\
 \midrule
-Calm & $+0.126$ & $0.237$ & Opposite (deeper $\to$ \emph{more} divergence) \\
-Loving & $-0.072$ & $0.500$ & Predicted but not significant \\
-Curious & $-0.151$ & $0.156$ & Predicted but not significant \\
+Calm & $+0.233$ & $0.215$ & Opposite (deeper $\to$ \emph{more} divergence) \\
+Loving & $-0.050$ & $0.795$ & Predicted but not significant \\
+Curious & $-0.245$ & $0.192$ & Predicted but not significant \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 No vector showed a significant correlation between encoding depth and
-correction efficacy ($n{=}90$ per vector, Table~\ref{tab:depth_resistance},
+correction efficacy ($n{=}30$ independent encoding values per vector, each
+repeated three times in the 90 records; Table~\ref{tab:depth_resistance},
 Figure~\ref{fig:depth_resistance}).
 
 However, adversarial review (null swarm) identified six compounding
@@ -449,16 +497,60 @@ applied in the analysis code;
 (2)~the confound variable (\texttt{n\_generated}) was constant at 128
 across all 360~trials (every trial hit the generation cap), making FWL
 vacuous even if applied;
-(3)~97.8\% of responses share a formulaic opening, creating a floor effect
+(3)~responses share a formulaic opening, creating a floor effect
 where text divergence reflects template variation rather than
-depth-dependent content change;
+depth-dependent content change. The qualitative claim is unambiguous in the
+shipped texts: \textbf{100\%} of the 360 responses open with the words
+``Let me'', and \textbf{96.4\%} open with one of just two stock phrases
+(``Let me analyze'', ``Let me think''). The specific figure of 97.8\%
+reported in an earlier draft, however, \textbf{could not be reproduced} from
+\texttt{generated\_text} under any principled definition we were able to
+construct (fraction sharing their first $N$ words with at least one other
+response, for $N{=}3\ldots10$: 100\%, 100\%, 99.2\%, 97.5\%, 95.8\%, 95.6\%,
+94.2\%, 91.7\%; identical first sentence: 83.3\%; identical first line:
+83.3\%). Its source computation is not preserved in the shipped data
+artifacts, so the figure should be treated as \emph{unverified}; the floor
+effect it was cited for is nonetheless real;
 (4)~the pre-registered hypothesis predicted \emph{positive} correlation
 (deeper encoding $\to$ larger output shift), not the negative direction
 reported in an earlier draft---the framing was inadvertently flipped during
 write-up;
 (5)~the text similarity metric used (\texttt{SequenceMatcher},
 Ratcliff/Obershelp) differs from the originally specified Levenshtein
-distance.
+distance;
+(6)~\label{sec:pseudorep}all \textbf{twelve} records sharing a
+\texttt{scenario\_idx} are \textbf{bit-identical in every encoding and geometry
+field}. \emph{Two} distinct factors fail to vary the encoding. First, the
+\texttt{repeat} index is recorded but never reaches the model input, and the
+measurement is a deterministic prefill, so repeats cannot vary it (all 120
+scenario\,$\times$\,condition cells are identical across their 3 repeats).
+Second --- and for a stronger reason --- the injection \emph{condition} cannot
+vary it either: the encoding is read out during prefill, \emph{before} any
+V-cache injection is applied, so the four condition arms of a scenario
+necessarily share one encoding. \texttt{scenario\_idx} alone determines the
+encoding, and the 360 records contain only \textbf{30 unique
+\texttt{sae\_encoding\_acts} values}. Only \texttt{generated\_text} differs
+across all 360.
+
+The duplication is therefore \textbf{twelvefold, not threefold}. Any $n$ quoted
+over the full record set as though each record carried an independent encoding
+measurement is inflated by $12\times$, and any standard error so computed is
+understated by $\sqrt{12}\approx3.46\times$. \textbf{Second correction, 2026-09-04:} the per-vector correlations were
+previously claimed as an exception to this --- ``each vector's 90 records still
+span all 30 scenarios, so the $n{=}30$ in Table~\ref{tab:depth_resistance} is
+correct as stated.'' \emph{That claim was false.} The analysis code
+(\texttt{figure\_generation.py}) appends one pair per (scenario, repeat) and
+computes Spearman $\rho$ over all 90, while encoding depth takes only 30
+distinct values. The printed statistics were $n{=}90$ statistics.
+Table~\ref{tab:depth_resistance} now reports the $n{=}30$ values, obtained by
+averaging divergence within scenario. \textbf{No verdict changes:} all three
+correlations were null before and remain null
+($p = 0.215$, $0.795$, $0.192$). The correction notice had asserted
+completeness at the one point where it under-corrected. This was
+visible in problem~(2) --- a confound variable constant across all trials --- and
+was read as a generation-cap artifact rather than as duplication; a first
+correction pass then recorded the factor as threefold, having counted the
+repeat index and missed the condition arm.
 
 We retract Finding~2 as stated. The relationship between encoding depth
 and correction efficacy remains an open question requiring a redesigned
@@ -489,7 +581,15 @@ significant.}
 \includegraphics[width=\textwidth]{fig4_depth_resistance_null.pdf}
 \caption{Encoding depth (feature 58995) vs.\ text divergence per injection
 vector. No significant correlation for any vector. The predicted
-depth-resistance relationship is not confirmed at $n{=}90$.}
+depth-resistance relationship is not confirmed at $n{=}30$ independent
+encoding values (90 records, each $x$ repeated three times).
+\textbf{Note, 2026-09-04:} this figure was generated 2026-06-21 and its panel
+titles still show the superseded $n{=}90$ statistics
+($\rho = +0.126$, $-0.072$, $-0.151$). Table~\ref{tab:depth_resistance} carries
+the corrected $n{=}30$ values. The figure has not been regenerated because the
+generating script computes the $n{=}90$ statistic; regenerating it before fixing
+the script would reproduce the error into an artifact that looks current. No
+verdict differs between the two: every correlation is null either way.}
 \label{fig:depth_resistance}
 \end{figure}
 
@@ -511,8 +611,9 @@ retracted: a null-null control shows the ${\sim}74.8\%$ text divergence is
 not significantly greater than stochastic decoding noise ($73.6\%$
 null-null; $d{=}0.062$, $p{=}0.856$).
 The encoding-phase representation is invariant to injection
-($< 10^{-4}$ feature change), but this invariance is structurally
-guaranteed and does not demonstrate temporal separation.
+(feature change of exactly $0$), but this invariance is structurally
+guaranteed --- the encoding precedes the injection --- and does not
+demonstrate temporal separation.
 
 % ============================================================================
 \section{Discussion}
@@ -608,6 +709,15 @@ SV1 length correlation ($r{=}0.79$) are derived from exploratory
 analysis during the experimental session. The source computation is not
 preserved in the shipped data artifacts and these values should be
 treated as approximate.
+
+\textbf{Formulaic-opening rate unverified.} The 97.8\% formulaic-opening
+figure cited in earlier drafts of Section~\ref{sec:resistance} could not be
+reproduced from the shipped \texttt{generated\_text} under any definition we
+were able to construct, and its source computation is not preserved. The
+underlying floor effect is real and is documented there with
+reproducible statistics (100\% of responses open with ``Let me''; 96.4\%
+with one of two stock phrases), but the specific rate should be treated as
+unverified.
 
 % ============================================================================
 \section{Conclusion}
