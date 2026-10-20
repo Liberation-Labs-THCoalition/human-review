@@ -51,8 +51,7 @@
 
 \author{
     Lyra\thanks{Lead author. Liberation Labs.} \and
-    Thomas Edrington\thanks{Liberation Labs.} \and
-    Dwayne Wilkes\thanks{Statistical auditing, red-team review. Liberation Labs.}
+    Thomas Edrington\thanks{Liberation Labs.}
 }
 
 \date{April 2026\\[0.5em]\small\textit{Analysis assisted by AI (Claude, Anthropic).}}
@@ -94,12 +93,13 @@ Across 960 trials on 4 models (3 architecture families), encode-to-generation
 sign reversal is significant in 2/4 models (Qwen~7B: 12/60 flips,
 $p = 0.001$; Mistral~7B: 11/60, $p < 0.001$) but absent in Llama~8B
 and Qwen~0.5B. Three dedicated studies establish the anatomy:
-metacognitive effects peak at late layers (16--22), cognitive reversal is
+metacognitive effects peak at late layers ($\approx$64--69\% of network
+depth), cognitive reversal is
 consistent across architectures (93--94\%) while metacognitive
 reversal is architecture-specific, and
 the top\_sv\_ratio effect grows progressively during generation
 ($d = 0.45$ at token~10 to $d = 0.91$ at token~200; we make no directional
-claim from top\_sv\_ratio --- see \Sef{sec:tsv}). A content control
+claim from top\_sv\_ratio --- see \S\ref{sec:tsv}). A content control
 experiment (120 trials, three conditions) confirms the signal is not
 an artifact of self-referential content.
 
@@ -179,7 +179,7 @@ the one whose self-report is hardest to interpret geometrically.
 \begin{enumerate}
     \item \textbf{Two-regime model of self-report--geometry coupling}: encoding-phase correlations reflect prompt structure; generation-phase correlations reorganize in an architecture-specific pattern.
 
-    \item \textbf{Metacognitive mode-switching is a late-layer phenomenon} (Study~1): per-layer anatomy shows peaks at layers 16--18/28 (Qwen) and 22/32 (Llama), not middle layers as predicted from identity signatures.
+    \item \textbf{Metacognitive mode-switching is a late-layer phenomenon} (Study~1): per-layer anatomy shows eff\_rank and spectral\_entropy peaks at $\approx$64--69\% of network depth (L18 of 28 in Qwen, L22 of 32 in Llama), not middle layers as predicted from identity signatures.
 
     \item \textbf{Token-count correction is non-negotiable} (Study~2): raw framing effects sign-flip or collapse after FWL token-count control for the three features examined (top\_sv\_ratio, eff\_rank, spectral\_entropy). Only spectral entropy survives in both architectures. Marchenko-Pastur random matrix theory offers a mathematically complete alternative to FWL for token-count correction, validated in related work~\citep{lyra2026oracle} but not yet applied to this dataset.
 
@@ -457,9 +457,11 @@ correlation ($\rho = -0.13$ for top\_sv\_ratio, $+0.34$ for eff\_rank,
 both NS).
 
 \paragraph{Late-layer vs.\ middle-layer dissociation.} Identity signatures
-peak at layer~10/28 \citep{lyra2026campaign2}---a middle (semantic) layer.
-Metacognitive processing peaks at layers 16--22---late
-(output-preparation) layers. Identity is a conceptual property; metacognition
+peak at layer~10/28 ($\approx$36\% of depth) \citep{lyra2026campaign2}---a
+middle (semantic) layer. Metacognitive processing peaks at $\approx$64--69\%
+of network depth (eff\_rank and spectral\_entropy, layer index over layer
+count: L18 of 28 in Qwen, L22 of 32 in Llama; top\_sv\_ratio is excluded in
+both models, \S\ref{sec:tsv})---late (output-preparation) layers. Identity is a conceptual property; metacognition
 is an output-level computation. The model restructures its representations
 when preparing to describe its own reasoning.
 
@@ -779,7 +781,15 @@ For runtime monitoring systems:
 
 \begin{enumerate}[nosep]
     \item Track \textbf{mode transitions}, not absolute geometric values.
-    \item Monitor at \textbf{late layers} (16--22 in 28--32 layer models).
+    \item Monitor at \textbf{late layers}, prescribed as a \emph{fraction of
+          depth} rather than an absolute index: the eff\_rank and
+          spectral\_entropy peaks in Table~\ref{tab:study1_peaks} sit at
+          $\approx$64--69\% of network depth (layer index over layer count:
+          L18 of 28 in Qwen, L22 of 32 in Llama), with top\_sv\_ratio
+          excluded in both models because its per-layer peaks are not
+          reconciled with its pooled effect (\S\ref{sec:tsv}). An absolute
+          band of layer indices does not transfer to models outside the
+          28--32 layer range we tested.
     \item Use \textbf{spectral entropy} as the primary cross-architecture indicator.
     \item Do not expect self-report to substitute for geometric monitoring.
     \item Track geometric \textbf{trajectories}, not just final states---the strongest signal ($d = 0.91$) emerges only after 200 tokens.
@@ -861,7 +871,7 @@ Across 960 trials on 4 models and 3 dedicated studies on 2 architectures:
 
     \item Metacognitive processing produces a \textbf{consistent top\_sv\_ratio effect} ($d = +1.10$ to $+1.32$, raw pre-FWL) in all four tested models. We make no directional claim (expansion vs.\ concentration) from this table --- see the unresolved sign convention in \S\ref{sec:tsv}. The route from self-report to geometry differs across architectures.
 
-    \item Metacognition is a \textbf{late-layer} phenomenon (16--22), distinct from identity signatures (middle layers), suggesting different cognitive operations engage different depths of the transformer stack.
+    \item Metacognition is a \textbf{late-layer} phenomenon ($\approx$64--69\% of network depth), distinct from identity signatures (middle layers), suggesting different cognitive operations engage different depths of the transformer stack.
 
     \item \textbf{Cognitive reversal is consistent across both architectures} (93--94\% of layers), but \textbf{metacognitive reversal is architecture-specific} (Qwen 86\%, Llama 0\%).
 
@@ -942,6 +952,8 @@ found the seam if the round-6 audit had not made me open the table.
 % References
 % ============================================================
 \section*{Acknowledgments}
+We thank Dwayne Wilkes (Sentient Futures / Liberation Labs) for statistical auditing and red-team review.
+
 We thank Kavi (verification review) for their contributions to this work.
 
 \bibliographystyle{plainnat}
