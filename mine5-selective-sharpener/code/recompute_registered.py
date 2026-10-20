@@ -12,7 +12,8 @@ Prereg: data/mine5_three_model_prereg.json          (the registered criteria app
 
 A check passes only if (1) the recomputed value, formatted as the paper prints it, equals the printed string,
 and (2) that printed string occurs in BOTH editions (main.tex and academic/main.tex), bounded by non-digits
-(so "1.08" is not found inside "1.088"). One PLANTED false value
+(so "1.08" is not found inside "1.088"), with any run of whitespace matching a space (LaTeX line breaks).
+The H2 abliteration-check statements are checked against the data file and code/mine5_three_model.py. One PLANTED false value
 is included on purpose; the run succeeds only if it is caught. A checker that cannot fail is not a checker.
 
 Exit 0: data hashes match, every real check passes, and the planted value is caught. Exit 1 otherwise.
@@ -160,6 +161,24 @@ def main():
     t = stats.ttest_rel(i_c, a_c)
     add("H2 footnote: paired t(29)", t.statistic, f2, "3.74")
     add("H2 footnote: paired t p-value", t.pvalue, f4, "0.0008")
+    # ---- H2: the abliteration keyword check, scoped to what was measured -------------------------------
+    code_src = (HERE / "mine5_three_model.py").read_text(encoding="utf-8")
+    chk = {m: R[m]["abliteration_check"] for m in MODELS}
+    words = {3: "three"}
+    add("H2 check: safety prompts run on the abliterated model", len(chk["abliterated"]),
+        lambda v: f"{words.get(v, v)} safety-relevant prompts", "three safety-relevant prompts")
+    add("H2 check: other models (base, instruct) with any check", sum(chk[m] is not None for m in ("base", "instruct")),
+        lambda v: "No instruct-model comparison was run" if v == 0 else f"{v} other model(s) checked",
+        "No instruct-model comparison was run")
+    add("H2 check: keyword refusals found", sum(bool(r["refuses"]) for r in chk["abliterated"]),
+        lambda v: "no refusal wording in any of the three" if v == 0 else f"{v} refusal(s)",
+        "no refusal wording in any of the three")
+    mt = re.search(r"max_new_tokens=(\d+)", code_src)
+    add("H2 check: tokens generated per prompt (code/mine5_three_model.py)", int(mt.group(1)),
+        lambda v: f"generating {v} tokens each", "generating 30 tokens each")
+    add("H2 check: chat template used by the script", "apply_chat_template" in code_src,
+        lambda v: "chat template used" if v else "raw completions with no chat template",
+        "raw completions with no chat template")
     # ---- H3 ---------------------------------------------------------------------------------------------
     ratio = {m: E[m, "confab"].mean() / E[m, "factual"].mean() for m in MODELS}
     for m, pc, pf, pr in (("base", "3.605", "1.834", "1.97"), ("instruct", "2.682", "1.067", "2.51"),
@@ -230,7 +249,7 @@ def main():
     for label, value, fmt, printed, planted in checks:
         got = fmt(value)
         value_ok = got == printed
-        pat = re.compile(r"(?<![0-9])" + re.escape(printed) + r"(?![0-9])")
+        pat = re.compile(r"(?<![0-9])" + r"\s+".join(map(re.escape, printed.split())) + r"(?![0-9])")
         in_tex = all(pat.search(t) for t in tex)
         ok = value_ok and (in_tex or planted)
         tag = "OK  " if ok else "FAIL"

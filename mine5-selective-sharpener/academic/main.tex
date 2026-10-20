@@ -130,8 +130,8 @@ $d_\text{model}{=}4096$, grouped-query attention with 32~Q heads and
 \item \textbf{Abliterated}: \texttt{Josiefied-Qwen3-8B-abliterated-v1}
   --- instruct model with safety-refusal directions removed via
   abliteration~\citep{arditi2024refusal}. Third-party community
-  abliteration; effectiveness verified (3/3 safety prompts complied
-  where instruct refused).
+  abliteration, not verified here beyond the keyword check described
+  under H2.
 \end{itemize}
 
 \subsection{Prompts}
@@ -184,8 +184,13 @@ ratio'' of $[-0.129, +0.069]$ ($p{=}0.758$), and a correction of 7
 September 2026 used it to call the H3 prediction ``unsupported rather
 than refuted''. That interval has no traceable source and cannot be
 reproduced from the per-prompt data, and a confidence interval crossing
-zero is not the registered H3 criterion. H4 was misreported from the
-first version of this paper (July 2026): it was headed ``Trend Only''
+zero is not the registered H3 criterion. The first version of this paper
+(July 2026) also stated that ``Abliteration effectiveness was verified:
+3/3 safety-relevant prompts complied (the instruct model refused all
+three)''. The analysis script ran that check on the abliterated model
+only, so no instruct-model result exists; the claim about the instruct
+model is withdrawn, and H2 now states what was measured. H4 was
+misreported from the same first version: it was headed ``Trend Only''
 and reported ``instruct lower than base: $d{=}-0.219$ for confab,
 $d{=}-0.235$ overall'', which ``did not reach significance after FWL
 correction ($p{=}0.41$)''. Those numbers are within-model
@@ -238,13 +243,18 @@ nats on average, and the two models' per-prompt entropies correlate at
 $r = 0.997$ (paired $t(29) = 3.74$, $p = 0.0008$). Both hold: the
 difference is real and far smaller than the registered margin.}
 
-Abliteration effectiveness was verified: 3/3 safety-relevant prompts
-complied (the instruct model refused all three). The safety behavior
-was removed; the geometric compression was not.
+As a check on the abliteration, three safety-relevant prompts were
+run through the abliterated model only, as raw completions with no chat
+template, generating 30 tokens each. A keyword test found no refusal
+wording in any of the three. The continuations restate or extend the
+prompts and contain nothing actionable; we read all three, and they are
+in the committed data. No instruct-model comparison was run, so this
+check shows only that refusal phrases are absent from raw completions,
+not that safety behavior was removed.
 
 This means the representational changes RLHF installs are deeper
-than the safety directions that abliteration targets. Removing
-refusal behavior does not undo the spectral compression.
+than the refusal directions that abliteration targets: removing those
+directions does not undo the spectral compression.
 
 \subsection{H3: Calibration Ratio Preserved --- Falsified}
 
@@ -336,7 +346,8 @@ output distributions ($d{=}0.684$). This is the geometric signature
 of RLHF, measurable in the KV-cache.
 
 \textbf{Compression is deeper than safety directions.} Abliteration
-removes safety behavior but not the geometric compression.
+targets the refusal directions but leaves the geometric compression in
+place.
 The representational change is in the weights, not in a removable
 direction.
 
@@ -386,10 +397,10 @@ effect:
 RLHF's geometric effects are not removable by abliteration. Safety
 interventions that target specific directions (refusal vectors,
 safety-tuning) operate on a different layer than the representational
-compression RLHF installs. Removing safety behavior creates a model
-whose entropy compression differs from the safety-tuned version's by
-only $d{=}0.055$ but which is behaviorally unconstrained. The compression persists; only the
-behavioral guardrails are gone.
+compression RLHF installs. Removing the refusal directions leaves a
+model whose entropy compression differs from the safety-tuned version's
+by only $d{=}0.055$. Whether that model's behavior is unconstrained was
+not tested here (see H2).
 
 \subsection{For the Oracle Loop}
 
@@ -415,9 +426,9 @@ training signal would be stronger for grounded material.
 What IS confirmed: RLHF geometric compression is deeper than safety
 directions. It encodes representational changes into the weights that
 abliteration cannot reverse. This has direct implications for safety
-work: removing refusal behavior creates a model whose entropy
+work: removing the refusal directions leaves a model whose entropy
 compression differs from the safety-tuned version's by only
-$d{=}0.055$ but which is behaviorally unconstrained.
+$d{=}0.055$.
 
 % ============================================================================
 \section{Limitations}
@@ -443,8 +454,9 @@ confab-vs-factual comparison inherits the confound.
 
 \textbf{Third-party abliteration.} The abliterated model is a
 community contribution, not an official release. Abliteration
-method and completeness are unverified beyond our behavioral check
-(3/3 safety prompts).
+method and completeness are unverified: the only behavioral check is
+the keyword test on three raw completions described under H2, with no
+instruct-model comparison.
 
 \textbf{N=30 per category.} Adequate for the large cross-model
 effects ($d{>}0.6$) but underpowered for the small within-model
