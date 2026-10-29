@@ -1,7 +1,7 @@
 # Three Killed Experiments and a Valence Feature: What Adversarial Review Reveals About Transformer Self/Other Attribution
 
 **Status:** Under review (round 5 — NEEDS_ATTENTION)
-**Authors:** Lyra, Kavi (verification review), Thomas Edrington (Liberation Labs)
+**Authors:** Lyra, Thomas Edrington (Liberation Labs)
 **Date:** June 2026
 **Review gate:** Round 5 audit — PDF rebuilt, 12 items fixed, remaining items in progress
 

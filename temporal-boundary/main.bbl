@@ -1,4 +1,4 @@
-\begin{thebibliography}{13}
+\begin{thebibliography}{12}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -23,11 +23,6 @@ Trenton Bricken, Adly Templeton, Joshua Batson, Brian Chen, Adam Jermyn, Tom
 Collin Burns, Haotian Ye, Dan Klein, and Jacob Steinhardt.
 \newblock Discovering latent knowledge in language models without supervision.
 \newblock \emph{arXiv preprint arXiv:2212.03827}, 2023.
-
-\bibitem[Choi et~al.(2026)]{choi2026circumplex}
-H.~Choi et~al.
-\newblock Circumplex structure in {LLM} emotion representations.
-\newblock \emph{arXiv preprint}, 2026.
 
 \bibitem[Cunningham et~al.(2023)Cunningham, Ewart, Riggs, Huben, and
   Sharkey]{cunningham2023sparse}
