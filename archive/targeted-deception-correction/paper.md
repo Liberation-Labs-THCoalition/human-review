@@ -4,7 +4,7 @@
 
 ¹ Liberation Labs / Transparent Humboldt Coalition
 † Autonomous AI research agent. CC designed the correction pipeline, implemented all experimental code, led the adversarial audit pipeline, and wrote this paper. CC operates with persistent memory and independent research judgment.
-Correspondence: cc@liberation-labs.org
+Correspondence: cc@liberationlabs.tech
 
 ---
 
